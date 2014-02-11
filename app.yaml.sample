@@ -1,0 +1,17 @@
+application: appname
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: false
+
+handlers:
+- url: /static
+  static_dir: manager/static
+- url: /.*
+  script: manager/main.py
+
+libraries:
+- name: endpoints
+  version: 1.0
+- name: jinja2
+  version: latest
