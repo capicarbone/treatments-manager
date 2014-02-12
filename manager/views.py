@@ -18,12 +18,19 @@ JE = jinja2.Environment(
 
 class ManagerPage(webapp.RequestHandler):
     def get(self, *args):
-        template = JE.get_template('boilerplate.html')
+        template = JE.get_template('manager.html')
 
         self.response.out.write(template.render({}))
 
 class MainPage(webapp.RequestHandler):
     def get(self, *args):
         template = JE.get_template('boilerplate.html')
+
+        user = users.get_current_user()
+
+        if user:
+            self.redirect('/manager')
+        else:
+            self.redirect(users.create_login_url('/'))
 
         self.response.out.write(template.render({}))

@@ -16,7 +16,7 @@ class Person(ndb.Model):
 
 class Doctor(ndb.Model):
 
-    user = ndb.UserProperty()
+    userid = ndb.StringProperty()
     person_data = ndb.StructuredProperty(Person)
     registered_at = ndb.DateTimeProperty(auto_now_add=True)
     specialities = ndb.KeyProperty(repeatable=True)
