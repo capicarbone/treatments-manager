@@ -34,3 +34,21 @@ class MainPage(webapp.RequestHandler):
             self.redirect(users.create_login_url('/'))
 
         self.response.out.write(template.render({}))
+
+class AmministratorePage(webapp.RequestHandler):
+    def get(self, *args):
+        template = JE.get_template('admin.html')
+
+        self.response.out.write(template.render({}))
+
+class AdminDashboardTemplate(webapp.RequestHandler):
+    def get(self, *args):
+        template = JE.get_template('admin_dashboard.html')
+
+        self.response.out.write(template.render({}))
+
+class DoctorsManagerTemplate(webapp.RequestHandler):
+    def get(self, *args):
+        template = JE.get_template('doctors_manager.html')
+
+        self.response.out.write(template.render({}))

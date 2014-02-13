@@ -9,5 +9,8 @@ import views
 
 routers = [
         ('/manager', views.ManagerPage),
+        ('/amministratore', views.AmministratorePage),
+        ('/admin_dashboard', views.AdminDashboardTemplate),
+        ('/doctors_manager', views.DoctorsManagerTemplate),
         ('/', views.MainPage),
         ]
