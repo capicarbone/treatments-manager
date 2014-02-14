@@ -1,5 +1,9 @@
 {% extends "syslayout.html" %}
 
+{% block title %}
+	Amministratore
+{% endblock %}
+
 {% block sidebar_options %}
 	<li class="active">
 		<a href="#/dashboard">Dashboard</a>
@@ -14,4 +18,5 @@
 
 {% block module_js %}
 	<script src="static/js/admin.js"></script>
+	<script src="https://apis.google.com/js/client.js?onload=init_app"></script>
 {% endblock %}

@@ -52,3 +52,9 @@ class DoctorsManagerTemplate(webapp.RequestHandler):
         template = JE.get_template('doctors_manager.html')
 
         self.response.out.write(template.render({}))
+
+class DoctorFormTemplate(webapp.RequestHandler):
+    def get(self, *args):
+        template = JE.get_template('doctor_form.html')
+
+        self.response.out.write(template.render({}))

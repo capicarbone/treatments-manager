@@ -1,0 +1,57 @@
+{% raw %}
+
+	<div class="row-fluid">
+		<div class="md-col-12">
+			<div class="page-header">
+				<h1>Registro de doctor</h1>
+			</div>
+
+			<form action="" class="form-horizontal" ng-submit="saveDoctor()" name="doctor">
+				<div class="form-group">
+					<label for="" class="col-md-2 control-label">Correo</label>
+					<div class="col-md-4">
+						<input type="text" class="form-control" ng-model="doctor.email"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="" class="col-md-2 control-label">Nombres</label>
+					<div class="col-md-4">
+						<input type="text" class="form-control" ng-model="doctor.person_data.first_name"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="" class="col-md-2 control-label">Apellidos</label>
+					<div class="col-md-4">
+						<input type="text" class="form-control" ng-model="doctor.person_data.last_name"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="" class="col-md-2 control-label">Sexo</label>
+					<div class="col-md-4">
+						<select class="form-control" name="gender"
+						ng-model="doctor.person_data.gender"
+						ng-options="g.value for g in genders"
+						>
+							<option value="">Seleccione sexo</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="" class="col-md-2 control-label">Especialidades</label>
+					<div class="col-md-4">
+						<select multiple class="form-control" name="specialities"
+						ng-model="doctor.specialities"
+						ng-options="s.name for s in specialities"
+						>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-dm-10">
+						<input class="btn btn-primary" type="submit" value="Registrar">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+{% endraw %}
