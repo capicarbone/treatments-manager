@@ -45,6 +45,22 @@ class AdminApi(remote.Service):
 
         return speciality_msg
 
+    @endpoints.method(message_types.VoidMessage, treatments_messages.SpecialitiesMsg,
+              path="specialities", http_method='GET',
+              name="specialities.all" )
+    def specialities_all(self, speciality_msg):
+
+        specialities_msg = SpecialitiesMsg()
+
+        specialities = Speciality.query()
+
+        for s in specialities:
+            specialities_msg.specialities.append(s.to_message())
+
+        return specialities_msg
+
+
+
 
 
 

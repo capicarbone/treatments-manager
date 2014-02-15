@@ -10,12 +10,15 @@ Created on 11/02/2014
 import views
 
 routers = [
+
+        # PÃ¡ginas
+        ('/', views.MainPage),
         ('/manager', views.ManagerPage),
         ('/amministratore', views.AmministratorePage),
-        ('/admin_dashboard.html', views.AdminDashboardTemplate),
 
-        # Plantillas para gestión de doctores
+        # Plantillas para gestiï¿½n de doctores
+        ('/admin_dashboard.html', views.AdminDashboardTemplate),
         ('/doctors_manager.html', views.DoctorsManagerTemplate),
         ('/doctor_form.html', views.DoctorFormTemplate),
-        ('/', views.MainPage),
+
         ]

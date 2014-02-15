@@ -5,6 +5,7 @@ Created on 11/02/2014
 '''
 
 from google.appengine.ext import ndb
+from manager.api.treatments_messages import SpecialityMsg
 
 class Person(ndb.Model):
 
@@ -18,7 +19,7 @@ class Doctor(ndb.Model):
 
     userid = ndb.StringProperty()
     email = ndb.StringProperty(required=True)
-    person_data = ndb.StructuredProperty(Person)
+    person = ndb.StructuredProperty(Person)
     registered_at = ndb.DateTimeProperty(auto_now_add=True)
     specialities = ndb.KeyProperty(repeated=True)
 
@@ -33,7 +34,14 @@ class Doctor(ndb.Model):
                              gender=person_msg.gender
                              )
 
-        self.person_data = person_data
+        self.person = person_data
+
+        specialities_keys = []
+
+        for s in doctor_msg.specialities:
+            specialities_keys.append(ndb.Key('Speciality', s.id))
+
+        self.specialities = specialities_keys
 
         self.person_data
 
@@ -46,3 +54,13 @@ class Speciality(ndb.Model):
 
         self.name = speciality_msg.name
         self.descripcion = speciality_msg.description
+
+    def to_message(self):
+
+        speciality_msg = SpecialityMsg(name=self.name)
+        speciality_msg.description = self.descripcion
+        speciality_msg.id = str(self.key.id())
+
+        return speciality_msg
+
+

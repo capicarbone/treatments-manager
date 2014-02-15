@@ -27,66 +27,92 @@ angular.module('logic', ['ngRoute'])
 
 })
 
-.controller('doctorFormCtrl', function($scope){
+.controller('doctorFormCtrl', function($scope, $location){
 
-	$scope.specialities = [
-		{name:'Dermatólogo', 'descripcion': '', id: "dermatologo"},
-		{name:'Cardiólogo', 'descripcion': '', id:"cardiologo"},
-		{name:'Médico Internista', 'descripcion': '', id:"internista"},
-	];
+	$scope.specialities = [];
+
+	$scope.init = function(){
+		gapi.client.admin.specialities.all().execute(
+			function(response){
+				$scope.specialities = response.specialities;
+				$scope.$apply();
+			}
+		);		
+	};
 
 	$scope.genders = [
 		{key: 'M', value:'Masculino'},
 		{key: 'F', value:'Femenino'}
-	]
+	];
 
 
 	$scope.saveDoctor = function(){
-		var ng_doctor = $scope.doctor;
 
-		var doctor = {}
-		doctor.person_data = ng_doctor.person_data;
-		doctor.email = ng_doctor.email;
-		doctor.specialities = [];
+		if ($scope.form.$valid){
+			var ng_doctor = $scope.doctor;			
+
+			var doctor = {}
+			doctor.person_data = ng_doctor.person_data;
+			doctor.email = ng_doctor.email;					
+
+			doctor.specialities = ng_doctor.specialities;
+
+			if (ng_doctor.person_data.gender)
+				doctor.person_data.gender = ng_doctor.person_data.gender.key;
+			else
+				doctor.person_data.gender = 'N';
+
+			console.log(doctor);
+
+			gapi.client.admin.doctor.save(doctor)
+			.execute(function(response){			
+				$location.path('/doctors').replace();
+				$scope.$apply()
+				console.log(response);
+
+			});	
+		}else
+			console.log("No es válido");
 		
-		/*angular.forEach(ng_doctor.specialities, function(spe){
-			doctor.specialities.push(spe.id);
-		});*/
-
-		ng_doctor.specialities = [];
-		ng_doctor.person_data.gender = 'M';
-
-		console.log(ng_doctor);
-
-		gapi.client.admin.doctor.save(ng_doctor)
-		.execute(function(response){
-			console.log(response);
-		})
 	}
+
+	$scope.init()
 })
 
-.controller('adminDashboardCtrl', function($scope, $window){
+.controller('adminDashboardCtrl', function($scope){
 
 	$scope.title = 'Dashboard';
 
+})
+
+.run(function($rootScope, $window, $location){
+	console.log("Se ejecutó");
+	$rootScope.is_backend_ready = false;
+
+	if ($location.path() != '/' ){
+		$location.path('/');
+		$rootScope.$apply();
+	}
+
 	$window.init= function(){
-		$scope.$apply($scope.load_endpoints);
+		console.log("Se ejecutó init");
+		$rootScope.$apply($rootScope.load_endpoints);
 	};
 
-	$scope.load_endpoints = function(){
+	$rootScope.load_endpoints = function(){
 
 		var host = window.location.host;
 		var API_ROOT = '//' + host + '/_ah/api';
 
 		gapi.client.load('admin', 'v1', function(){
-			$scope.is_backend_ready = true;
+			$rootScope.is_backend_ready = true;
+			$rootScope.$apply();
 
 		}, API_ROOT)
 	};
-
 });
 
-function init_app(){
+init_app = function(){
 	window.init();
 }
 

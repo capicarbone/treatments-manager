@@ -9,7 +9,7 @@
 
 {% block content %}
 
-	<div ng-app="logic">
+	<div ng-app="logic" >
 		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 			<div class="container-fluid">
 				<div class="navbar-header">
@@ -19,7 +19,7 @@
 			</div>
 		</nav>
 
-		<div class="container-fluid">
+		<div class="container-fluid ng-hide" ng-show="is_backend_ready">
 			<div class="row-fluid">
 				<nav class="col-md-2">
 					<ul id="nav-side" class="nav nav-pills nav-stacked">
@@ -27,6 +27,10 @@
 						{% block sidebar_options %}
 
 						{% endblock %}
+
+						<li>
+							<a href="{{logout_url}}">Cerrar sesión</a>
+						</li>
 					</ul>
 				</nav>
 				<section class="col-md-10" ng-view>

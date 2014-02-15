@@ -24,22 +24,41 @@ class ManagerPage(webapp.RequestHandler):
 
 class MainPage(webapp.RequestHandler):
     def get(self, *args):
-        template = JE.get_template('boilerplate.html')
+
 
         user = users.get_current_user()
 
         if user:
-            self.redirect('/manager')
-        else:
-            self.redirect(users.create_login_url('/'))
+            url_destiny = '/manager'
+            if users.is_current_user_admin():
+                url_destiny = '/amministratore'
 
-        self.response.out.write(template.render({}))
+            self.redirect(url_destiny)
+        else:
+            template = JE.get_template('index.html')
+            login_url = users.create_login_url('/manager')
+            self.response.out.write(template.render({
+                                                     'login_url':  login_url
+                                                     }))
 
 class AmministratorePage(webapp.RequestHandler):
     def get(self, *args):
         template = JE.get_template('admin.html')
 
-        self.response.out.write(template.render({}))
+        # TODO Validarse si el usuario es administrador
+
+        user= users.get_current_user()
+
+        if (user):
+            logout_url = users.create_logout_url('/')
+            self.response.out.write(template.render({
+                                                     'logout_url': logout_url
+                                                     }))
+        else:
+            self.redirect('/manager')
+
+
+
 
 class AdminDashboardTemplate(webapp.RequestHandler):
     def get(self, *args):
