@@ -63,4 +63,10 @@ class Speciality(ndb.Model):
 
         return speciality_msg
 
+class Patient(ndb.Model):
+    person = ndb.StructuredProperty(Person, required=True)
+    birthday = ndb.DateProperty()
+
+
+
 
