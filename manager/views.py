@@ -8,6 +8,8 @@ import os
 from google.appengine.api import users
 from google.appengine.ext import webapp
 
+from models import Doctor
+
 import jinja2
 
 JE = jinja2.Environment(
@@ -20,6 +22,17 @@ class ManagerPage(webapp.RequestHandler):
     def get(self, *args):
         template = JE.get_template('manager.html')
 
+        user = users.get_current_user()
+
+        if user:
+            if users.is_current_user_admin():
+                self.redirect('/amministratore')
+            else:
+                doctor = Doctor.by_email(user.email())
+
+                if not doctor:
+                    self.redirect('/')
+
         self.response.out.write(template.render({}))
 
 class MainPage(webapp.RequestHandler):
@@ -31,15 +44,16 @@ class MainPage(webapp.RequestHandler):
         if user:
             url_destiny = '/manager'
             if users.is_current_user_admin():
-                url_destiny = '/amministratore'
+                self.redirect('/amministratore')
 
-            self.redirect(url_destiny)
-        else:
-            template = JE.get_template('index.html')
-            login_url = users.create_login_url('/manager')
-            self.response.out.write(template.render({
-                                                     'login_url':  login_url
-                                                     }))
+            if Doctor.by_email(user.email()):
+                self.redirect('/manager')
+
+        template = JE.get_template('index.html')
+        login_url = users.create_login_url('/manager')
+        self.response.out.write(template.render({
+                                                 'login_url':  login_url
+                                                 }))
 
 class AmministratorePage(webapp.RequestHandler):
     def get(self, *args):

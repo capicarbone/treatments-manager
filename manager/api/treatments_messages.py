@@ -31,7 +31,7 @@ class DoctorMsg(messages.Message):
 
 class PatientMsg(messages.Message):
     id = messages.StringField(1)
-    person = messages.MessageField(2, required=True)
+    person = messages.MessageField(PersonMsg, 2, required=True)
     birthday = message_types.DateTimeField(3)
 
 

@@ -18,6 +18,7 @@ class Person(ndb.Model):
 class Doctor(ndb.Model):
 
     userid = ndb.StringProperty()
+    user = ndb.UserProperty()
     email = ndb.StringProperty(required=True)
     person = ndb.StructuredProperty(Person)
     registered_at = ndb.DateTimeProperty(auto_now_add=True)
@@ -28,7 +29,7 @@ class Doctor(ndb.Model):
         self.email = doctor_msg.email
         self.registered_at = doctor_msg.registered_at
 
-        person_msg = doctor_msg.person_data
+        person_msg = doctor_msg.person
         person_data = Person(first_name=person_msg.first_name,
                              last_name=person_msg.last_name,
                              gender=person_msg.gender
@@ -43,7 +44,16 @@ class Doctor(ndb.Model):
 
         self.specialities = specialities_keys
 
-        self.person_data
+    @classmethod
+    def by_email(cls, email):
+        query = cls.query(cls.email == email).fetch(1)
+
+        if len(query) > 0:
+            return query[0]
+        else:
+            return None
+
+
 
 
 class Speciality(ndb.Model):

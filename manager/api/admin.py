@@ -10,6 +10,7 @@ from manager.models import Doctor, Speciality
 from protorpc import remote, message_types
 from manager.api import treatments_messages
 
+from google.appengine.api import users
 
 @endpoints.api(name="admin", version="v1",
                description="API only for admin users operations")
@@ -22,6 +23,7 @@ class AdminApi(remote.Service):
 
         doctor = Doctor(email=doctor_msg.email)
         doctor.from_message(doctor_msg)
+        doctor.user = users.User(doctor_msg.email)
 
         doctor.put()
 
