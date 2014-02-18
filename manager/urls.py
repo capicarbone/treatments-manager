@@ -16,9 +16,14 @@ routers = [
         ('/manager', views.ManagerPage),
         ('/amministratore', views.AmministratorePage),
 
-        # Plantillas para gesti�n de doctores
+        # Plantillas para gestión de doctores
         ('/admin_dashboard.html', views.AdminDashboardTemplate),
         ('/doctors_manager.html', views.DoctorsManagerTemplate),
         ('/doctor_form.html', views.DoctorFormTemplate),
+
+        # Plantillas para gestión de tratamientos
+        ('/doctor_dashboard.html', views.DoctorDashboardTemplate),
+        ('/patients_manager.html', views.PatientsManagerTemplate),
+        ('/treatments_manager.html', views.TreatmentsManagerTemplate),
 
         ]

@@ -33,5 +33,6 @@ class PatientMsg(messages.Message):
     id = messages.StringField(1)
     person = messages.MessageField(PersonMsg, 2, required=True)
     birthday = message_types.DateTimeField(3)
+    blood_type = messages.StringField(4)
 
 

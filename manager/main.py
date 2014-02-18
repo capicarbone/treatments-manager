@@ -9,11 +9,12 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from manager.urls import routers
 import endpoints
 
-from manager.api import admin
+from manager.api import admin, for_doctors
 
 
 ENDPOINTS = endpoints.api_server([
-                                  admin.AdminApi
+                                  admin.AdminApi,
+                                  for_doctors.ForDoctorApi
                                   ])
 
 def main():

@@ -91,3 +91,24 @@ class DoctorFormTemplate(webapp.RequestHandler):
         template = JE.get_template('doctor_form.html')
 
         self.response.out.write(template.render({}))
+
+
+# Templates for Treatments Manager
+
+class DoctorDashboardTemplate(webapp.RequestHandler):
+    def get(self, *args):
+        template = JE.get_template('doctor_dashboard.html')
+
+        self.response.out.write(template.render({}))
+
+class PatientsManagerTemplate(webapp.RequestHandler):
+    def get(self, *args):
+        template = JE.get_template('patients_manager.html')
+
+        self.response.out.write(template.render({}))
+
+class TreatmentsManagerTemplate(webapp.RequestHandler):
+    def get(self, *args):
+        template = JE.get_template('treatments_manager.html')
+
+        self.response.out.write(template.render({}))

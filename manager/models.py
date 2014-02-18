@@ -5,15 +5,24 @@ Created on 11/02/2014
 '''
 
 from google.appengine.ext import ndb
-from manager.api.treatments_messages import SpecialityMsg
+import manager.api.treatments_messages
+from manager.api.treatments_messages import SpecialityMsg, PatientMsg
+from protorpc import message_types, messages
+
 
 class Person(ndb.Model):
 
     genders = ['M', 'F', 'N']
 
-    first_name = ndb.StringProperty(required=True)
-    last_name = ndb.StringProperty(required=True)
+    first_name = ndb.StringProperty()
+    last_name = ndb.StringProperty()
     gender = ndb.StringProperty(choices=genders)
+
+    def from_message(self, person_msg):
+
+        self.first_name = person_msg.first_name
+        self.last_name = person_msg.last_name
+        self.gender = person_msg.gender
 
 class Doctor(ndb.Model):
 
@@ -74,8 +83,49 @@ class Speciality(ndb.Model):
         return speciality_msg
 
 class Patient(ndb.Model):
-    person = ndb.StructuredProperty(Person, required=True)
+    person = ndb.StructuredProperty(Person)
     birthday = ndb.DateProperty()
+
+    blood_type = ndb.StringProperty()
+
+    message_class = PatientMsg
+
+    def __init__(self, *args, **kwargs):
+
+        message = None
+        try:
+            message = kwargs['message']
+            del(kwargs['message'])
+        except KeyError:
+            pass
+
+        super(Patient, self).__init__( **kwargs)
+
+        if message:
+            self.from_message(message)
+
+
+    def from_message(self, patient_msg):
+
+        if isinstance(patient_msg, self.message_class):
+
+            for field in patient_msg.all_fields():
+                value = field.__get__(patient_msg, patient_msg.__class__)
+                try:
+                    field_class = field.message_type
+                    o = field_class()
+
+                    if not isinstance(o, message_types.DateTimeField):
+                        class_property = self._properties[field.name]._modelclass
+                        o = class_property()
+                        o.from_message(value)
+                        setattr(self, field.name, o)
+                    else:
+                        setattr(self, field.name, value)
+
+                except AttributeError:
+                    setattr(self, field.name, value)
+
 
 
 
