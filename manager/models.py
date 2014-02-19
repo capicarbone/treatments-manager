@@ -124,6 +124,10 @@ class Patient(MessageModel):
     person = ndb.StructuredProperty(Person)
     birthday = ndb.DateProperty()
     blood_type = ndb.StringProperty()
+    allergies = ndb.StringProperty()
+
+
+#class Treatment(MessageModel):
 
 
 

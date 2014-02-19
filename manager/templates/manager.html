@@ -4,6 +4,11 @@
 	| Gestión de tratamientos
 {% endblock %}
 
+{% block module_css %}
+	
+	<link rel="stylesheet" href="static/css/vendor/datepicker3.css">
+{% endblock module_css %}
+
 {% block sidebar_options %}
 	<li class="active">
 		<a href="#/">Inicio</a>
@@ -22,4 +27,6 @@
 {% block module_js %}
 	<script src="static/js/manager.js"></script>
 	<script src="https://apis.google.com/js/client.js?onload=init_app"></script>
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="static/js/vendor/bootstrap-datepicker.js"></script>
 {% endblock module_js %}

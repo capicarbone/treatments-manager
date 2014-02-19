@@ -34,5 +34,6 @@ class PatientMsg(messages.Message):
     person = messages.MessageField(PersonMsg, 2, required=True)
     birthday = message_types.DateTimeField(3)
     blood_type = messages.StringField(4)
+    allergies = messages.StringField(5)
 
 

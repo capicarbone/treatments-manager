@@ -1,0 +1,27 @@
+
+{% macro person_form(base_model='user') %}
+
+	<div class="form-group">
+		<label for="" class="col-md-2 control-label">Nombres</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" ng-model="{{base_model}}.person.first_name"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="" class="col-md-2 control-label">Apellidos</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" ng-model="{{base_model}}.person.last_name"/>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="" class="col-md-2 control-label">Sexo</label>
+		<div class="col-md-4">
+			<select class="form-control" name="gender"
+			ng-model="{{base_model}}.person.gender"
+			ng-options="g.value for g in genders"
+			>
+				<option value="">Seleccione sexo</option>
+			</select>
+		</div>
+	</div>
+{% endmacro %}

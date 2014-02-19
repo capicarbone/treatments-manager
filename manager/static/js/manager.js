@@ -8,6 +8,8 @@ angular.module('logic', ['ngRoute'])
 		controller:'DoctorDashboardCtrl',
 		templateUrl:'template/doctor_dashboard.html'
 	})
+
+	// Patients Routes
 	.when('/pacientes', {
 		controller:'PatientsManagerCtrl',
 		templateUrl:'template/patients_manager.html'
@@ -16,9 +18,15 @@ angular.module('logic', ['ngRoute'])
 		controller:'PatientFormCtrl',
 		templateUrl:'template/patient_form.html'
 	})
+
+	// Treatments Routes
 	.when('/tratamientos',{
 		controller: 'TreatmentsManagerCtrl',
 		templateUrl:'template/treatments_manager.html'
+	})
+	.when('/tratamiento/form',{
+		controller: 'TreatmentFormCtrl',
+		templateUrl:'template/treatment_form.html'
 	})
 	.otherwise({
 		redirectTo: '/'
@@ -38,13 +46,62 @@ angular.module('logic', ['ngRoute'])
 
 .controller('PatientFormCtrl', function($scope, $location, $rootScope){
 
-	$rootScope.section_title = "Registro de Paciente"
+	$rootScope.section_title = "Registro de Paciente";
+
+	$scope.blood_types = ['ORH+', 'ORH-',' B+','A+', 'B-', 'A-' ];
+
+	$scope.genders = [
+		{key: 'M', value:'Masculino'},
+		{key: 'F', value:'Femenino'}
+	];
+
+	$scope.patient = {};
+
+	$scope.init_birthday_field = function(){
+
+		console.log("Ejecutado");
+
+	    $(".input-group.date").datepicker({
+	    	format: "yyyy-mm-ddT00:00:00.00Z",
+    		language: "es"
+	    })
+	    .on('changeDate', function(e){
+
+	    	$scope.$apply(function(){
+	    		$scope.patient.birthday = e.format();
+	    	})
+	    })
+	  
+	}
+
+	$scope.savePatient = function(){	
+
+		var patient = $scope.patient
+
+		patient.person.gender = patient.person.gender.key;	
+
+
+		$rootScope.api.patient.save(patient).execute(function(res){
+			console.log(res);
+			$location.path('/tratamiento/form').replace();
+			$scope.$apply();
+		});
+
+	}
+
+	$scope.init_birthday_field();
 })
 
 
 .controller('TreatmentsManagerCtrl', function($scope, $rootScope){
 
 	$rootScope.section_title = "Tratamientos activos"
+
+})
+
+.controller('TreatmentFormCtrl', function($scope, $rootScope){
+
+	$rootScope.section_title = "Registro de tratamiento"
 
 })
 
@@ -72,11 +129,16 @@ angular.module('logic', ['ngRoute'])
 			$rootScope.is_backend_ready = true;
 			$rootScope.$apply();
 
+			$rootScope.api = gapi.client.doctor;
+
 		}, API_ROOT)
 	};
 });
 
 init_app = function(){
-	window.init();
+	
+	window.init();	
+		
 }
+
 
