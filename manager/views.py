@@ -24,6 +24,8 @@ class ManagerPage(webapp.RequestHandler):
 
         user = users.get_current_user()
 
+        doctor = None
+
         if user:
             if users.is_current_user_admin():
                 self.redirect('/amministratore')
@@ -33,7 +35,11 @@ class ManagerPage(webapp.RequestHandler):
                 if not doctor:
                     self.redirect('/')
 
-        self.response.out.write(template.render({}))
+        logout_url = users.create_logout_url('/')
+        self.response.out.write(template.render({
+                                                 'logout_url': logout_url,
+                                                 'doctor': doctor
+                                                 }))
 
 class MainPage(webapp.RequestHandler):
     def get(self, *args):
@@ -72,43 +78,12 @@ class AmministratorePage(webapp.RequestHandler):
             self.redirect('/manager')
 
 
+class GetTemplate(webapp.RequestHandler):
+
+    def get(self, template_file):
+
+        t = JE.get_template(template_file)
+
+        self.response.out.write(t.render({}))
 
 
-class AdminDashboardTemplate(webapp.RequestHandler):
-    def get(self, *args):
-        template = JE.get_template('admin_dashboard.html')
-
-        self.response.out.write(template.render({}))
-
-class DoctorsManagerTemplate(webapp.RequestHandler):
-    def get(self, *args):
-        template = JE.get_template('doctors_manager.html')
-
-        self.response.out.write(template.render({}))
-
-class DoctorFormTemplate(webapp.RequestHandler):
-    def get(self, *args):
-        template = JE.get_template('doctor_form.html')
-
-        self.response.out.write(template.render({}))
-
-
-# Templates for Treatments Manager
-
-class DoctorDashboardTemplate(webapp.RequestHandler):
-    def get(self, *args):
-        template = JE.get_template('doctor_dashboard.html')
-
-        self.response.out.write(template.render({}))
-
-class PatientsManagerTemplate(webapp.RequestHandler):
-    def get(self, *args):
-        template = JE.get_template('patients_manager.html')
-
-        self.response.out.write(template.render({}))
-
-class TreatmentsManagerTemplate(webapp.RequestHandler):
-    def get(self, *args):
-        template = JE.get_template('treatments_manager.html')
-
-        self.response.out.write(template.render({}))

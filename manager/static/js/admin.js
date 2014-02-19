@@ -6,30 +6,32 @@ angular.module('logic', ['ngRoute'])
 	$routeProvider
 	.when('/',{
 		controller:'adminDashboardCtrl',
-		templateUrl:'admin_dashboard.html'
+		templateUrl:'template/admin_dashboard.html'
 	})
 	.when('/doctors', {
 		controller:'doctorsManagerCtrl',
-		templateUrl:'doctors_manager.html'
+		templateUrl:'template/doctors_manager.html'
 	})
 	.when('/doctor/form',{
 		controller: 'doctorFormCtrl',
-		templateUrl: 'doctor_form.html'
+		templateUrl:'template/doctor_form.html'
 	})
 	.otherwise({
 		redirectTo: '/'
 	});
 })
 
-.controller('doctorsManagerCtrl', function($scope){
+.controller('doctorsManagerCtrl', function($scope, $rootScope){
 
-	$scope.title = 'Doctores';
+	$rootScope.section_title = "Doctores";	
 
 })
 
-.controller('doctorFormCtrl', function($scope, $location){
+.controller('doctorFormCtrl', function($scope, $location, $rootScope){
 
+	$rootScope.section_title = "Registro de doctor"
 	$scope.specialities = [];
+
 
 	$scope.init = function(){
 		gapi.client.admin.specialities.all().execute(
@@ -79,9 +81,9 @@ angular.module('logic', ['ngRoute'])
 	$scope.init()
 })
 
-.controller('adminDashboardCtrl', function($scope){
+.controller('adminDashboardCtrl', function($scope, $rootScope){
 
-	$scope.title = 'Dashboard';
+	$rootScope.section_title = "Dashboard";	
 
 })
 

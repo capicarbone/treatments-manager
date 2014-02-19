@@ -6,40 +6,52 @@ angular.module('logic', ['ngRoute'])
 	$routeProvider
 	.when('/',{
 		controller:'DoctorDashboardCtrl',
-		templateUrl:'doctor_dashboard.html'
+		templateUrl:'template/doctor_dashboard.html'
 	})
 	.when('/pacientes', {
 		controller:'PatientsManagerCtrl',
-		templateUrl:'patients_manager.html'
+		templateUrl:'template/patients_manager.html'
+	})
+	.when('/paciente/form', {
+		controller:'PatientFormCtrl',
+		templateUrl:'template/patient_form.html'
 	})
 	.when('/tratamientos',{
 		controller: 'TreatmentsManagerCtrl',
-		templateUrl: 'treatments_manager.html'
+		templateUrl:'template/treatments_manager.html'
 	})
 	.otherwise({
 		redirectTo: '/'
 	});
 })
 
-.controller('DoctorDashboardCtrl', function($scope){
+.controller('DoctorDashboardCtrl', function($scope, $rootScope){
 
 	
-
+	$rootScope.section_title = "Inicio"
 })
 
-.controller('PatientsManagerCtrl', function($scope, $location){
+.controller('PatientsManagerCtrl', function($scope, $location, $rootScope){
 
+	$rootScope.section_title = "Mis Pacientes"
 })
 
-.controller('TreatmentsManagerCtrl', function($scope){
+.controller('PatientFormCtrl', function($scope, $location, $rootScope){
 
-	
+	$rootScope.section_title = "Registro de Paciente"
+})
+
+
+.controller('TreatmentsManagerCtrl', function($scope, $rootScope){
+
+	$rootScope.section_title = "Tratamientos activos"
 
 })
 
 .run(function($rootScope, $window, $location){
 	
 	$rootScope.is_backend_ready = false;
+	$rootScope.section_title = 'Inicio';
 
 	if ($location.path() != '/' ){
 		$location.path('/');

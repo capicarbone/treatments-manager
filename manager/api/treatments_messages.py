@@ -26,7 +26,7 @@ class DoctorMsg(messages.Message):
     id = messages.StringField(1)
     email = messages.StringField(2)
     person = messages.MessageField(PersonMsg, 3, required=True)
-    registered_at = message_types.DateTimeField(4)
+    #registered_at = message_types.DateTimeField(4)
     specialities = messages.MessageField(SpecialityMsg, 5, repeated=True)
 
 class PatientMsg(messages.Message):

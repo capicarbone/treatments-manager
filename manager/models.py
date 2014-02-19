@@ -6,11 +6,59 @@ Created on 11/02/2014
 
 from google.appengine.ext import ndb
 import manager.api.treatments_messages
-from manager.api.treatments_messages import SpecialityMsg, PatientMsg
+from manager.api.treatments_messages import SpecialityMsg, PatientMsg, PersonMsg,\
+    DoctorMsg
 from protorpc import message_types, messages
 
+class MessageModel(ndb.Model):
 
-class Person(ndb.Model):
+    def __init__(self, *args, **kwargs):
+
+        message = None
+        try:
+            message = kwargs['message']
+            del(kwargs['message'])
+        except KeyError:
+            pass
+
+        super(MessageModel, self).__init__( **kwargs)
+
+        if message:
+            self.from_message(message)
+
+
+    def from_message(self, msg):
+
+        if isinstance(msg, self.message_class):
+
+            for field in msg.all_fields():
+                value = field.__get__(msg, msg.__class__)
+
+                if not field.repeated:
+                    try:
+                        field_class = field.message_type
+                        o = field_class()
+
+                        if not isinstance(o, message_types.DateTimeField):
+                            class_property = self._properties[field.name]._modelclass
+                            o = class_property()
+                            o.from_message(value)
+                            setattr(self, field.name, o)
+                        else:
+                            setattr(self, field.name, value)
+
+                    except AttributeError:
+                        setattr(self, field.name, value)
+
+    def to_message(self):
+
+        msg = self.message_class()
+        msg.id = str(self.key.id())
+
+        return msg
+
+
+class Person(MessageModel):
 
     genders = ['M', 'F', 'N']
 
@@ -18,13 +66,11 @@ class Person(ndb.Model):
     last_name = ndb.StringProperty()
     gender = ndb.StringProperty(choices=genders)
 
-    def from_message(self, person_msg):
+    message_class = PersonMsg
 
-        self.first_name = person_msg.first_name
-        self.last_name = person_msg.last_name
-        self.gender = person_msg.gender
+class Doctor(MessageModel):
 
-class Doctor(ndb.Model):
+    message_class = DoctorMsg
 
     userid = ndb.StringProperty()
     user = ndb.UserProperty()
@@ -35,16 +81,7 @@ class Doctor(ndb.Model):
 
     def from_message(self, doctor_msg):
 
-        self.email = doctor_msg.email
-        self.registered_at = doctor_msg.registered_at
-
-        person_msg = doctor_msg.person
-        person_data = Person(first_name=person_msg.first_name,
-                             last_name=person_msg.last_name,
-                             gender=person_msg.gender
-                             )
-
-        self.person = person_data
+        super(Doctor, self).from_message(doctor_msg)
 
         specialities_keys = []
 
@@ -65,66 +102,31 @@ class Doctor(ndb.Model):
 
 
 
-class Speciality(ndb.Model):
-    name = ndb.StringProperty(required=True)
+class Speciality(MessageModel):
+    message_class = SpecialityMsg
+
+    name = ndb.StringProperty()
     descripcion = ndb.StringProperty()
-
-    def from_message(self,speciality_msg):
-
-        self.name = speciality_msg.name
-        self.descripcion = speciality_msg.description
 
     def to_message(self):
 
-        speciality_msg = SpecialityMsg(name=self.name)
+        speciality_msg = super(Speciality, self).to_message()
+
         speciality_msg.description = self.descripcion
-        speciality_msg.id = str(self.key.id())
+        speciality_msg.name = self.name
 
         return speciality_msg
 
-class Patient(ndb.Model):
-    person = ndb.StructuredProperty(Person)
-    birthday = ndb.DateProperty()
-
-    blood_type = ndb.StringProperty()
+class Patient(MessageModel):
 
     message_class = PatientMsg
 
-    def __init__(self, *args, **kwargs):
-
-        message = None
-        try:
-            message = kwargs['message']
-            del(kwargs['message'])
-        except KeyError:
-            pass
-
-        super(Patient, self).__init__( **kwargs)
-
-        if message:
-            self.from_message(message)
+    person = ndb.StructuredProperty(Person)
+    birthday = ndb.DateProperty()
+    blood_type = ndb.StringProperty()
 
 
-    def from_message(self, patient_msg):
 
-        if isinstance(patient_msg, self.message_class):
-
-            for field in patient_msg.all_fields():
-                value = field.__get__(patient_msg, patient_msg.__class__)
-                try:
-                    field_class = field.message_type
-                    o = field_class()
-
-                    if not isinstance(o, message_types.DateTimeField):
-                        class_property = self._properties[field.name]._modelclass
-                        o = class_property()
-                        o.from_message(value)
-                        setattr(self, field.name, o)
-                    else:
-                        setattr(self, field.name, value)
-
-                except AttributeError:
-                    setattr(self, field.name, value)
 
 
 

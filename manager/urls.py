@@ -8,22 +8,14 @@ Created on 11/02/2014
 '''
 
 import views
+from webapp2 import Route
+
+R = Route
 
 routers = [
+    R(r'/', handler=views.MainPage),
+    R(r'/manager', handler=views.ManagerPage),
+    R(r'/amministratore', handler=views.AmministratorePage),
 
-        # Páginas
-        ('/', views.MainPage),
-        ('/manager', views.ManagerPage),
-        ('/amministratore', views.AmministratorePage),
-
-        # Plantillas para gestión de doctores
-        ('/admin_dashboard.html', views.AdminDashboardTemplate),
-        ('/doctors_manager.html', views.DoctorsManagerTemplate),
-        ('/doctor_form.html', views.DoctorFormTemplate),
-
-        # Plantillas para gestión de tratamientos
-        ('/doctor_dashboard.html', views.DoctorDashboardTemplate),
-        ('/patients_manager.html', views.PatientsManagerTemplate),
-        ('/treatments_manager.html', views.TreatmentsManagerTemplate),
-
-        ]
+    R(r'/template/<template_file>', handler=views.GetTemplate),
+]
