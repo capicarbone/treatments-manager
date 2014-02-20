@@ -54,13 +54,13 @@ angular.module('logic', ['ngRoute'])
 			var ng_doctor = $scope.doctor;			
 
 			var doctor = {}
-			doctor.person = ng_doctor.person_data;
+			doctor.person = ng_doctor.person;
 			doctor.email = ng_doctor.email;					
 
 			doctor.specialities = ng_doctor.specialities;
 
-			if (ng_doctor.person_data.gender)
-				doctor.person.gender = ng_doctor.person_data.gender.key;
+			if (ng_doctor.person.gender)
+				doctor.person.gender = ng_doctor.person.gender.key;
 			else
 				doctor.person.gender = 'N';
 

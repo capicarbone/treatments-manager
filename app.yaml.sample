@@ -6,7 +6,7 @@ threadsafe: false
 
 handlers:
 - url: /_ah/spi/.*
-  script: main.ENDPOINTS
+  script: manager.main.ENDPOINTS
 - url: /static
   static_dir: manager/static
 - url: /.*
