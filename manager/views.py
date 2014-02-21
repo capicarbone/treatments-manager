@@ -36,6 +36,7 @@ class ManagerPage(webapp.RequestHandler):
 
                 if not doctor:
                     self.redirect('/')
+                    return
 
         logout_url = users.create_logout_url('/')
         self.response.out.write(template.render({

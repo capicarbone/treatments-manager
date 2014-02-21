@@ -24,7 +24,7 @@ angular.module('logic', ['ngRoute'])
 		controller: 'TreatmentsManagerCtrl',
 		templateUrl:'template/treatments_manager.html'
 	})
-	.when('/tratamiento/form',{
+	.when('/paciente/:patient_key/tratamiento/form',{
 		controller: 'TreatmentFormCtrl',
 		templateUrl:'template/treatment_form.html'
 	})
@@ -63,7 +63,8 @@ angular.module('logic', ['ngRoute'])
 
 	    $(".input-group.date").datepicker({
 	    	format: "yyyy-mm-ddT00:00:00.00Z",
-    		language: "es"
+    		language: "es",
+    		startView: 'decade'
 	    })
 	    .on('changeDate', function(e){
 
@@ -79,12 +80,15 @@ angular.module('logic', ['ngRoute'])
 		var patient = $scope.patient
 
 		patient.person.gender = patient.person.gender.key;	
-
+		patient.doctor_key = $rootScope.doctor_key;
 
 		$rootScope.api.patient.save(patient).execute(function(res){
-			console.log(res);
-			$location.path('/tratamiento/form').replace();
+			console.log(res);	
+			
+			$location.path('/paciente/'+ res.key +'/tratamiento/form').replace();
 			$scope.$apply();
+
+
 		});
 
 	}
@@ -99,9 +103,24 @@ angular.module('logic', ['ngRoute'])
 
 })
 
-.controller('TreatmentFormCtrl', function($scope, $rootScope){
+.controller('TreatmentFormCtrl', function($scope, $rootScope, $routeParams){
 
 	$rootScope.section_title = "Registro de tratamiento"
+	
+	$scope.init_dates_field = function(){		
+
+	    $(".input-group.date").datepicker({
+	    	format: "yyyy-mm-ddT00:00:00.00Z",
+    		language: "es",    		
+	    })
+	    .on('changeDate', function(e){
+
+	    	$scope.$apply(function(){
+	    		$scope.patient.birthday = e.format();
+	    	})
+	    })
+	  
+	}
 
 })
 
@@ -118,6 +137,10 @@ angular.module('logic', ['ngRoute'])
 	$window.init= function(){
 		console.log("Se ejecutó init");
 		$rootScope.$apply($rootScope.load_endpoints);
+
+		$rootScope.$apply(function(){
+			$rootScope.doctor_key = document.getElementById('doctor_key').value
+		})
 	};
 
 	$rootScope.load_endpoints = function(){

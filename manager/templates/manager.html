@@ -24,6 +24,11 @@
 	</li>
 {% endblock %}
 
+{% block hiddens %}
+	<input id="doctor_key" type="hidden" value="{{doctor.key.urlsafe()}}" >
+{% endblock hiddens %}
+
+
 {% block module_js %}
 	<script src="static/js/manager.js"></script>
 	<script src="https://apis.google.com/js/client.js?onload=init_app"></script>

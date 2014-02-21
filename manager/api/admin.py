@@ -28,7 +28,7 @@ class AdminApi(remote.Service):
         doctor.put()
 
         doctor_msg.registered_at = doctor.registered_at
-        doctor_msg.id = str(doctor.key.id())
+        doctor_msg.key = doctor.key.urlsafe()
 
         return doctor_msg
 
@@ -43,7 +43,7 @@ class AdminApi(remote.Service):
 
         speciality.put()
 
-        speciality_msg.id = str(speciality.key.id())
+        speciality_msg.id = speciality.key.urlsafe()
 
         return speciality_msg
 

@@ -5,7 +5,8 @@ Created on 14/02/2014
 '''
 
 import endpoints
-from manager.models import Patient
+from google.appengine.ext import ndb
+from manager.models import Patient, Treatment
 from manager.api import treatments_messages
 from protorpc import remote, message_types
 
@@ -17,13 +18,23 @@ class ForDoctorApi(remote.Service):
                       path="patient", http_method="POST", name="patient.save")
     def patient_save(self, patient_msg):
 
-        patient = Patient(message=patient_msg)
+
+        patient = Patient(message=patient_msg, parent=ndb.Key(urlsafe=patient_msg.doctor_key))
         patient.put()
 
-        patient_msg.id = str(patient.key.id())
+        patient_msg.key = patient.key.urlsafe()
 
         return patient_msg
 
+    @endpoints.method(treatments_messages.TreatmentMsg, treatments_messages.TreatmentMsg,
+                      path="treatment", http_method="POST", name="treatment.save")
+    def treatment_save(self,treatment_msg):
 
+        treatment = Treatment(message=treatment_msg, parent=treatment_msg.patient_key)
+        treatment.put()
+
+        treatment_msg.key = treatment.key.urlsafe()
+
+        return treatment_msg
 
 

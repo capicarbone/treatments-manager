@@ -7,7 +7,7 @@ Created on 11/02/2014
 from google.appengine.ext import ndb
 import manager.api.treatments_messages
 from manager.api.treatments_messages import SpecialityMsg, PatientMsg, PersonMsg,\
-    DoctorMsg
+    DoctorMsg, TreatmentMsg
 from protorpc import message_types, messages
 
 class MessageModel(ndb.Model):
@@ -126,8 +126,51 @@ class Patient(MessageModel):
     blood_type = ndb.StringProperty()
     allergies = ndb.StringProperty()
 
+    def from_message(self, patient_msg):
 
-#class Treatment(MessageModel):
+        self.person = Person(message=patient_msg.person)
+        self.birthday = patient_msg.birthday
+        self.blood_type = patient_msg.blood_type
+        self.allergies = patient_msg.allergies
+
+
+class TreatmentAction(MessageModel):
+
+    time_interval = ndb.IntegerProperty()
+    action_type = ndb.StringProperty()
+
+    medicine = ndb.KeyProperty()
+
+
+
+
+class Treatment(MessageModel):
+
+    message_class = TreatmentMsg
+
+    finish_date = ndb.DateProperty()
+    display_code = ndb.StringProperty()
+    is_active = ndb.BooleanProperty(default=False)
+    objetives = ndb.StringProperty()
+
+    created_at = ndb.DateTimeProperty(auto_now_add=True)
+
+    actions = ndb.StructuredProperty(TreatmentAction, repeated=True)
+
+    def from_message(self, treatment_msg):
+
+        self.finish_date = treatment_msg.finish_date
+        self.display_code = treatment_msg.display_code
+        self.is_active = treatment_msg.is_active
+        self.objetives = ndb.StringProperty()
+
+
+
+
+
+
+
+
 
 
 
