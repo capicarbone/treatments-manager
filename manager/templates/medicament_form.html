@@ -1,0 +1,16 @@
+
+
+{% import 'includes/bs_fields.html' as fields %}
+
+<form action="" class="form-horizontal" ng-submit="save()" name="form">	
+
+	{{ fields.input('Nombre', 'medicament.name', 'name', True) }}
+
+	{{ fields.textarea('Descripcion', 'medicament.description', 'description' ) }}
+
+	{{ fields.input('Dosis', 'medicament.dose', 'dose') }}
+
+	{{ fields.select('Presentación', 'medicament.presentation', 'presentation', 'p.description for p in presentations', 'Seleccione presentación' ) }}
+
+	{% include "includes/submit_button.html" %}
+</form>

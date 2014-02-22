@@ -1,0 +1,57 @@
+
+{% macro input(label='', model='', name='', required=False, label_cols='2', input_cols='4') %}
+
+	<div class="form-group">
+		<label for="Tipo de sangre" class="control-label col-md-{{label_cols}}">
+			{{label}}
+		</label>
+		<div class="col-md-{{input_cols}}">
+			<input type="text" class="form-control" ng-model="{{model}}" name="{{name}}" 
+			{% if required %}
+			required
+			{% endif %}
+			>
+		</div>
+	</div>
+
+{% endmacro %}
+
+{% macro textarea(label='', model='', name='', required=False, label_cols='2', input_cols='4') %}
+
+	<div class="form-group">
+		<label for="Tipo de sangre" class="control-label col-md-{{label_cols}}">
+			{{label}}
+		</label>
+		<div class="col-md-{{input_cols}}">
+			<textarea class="form-control" ng-model="{{model}}" name="{{name}}" 
+			{% if required %}
+			required
+			{% endif %}
+			></textarea>
+		</div>
+	</div>
+
+{% endmacro %}
+
+{% macro select(label='', model='', name='', options='', neutral_option="", required=False, label_cols='2', input_cols='4') %}
+
+	<div class="form-group">
+		<label for="Tipo de sangre" class="control-label col-md-{{label_cols}}">
+			{{label}}
+		</label>
+		<div class="col-md-{{input_cols}}">
+			<select class="form-control" ng-model="{{model}}" name="{{name}}" 
+			ng-options="{{options}}"
+			{% if required %}
+			required
+			{% endif %}
+			>
+			{% if neutral_option != "" %}
+
+				<option value="">{{neutral_option}}</option>
+			{% endif %}
+		</select>
+		</div>
+	</div>
+
+{% endmacro %}

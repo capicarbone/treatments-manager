@@ -1,36 +1,37 @@
 
 <div class="row-fluid">
-	<div class="col-md-6">
+	<div class="col-md-8">
 
-		<form action="" name="form">
+		<form action="" name="form" class="form-horizontal">
 			<div class="form-group">
-				<label for="Tipo de sangre" class="control-label col-md-2">
+				<label for="Tipo de sangre" class="control-label col-md-4">
 					Objetivos
 				</label>
-				<div class="col-md-4">
+				<div class="col-md-8">
 					<textarea type="textarea" class="form-control" ng-model="treatment.objetives" name="objetives"></textarea>				
 				</div>
-			</div>	
+			</div>			
 
-			<div class="form-group">
-				<label for="Tipo de sangre" class="control-label col-md-2">
-					Finalizar el 
-				</label>
-				<div class="col-md-4">
-					<div class="input-group date">
-					  <input type="text" class="form-control" ng-model="treatment.finish_date" name="finish_date" disabled>
-					  <span class="input-group-addon">
-					  	<i class="glyphicon glyphicon-th"></i>
-					  </span>
-					</div>
+			<h4 class="page-header">
+				Medicamentos
+			</h4>
+			<button class="btn btn-primary" ng-click="add_medicament_take()">Agregar</button>
+			<div ng-repeat="m in medicaments" class="panel panel-success">
+				<div class="panel-heading">
+					<h3 class="panel-heading">
+						Nuevo medicamento	
+					</h3>
 				</div>
+				<div class="panel-body">
+					<input type="text" ng-model="m.text">	
+				</div>				
 			</div>
-		</form>
-		
 
+		</form>
+	</div>	
 	
 	
-	<div class="col-md-6">
+	<div class="col-md-4">
 		<h3>Datos del paciente</h3>
 	</div>
 </div>

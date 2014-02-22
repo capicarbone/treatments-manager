@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 '''
 Created on 14/02/2014
 
@@ -6,8 +8,9 @@ Created on 14/02/2014
 
 import endpoints
 from google.appengine.ext import ndb
-from manager.models import Patient, Treatment
+from manager.models import Patient, Treatment, Medicament
 from manager.api import treatments_messages
+from manager.api.treatments_messages import MappedObjectMsg
 from protorpc import remote, message_types
 
 @endpoints.api(name="doctor", version="v1",
@@ -36,5 +39,34 @@ class ForDoctorApi(remote.Service):
         treatment_msg.key = treatment.key.urlsafe()
 
         return treatment_msg
+
+    @endpoints.method(treatments_messages.MedicamentMsg, treatments_messages.MedicamentMsg,
+                      path="medicament", http_method="POST", name="medicament.save")
+    def medicament_save(self, medicament_msg):
+
+        medicament = Medicament(message=medicament_msg)
+        medicament.put()
+
+        medicament_msg.key = medicament.key.urlsafe()
+
+        return medicament_msg
+
+    @endpoints.method(message_types.VoidMessage, treatments_messages.Presentations,
+                      path="presentations", http_method="POST", name="presentations.all")
+    def presentations(self, request):
+
+        items = [
+            MappedObjectMsg(description='Tabletas', for_db='t'),
+            MappedObjectMsg(description='Cápsulas', for_db='t'),
+            MappedObjectMsg(description='Jarabe', for_db='j'),
+            MappedObjectMsg(description='Ampolla', for_db='a'),
+            MappedObjectMsg(description='Inyección', for_db='i')
+         ]
+
+        return treatments_messages.Presentations(presentations=items)
+
+
+
+
 
 

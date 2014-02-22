@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 '''
 Created on 11/02/2014
 
@@ -6,6 +8,10 @@ Created on 11/02/2014
 
 from protorpc import messages
 from protorpc import message_types
+
+class MappedObjectMsg(messages.Message):
+    description = messages.StringField(1)
+    for_db = messages.StringField(2)
 
 class SpecialityMsg(messages.Message):
     key = messages.StringField(1)
@@ -46,6 +52,23 @@ class TreatmentMsg(messages.Message):
     objetives = messages.StringField(4)
 
     patient_key = messages.StringField(5)
+
+class MedicamentMsg(messages.Message):
+
+    key = messages.StringField(1)
+    name = messages.StringField(2)
+    dose = messages.StringField(3)
+    description = messages.StringField(4)
+
+    presentation = messages.MessageField(MappedObjectMsg, 5)
+
+    registered_by = messages.StringField(6)
+
+
+class Presentations(messages.Message):
+
+    presentations = messages.MessageField(MappedObjectMsg, 1, repeated=True)
+
 
 
 

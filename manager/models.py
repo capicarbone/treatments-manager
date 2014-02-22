@@ -7,7 +7,7 @@ Created on 11/02/2014
 from google.appengine.ext import ndb
 import manager.api.treatments_messages
 from manager.api.treatments_messages import SpecialityMsg, PatientMsg, PersonMsg,\
-    DoctorMsg, TreatmentMsg
+    DoctorMsg, TreatmentMsg, MedicamentMsg
 from protorpc import message_types, messages
 
 class MessageModel(ndb.Model):
@@ -21,6 +21,8 @@ class MessageModel(ndb.Model):
         except KeyError:
             pass
 
+        # TODO: Esto puede ser supremamente mejorado llamando al init con un diccionario de los campos
+
         super(MessageModel, self).__init__( **kwargs)
 
         if message:
@@ -32,6 +34,13 @@ class MessageModel(ndb.Model):
         if isinstance(msg, self.message_class):
 
             for field in msg.all_fields():
+
+                try:
+                    if field.name in self.ignore_fields:
+                        continue
+                except AttributeError:
+                    pass
+
                 value = field.__get__(msg, msg.__class__)
 
                 if not field.repeated:
@@ -148,7 +157,6 @@ class Treatment(MessageModel):
 
     message_class = TreatmentMsg
 
-    finish_date = ndb.DateProperty()
     display_code = ndb.StringProperty()
     is_active = ndb.BooleanProperty(default=False)
     objetives = ndb.StringProperty()
@@ -159,10 +167,35 @@ class Treatment(MessageModel):
 
     def from_message(self, treatment_msg):
 
-        self.finish_date = treatment_msg.finish_date
         self.display_code = treatment_msg.display_code
         self.is_active = treatment_msg.is_active
         self.objetives = ndb.StringProperty()
+
+
+class Medicament(MessageModel):
+
+    message_class = MedicamentMsg
+    ignore_fields = ('registered_by', 'registered_at', 'presentation')
+
+    name = ndb.StringProperty()
+    dose = ndb.StringProperty()
+    description = ndb.StringProperty()
+
+    presentation = ndb.StringProperty()
+
+    registered_by = ndb.KeyProperty()
+    registered_at = ndb.DateTimeProperty(auto_now_add=True)
+
+    def from_message(self, msg):
+
+        super(Medicament, self).from_message(msg)
+
+        self.registered_by = ndb.Key(urlsafe=msg.registered_by)
+        self.presentation = msg.presentation.for_db
+
+
+
+
 
 
 

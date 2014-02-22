@@ -28,6 +28,18 @@ angular.module('logic', ['ngRoute'])
 		controller: 'TreatmentFormCtrl',
 		templateUrl:'template/treatment_form.html'
 	})
+
+	// Medicaments Routes
+
+	.when('/medicamentos',{
+		controller: 'MedicamentsManagerCtrl',
+		templateUrl:'template/medicaments_manager.html'
+	})
+	.when('/medicamento/form',{
+		controller: 'MedicamentFormCtrl',
+		templateUrl:'template/medicament_form.html'
+	})
+
 	.otherwise({
 		redirectTo: '/'
 	});
@@ -107,20 +119,50 @@ angular.module('logic', ['ngRoute'])
 
 	$rootScope.section_title = "Registro de tratamiento"
 	
-	$scope.init_dates_field = function(){		
+	$scope.medicaments = []	
 
-	    $(".input-group.date").datepicker({
-	    	format: "yyyy-mm-ddT00:00:00.00Z",
-    		language: "es",    		
-	    })
-	    .on('changeDate', function(e){
+	$scope.add_medicament_take = function(){
 
-	    	$scope.$apply(function(){
-	    		$scope.patient.birthday = e.format();
-	    	})
-	    })
-	  
+		$scope.medicaments.push({text: 'hola'});
+	}	
+
+})
+
+.controller('MedicamentsManagerCtrl', function($scope, $rootScope){
+
+	$rootScope.section_title = "Medicamentos"
+
+})
+
+.controller('MedicamentFormCtrl', function($scope, $rootScope){
+
+	$rootScope.section_title = "Registro de medicamento"
+
+	$scope.presentations = []
+
+	$scope.init = function(){
+
+		$rootScope.api.presentations.all().execute(function(res){
+
+			$scope.presentations = res.presentations;
+			$scope.$apply()
+
+		});
 	}
+
+	$scope.save = function(){
+
+		medicament = $scope.medicament;	
+
+		medicament.registered_by = $rootScope.doctor_key;
+
+		$rootScope.api.medicament.save(medicament).execute(function(res){
+
+			console.log(res);
+		})
+	}
+
+	$scope.init();
 
 })
 
