@@ -52,7 +52,7 @@ class ForDoctorApi(remote.Service):
         return medicament_msg
 
     @endpoints.method(message_types.VoidMessage, treatments_messages.Presentations,
-                      path="presentations", http_method="POST", name="presentations.all")
+                      path="presentations", http_method="GET", name="presentations.all")
     def presentations(self, request):
 
         items = [
@@ -64,6 +64,19 @@ class ForDoctorApi(remote.Service):
          ]
 
         return treatments_messages.Presentations(presentations=items)
+
+    @endpoints.method(message_types.VoidMessage, treatments_messages.MedicamentsCollection,
+                      path="medicaments", http_method="GET", name="medicaments.all")
+    def medicaments(self, request):
+
+        medicament_msgs = []
+
+        medicaments = Medicament.query()
+
+        for m in medicaments:
+            medicament_msgs.append(m.to_message())
+
+        return treatments_messages.MedicamentsCollection(medicaments=medicament_msgs)
 
 
 

@@ -60,7 +60,7 @@ angular.module('logic', ['ngRoute'])
 
 	$rootScope.section_title = "Registro de Paciente";
 
-	$scope.blood_types = ['ORH+', 'ORH-',' B+','A+', 'B-', 'A-' ];
+	$scope.blood_types = ['ORH+', 'ORH-',' B+','A+', 'B-', 'A-' , 'AB+', 'AB-'];
 
 	$scope.genders = [
 		{key: 'M', value:'Masculino'},
@@ -96,6 +96,8 @@ angular.module('logic', ['ngRoute'])
 
 		$rootScope.api.patient.save(patient).execute(function(res){
 			console.log(res);	
+
+			$rootScope.patient = patient;
 			
 			$location.path('/paciente/'+ res.key +'/tratamiento/form').replace();
 			$scope.$apply();
@@ -118,13 +120,30 @@ angular.module('logic', ['ngRoute'])
 .controller('TreatmentFormCtrl', function($scope, $rootScope, $routeParams){
 
 	$rootScope.section_title = "Registro de tratamiento"
+
+	$scope.patient = $rootScope.patient;
+
+	$scope.init = function(){
+
+		$rootScope.api.medicaments.all().execute(function(res){
+
+			$scope.medicaments = res.medicaments;
+			$scope.$apply();
+		});
+	}
+
+	$scope.medicaments = []
 	
-	$scope.medicaments = []	
+	$scope.actions = []	
 
-	$scope.add_medicament_take = function(){
+	$scope.medicament_take_form_fl = false;
 
-		$scope.medicaments.push({text: 'hola'});
+
+	$scope.medicament_take_form = function(){
+		$scope.medicament_take_form_fl = true;
 	}	
+
+	$scope.init();
 
 })
 

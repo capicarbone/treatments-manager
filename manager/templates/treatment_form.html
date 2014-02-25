@@ -1,6 +1,8 @@
 
+{% import "includes/bs_fields.html" as fields %}
+
 <div class="row-fluid">
-	<div class="col-md-8">
+	<div class="col-md-6">
 
 		<form action="" name="form" class="form-horizontal">
 			<div class="form-group">
@@ -13,25 +15,31 @@
 			</div>			
 
 			<h4 class="page-header">
-				Medicamentos
+				Acciones
 			</h4>
-			<button class="btn btn-primary" ng-click="add_medicament_take()">Agregar</button>
-			<div ng-repeat="m in medicaments" class="panel panel-success">
+			<button class="btn btn-primary" ng-click="medicament_take_form()">Agregar medicamento</button>
+			
+			<div ng-show="medicament_take_form_fl">
 				<div class="panel-heading">
 					<h3 class="panel-heading">
 						Nuevo medicamento	
 					</h3>
 				</div>
-				<div class="panel-body">
-					<input type="text" ng-model="m.text">	
-				</div>				
+
+				{{ fields.select('Medicamento', 'treatment.medicament', 'medicament', 'm.name for m in medicaments', 'Seleccione un medicamento', label_cols="4", input_cols="8" ) }}
+				
 			</div>
+			
+			
 
 		</form>
 	</div>	
 	
 	
-	<div class="col-md-4">
-		<h3>Datos del paciente</h3>
+	<div class="col-md-6 treatment-resumen">
+		{% raw %}
+		<h3>{{patient.person.first_name}} {{patient.person.last_name}}</h3>
+
+		{% endraw %}
 	</div>
 </div>

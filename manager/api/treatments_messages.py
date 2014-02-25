@@ -69,6 +69,9 @@ class Presentations(messages.Message):
 
     presentations = messages.MessageField(MappedObjectMsg, 1, repeated=True)
 
+class MedicamentsCollection(messages.Message):
+    medicaments = messages.MessageField(MedicamentMsg, 1, repeated=True)
+
 
 
 

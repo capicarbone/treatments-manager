@@ -7,7 +7,7 @@ Created on 11/02/2014
 from google.appengine.ext import ndb
 import manager.api.treatments_messages
 from manager.api.treatments_messages import SpecialityMsg, PatientMsg, PersonMsg,\
-    DoctorMsg, TreatmentMsg, MedicamentMsg
+    DoctorMsg, TreatmentMsg, MedicamentMsg, MappedObjectMsg
 from protorpc import message_types, messages
 
 class MessageModel(ndb.Model):
@@ -192,6 +192,19 @@ class Medicament(MessageModel):
 
         self.registered_by = ndb.Key(urlsafe=msg.registered_by)
         self.presentation = msg.presentation.for_db
+
+    def to_message(self):
+
+        msg = MedicamentMsg()
+
+        msg.key = self.key.urlsafe()
+        msg.name = self.name
+        msg.dose = self.dose
+        msg.description = self.description
+        msg.presentation = MappedObjectMsg(for_db=self.presentation)
+
+        return msg
+
 
 
 
