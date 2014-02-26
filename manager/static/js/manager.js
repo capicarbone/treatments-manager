@@ -97,6 +97,7 @@ angular.module('logic', ['ngRoute'])
 		$rootScope.api.patient.save(patient).execute(function(res){
 			console.log(res);	
 
+			patient.key = res.key;
 			$rootScope.patient = patient;
 			
 			$location.path('/paciente/'+ res.key +'/tratamiento/form').replace();
@@ -117,11 +118,14 @@ angular.module('logic', ['ngRoute'])
 
 })
 
+// ######## Treatment Form Controller ########
+
 .controller('TreatmentFormCtrl', function($scope, $rootScope, $routeParams){
 
 	$rootScope.section_title = "Registro de tratamiento"
 
 	$scope.patient = $rootScope.patient;
+	$scope.treatment = {is_active: true};
 
 	$scope.init = function(){
 
@@ -130,18 +134,72 @@ angular.module('logic', ['ngRoute'])
 			$scope.medicaments = res.medicaments;
 			$scope.$apply();
 		});
+
+		$("#take_time_picker").datetimepicker({
+			language: 'es',
+			pickDate: false
+		})
+		.on('change.dp', function(e){
+			$scope.$apply(function(){
+				$scope.action.readable_take_hour = document.getElementById("take_hour").value			
+
+				var moment_date = moment($scope.action.readable_take_hour, "hh:mm a");
+				$scope.action.take_hour = moment_date.format();	
+			});
+			
+		})
+
 	}
 
 	$scope.medicaments = []
 	
+	$scope.action = {}
+	$scope.action.regime_type = 'E';
+
 	$scope.actions = []	
 
+
 	$scope.medicament_take_form_fl = false;
+	
+	$scope.specific_hour_selected = function(){
+		return $scope.action.regime_type == 'E';
+	}
 
 
 	$scope.medicament_take_form = function(){
 		$scope.medicament_take_form_fl = true;
 	}	
+
+	$scope.register_medicament = function(){
+
+		var action = {}
+
+		action.action_type = 'M';
+		action.medicament = $scope.action.medicament;
+		action.regime_type = $scope.action.regime_type;	
+		action.take_hour = $scope.action.take_hour;
+		action.readable_take_hour = $scope.action.readable_take_hour;
+
+		$scope.actions.push(action);
+
+		$scope.medicament_take_form_fl = false;
+
+		$scope.action.medicament = "";
+		$scope.action.take_hour = "";
+		$scope.form.take_hour = "";
+
+	}
+
+	$scope.treatment_save = function(){
+
+		var treatment = $scope.treatment;
+		treatment.actions = $scope.actions;
+		treatment.patient_key = $scope.patient.key;
+
+		$rootScope.api.treatment.save(treatment).execute(function(res){
+			console.log(res);
+		});
+	}
 
 	$scope.init();
 

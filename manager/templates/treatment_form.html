@@ -6,10 +6,10 @@
 
 		<form action="" name="form" class="form-horizontal">
 			<div class="form-group">
-				<label for="Tipo de sangre" class="control-label col-md-4">
+				<label for="Tipo de sangre" class="control-label col-md-2">
 					Objetivos
 				</label>
-				<div class="col-md-8">
+				<div class="col-md-10">
 					<textarea type="textarea" class="form-control" ng-model="treatment.objetives" name="objetives"></textarea>				
 				</div>
 			</div>			
@@ -20,13 +20,41 @@
 			<button class="btn btn-primary" ng-click="medicament_take_form()">Agregar medicamento</button>
 			
 			<div ng-show="medicament_take_form_fl">
-				<div class="panel-heading">
-					<h3 class="panel-heading">
-						Nuevo medicamento	
-					</h3>
+				
+				<h3>Medicamento</h3>
+
+				{{ fields.select('', 'action.medicament', 'medicament', 'm.name for m in medicaments', 'Seleccione un medicamento', label_cols="0", input_cols="12" ) }}
+
+				<h3>Régimen</h3>
+	
+				<div class="row-fluid">
+					<div class="col-md-6">
+						<input type="radio" ng-model="action.regime_type" value="E" > Hora específica		
+					</div>
+					<div class="col-md-6">
+						<input type="radio" ng-model="action.regime_type" value="C"> Cada cierto tiempo		
+					</div>
+				</div>
+				
+				<div class="form-group" ng-show="specific_hour_selected()">
+					<label for="Tipo de sangre" class="control-label col-md-2">
+						Hora
+					</label>
+					<div class="col-md-4">
+						<div class="input-group date" id="take_time_picker">
+							<input type="text" class="form-control" name="take_hour" ng-model="action.readable_take_hour" id="take_hour">
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-time"></i>
+							</span>	
+						</div>
+						
+					</div>
 				</div>
 
-				{{ fields.select('Medicamento', 'treatment.medicament', 'medicament', 'm.name for m in medicaments', 'Seleccione un medicamento', label_cols="4", input_cols="8" ) }}
+				<button class="btn btn-primary" ng-click="register_medicament()">Registrar</button>
+				<button class="btn" ng-click="cancel()">Cancelar</button>
+				
+
 				
 			</div>
 			
@@ -38,8 +66,56 @@
 	
 	<div class="col-md-6 treatment-resumen">
 		{% raw %}
-		<h3>{{patient.person.first_name}} {{patient.person.last_name}}</h3>
+		<h2>{{patient.person.first_name}} {{patient.person.last_name}}</h2>
+		<div class="row">
 
+			<div class="col-md-6">
+				Tipo de sangre: {{patient.blood_type}} <br/>
+				Sexo: {{patient.person.gender}} <br/>	
+			</div>
+			<div class="col-md-6">
+				Alergias: <br/>
+				{{patient.allergies}}
+			</div>
+
+		</div>
+		
+		<div class="page-header">
+			<h4>Medicamentos</h4>			
+		</div>		
+
+		<div ng-repeat="action in actions" class="panel panel-success">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-md-10">
+						<h4>{{action.medicament.name}}</h4>
+						
+					</div>
+					<div class="col-md-2">
+						<button class="close pull-right" aria-hidden="true">&times;</button>	
+					</div>
+				</div>							
+			</div>
+			<div class="panel-body">
+				<div class="row-fluid">
+					<div class="col-md-8">
+						{{action.medicament.description}}
+					</div>
+					<div class="col-md-4">
+					<strong>{{action.readable_take_hour}}</strong>
+						
+					</div>
+				</div>
+				
+			</div>				
+		</div>
 		{% endraw %}
+
+		<button class="btn btn-primary btn-lg btn-block" ng-click="treatment_save()">
+			Asignar tratamiento
+		</button>
+		<button class="btn btn-default btn-lg btn-block">
+			Cancelar
+		</button>
 	</div>
 </div>

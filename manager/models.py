@@ -7,8 +7,10 @@ Created on 11/02/2014
 from google.appengine.ext import ndb
 import manager.api.treatments_messages
 from manager.api.treatments_messages import SpecialityMsg, PatientMsg, PersonMsg,\
-    DoctorMsg, TreatmentMsg, MedicamentMsg, MappedObjectMsg
+    DoctorMsg, TreatmentMsg, MedicamentMsg, MappedObjectMsg, TreatmentActionMsg
 from protorpc import message_types, messages
+
+from datetime import time
 
 class MessageModel(ndb.Model):
 
@@ -145,17 +147,28 @@ class Patient(MessageModel):
 
 class TreatmentAction(MessageModel):
 
+    message_class = TreatmentActionMsg
+    ignore_fields = ('medicament', 'take_hour')
+
     time_interval = ndb.IntegerProperty()
     action_type = ndb.StringProperty()
+    take_hour = ndb.TimeProperty()
 
-    medicine = ndb.KeyProperty()
+    medicament = ndb.KeyProperty()
 
+    def from_message(self, msg):
+        super(TreatmentAction, self).from_message(msg)
 
+        if msg.medicament:
+            self.medicament = ndb.Key(urlsafe=msg.medicament.key)
+
+        self.take_hour = time(msg.take_hour.hour, msg.take_hour.minute)
 
 
 class Treatment(MessageModel):
 
     message_class = TreatmentMsg
+    ignore_fields = ('patient_key',)
 
     display_code = ndb.StringProperty()
     is_active = ndb.BooleanProperty(default=False)
@@ -165,11 +178,35 @@ class Treatment(MessageModel):
 
     actions = ndb.StructuredProperty(TreatmentAction, repeated=True)
 
-    def from_message(self, treatment_msg):
+    def from_message(self, msg):
 
-        self.display_code = treatment_msg.display_code
-        self.is_active = treatment_msg.is_active
-        self.objetives = ndb.StringProperty()
+        for a in msg.actions:
+
+            action = TreatmentAction(message=a)
+            self.actions.append(action)
+
+    def generate_code(self):
+
+        code = ''
+
+        id_str = str(self.key.id())
+
+        partition = ''
+        for c in id_str:
+            partition = partition + c
+
+            if len(partition) == 2:
+
+                n = int(partition)
+                start_range = 97
+                ends_range = 122
+
+                n = n % (ends_range - start_range)
+
+                code = code + chr(n + start_range)
+                partition = ''
+
+        self.display_code = code
 
 
 class Medicament(MessageModel):

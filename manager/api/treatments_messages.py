@@ -44,15 +44,6 @@ class PatientMsg(messages.Message):
 
     doctor_key = messages.StringField(6, required=True)
 
-class TreatmentMsg(messages.Message):
-
-    key = messages.StringField(1)
-    display_code = messages.StringField(2)
-    is_active = messages.BooleanField(3, default=False)
-    objetives = messages.StringField(4)
-
-    patient_key = messages.StringField(5)
-
 class MedicamentMsg(messages.Message):
 
     key = messages.StringField(1)
@@ -63,6 +54,24 @@ class MedicamentMsg(messages.Message):
     presentation = messages.MessageField(MappedObjectMsg, 5)
 
     registered_by = messages.StringField(6)
+
+class TreatmentActionMsg(messages.Message):
+
+    time_interval = messages.IntegerField(1)
+    action_type = messages.StringField(2)
+    take_hour = message_types.DateTimeField(3)
+
+    medicament = messages.MessageField(MedicamentMsg, 4)
+
+class TreatmentMsg(messages.Message):
+
+    key = messages.StringField(1)
+    display_code = messages.StringField(2)
+    is_active = messages.BooleanField(3, default=True)
+    objetives = messages.StringField(4)
+    patient_key = messages.StringField(7)
+
+    actions = messages.MessageField(TreatmentActionMsg,5, repeated=True)
 
 
 class Presentations(messages.Message):

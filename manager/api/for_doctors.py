@@ -33,7 +33,9 @@ class ForDoctorApi(remote.Service):
                       path="treatment", http_method="POST", name="treatment.save")
     def treatment_save(self,treatment_msg):
 
-        treatment = Treatment(message=treatment_msg, parent=treatment_msg.patient_key)
+        treatment = Treatment(message=treatment_msg, parent=ndb.Key(urlsafe=treatment_msg.patient_key))
+        treatment.put()
+        treatment.generate_code()
         treatment.put()
 
         treatment_msg.key = treatment.key.urlsafe()
