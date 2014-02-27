@@ -212,7 +212,7 @@ class TreatmentAction(MessageModel):
 class Treatment(MessageModel):
 
     message_class = TreatmentMsg
-    ignore_fields = ('patient_key',)
+    ignore_fields = ('patient_key', 'actions')
 
     display_code = ndb.StringProperty()
     is_active = ndb.BooleanProperty(default=False)
@@ -220,17 +220,8 @@ class Treatment(MessageModel):
 
     created_at = ndb.DateTimeProperty(auto_now_add=True)
 
-    actions = ndb.StructuredProperty(TreatmentAction, repeated=True)
-
-    def from_message(self, msg):
-
-        for a in msg.actions:
-
-            action = TreatmentAction(message=a)
-            self.actions.append(action)
 
     def to_message(self):
-
 
         msg = super(Treatment,self).to_message()
 
@@ -238,12 +229,6 @@ class Treatment(MessageModel):
         msg.is_active = self.is_active
         msg.objetives = self.objetives
         msg.patient_key = self.key.parent().urlsafe()
-
-        actions_msgs = []
-        for action in self.actions:
-            actions_msgs.append(action.to_message())
-
-        msg.actions = actions_msgs
 
         return msg
 
@@ -278,6 +263,22 @@ class Treatment(MessageModel):
             return query[0]
         else:
             return None
+
+    def get_actions(self):
+
+        actions = TreatmentAction.query().filter(parent=self.key)
+
+        return actions
+
+    def get_actions_messages(self):
+
+        actions = self.get_actions()
+
+        actions_msgs = []
+        for a in actions:
+            actions_msgs.append(a.to_message())
+
+        return actions_msgs
 
 
 

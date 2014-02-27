@@ -25,8 +25,11 @@ class ForPatientApi(remote.Service):
         patient = treatment.key.parent().get()
         doctor = patient.key.parent().get()
 
+
         entire_msg = EntireTreatment()
         treatment_msg = treatment.to_message()
+        actions_msgs = treatment.get_actions_messages()
+        treatment_msg.actions = actions_msgs
 
         entire_msg.treatment = treatment_msg
         entire_msg.doctor = doctor.to_message()

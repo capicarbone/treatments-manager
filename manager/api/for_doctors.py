@@ -8,7 +8,7 @@ Created on 14/02/2014
 
 import endpoints
 from google.appengine.ext import ndb
-from manager.models import Patient, Treatment, Medicament
+from manager.models import *
 from manager.api import treatments_messages
 from manager.api.treatments_messages import MappedObjectMsg, EntireTreatment
 from protorpc import remote, message_types, messages
@@ -37,6 +37,12 @@ class ForDoctorApi(remote.Service):
         treatment.put()
         treatment.generate_code()
         treatment.put()
+
+        for a in treatment_msg.actions:
+
+            action = TreatmentAction(message=a, parent=treatment.key)
+            action.put()
+            a.key = action.key.urlsafe()
 
         treatment_msg.key = treatment.key.urlsafe()
 
@@ -80,7 +86,7 @@ class ForDoctorApi(remote.Service):
 
         return treatments_messages.MedicamentsCollection(medicaments=medicament_msgs)
 
- 
+
 
 
 

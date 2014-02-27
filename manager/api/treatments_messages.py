@@ -32,7 +32,7 @@ class DoctorMsg(messages.Message):
     key = messages.StringField(1)
     email = messages.StringField(2)
     person = messages.MessageField(PersonMsg, 3, required=True)
-    #registered_at = message_types.DateTimeField(4)
+    registered_at = message_types.DateTimeField(4)
     specialities = messages.MessageField(SpecialityMsg, 5, repeated=True)
 
 class PatientMsg(messages.Message):
@@ -57,6 +57,7 @@ class MedicamentMsg(messages.Message):
 
 class TreatmentActionMsg(messages.Message):
 
+    key = messages.StringField(5)
     time_interval = messages.IntegerField(1)
     action_type = messages.StringField(2)
     take_hour = message_types.DateTimeField(3)
