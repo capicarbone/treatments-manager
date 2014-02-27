@@ -73,7 +73,6 @@ class TreatmentMsg(messages.Message):
 
     actions = messages.MessageField(TreatmentActionMsg,5, repeated=True)
 
-
 class Presentations(messages.Message):
 
     presentations = messages.MessageField(MappedObjectMsg, 1, repeated=True)
@@ -82,6 +81,10 @@ class MedicamentsCollection(messages.Message):
     medicaments = messages.MessageField(MedicamentMsg, 1, repeated=True)
 
 
+class EntireTreatment(messages.Message):
 
+    treatment = messages.MessageField(TreatmentMsg,1)
+    doctor = messages.MessageField(DoctorMsg,2)
+    patient = messages.MessageField(PatientMsg,3)
 
 

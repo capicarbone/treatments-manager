@@ -10,8 +10,8 @@ import endpoints
 from google.appengine.ext import ndb
 from manager.models import Patient, Treatment, Medicament
 from manager.api import treatments_messages
-from manager.api.treatments_messages import MappedObjectMsg
-from protorpc import remote, message_types
+from manager.api.treatments_messages import MappedObjectMsg, EntireTreatment
+from protorpc import remote, message_types, messages
 
 @endpoints.api(name="doctor", version="v1",
                description="API for doctor users.")
@@ -80,6 +80,7 @@ class ForDoctorApi(remote.Service):
 
         return treatments_messages.MedicamentsCollection(medicaments=medicament_msgs)
 
+ 
 
 
 

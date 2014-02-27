@@ -64,7 +64,11 @@ class MessageModel(ndb.Model):
     def to_message(self):
 
         msg = self.message_class()
-        msg.id = str(self.key.id())
+
+        try:
+            msg.key = self.key.urlsafe()
+        except AttributeError:
+            pass
 
         return msg
 
@@ -78,6 +82,16 @@ class Person(MessageModel):
     gender = ndb.StringProperty(choices=genders)
 
     message_class = PersonMsg
+
+    def to_message(self):
+
+        msg = self.message_class()
+
+        msg.first_name = self.first_name
+        msg.last_name = self.last_name
+        msg.gender = self.gender
+
+        return msg
 
 class Doctor(MessageModel):
 
@@ -100,6 +114,16 @@ class Doctor(MessageModel):
             specialities_keys.append(ndb.Key('Speciality', s.id))
 
         self.specialities = specialities_keys
+
+    def to_message(self):
+
+        msg = super(Doctor, self).to_message()
+
+        msg.email = self.email
+        msg.person = self.person.to_message()
+
+        return msg
+
 
     @classmethod
     def by_email(cls, email):
@@ -144,6 +168,17 @@ class Patient(MessageModel):
         self.blood_type = patient_msg.blood_type
         self.allergies = patient_msg.allergies
 
+    def to_message(self):
+
+        msg = super(Patient, self).to_message()
+
+        msg.person = self.person.to_message()
+        msg.blood_type = self.blood_type
+        msg.allergies = self.allergies
+        msg.doctor_key = self.key.parent().urlsafe()
+
+        return msg
+
 
 class TreatmentAction(MessageModel):
 
@@ -164,6 +199,15 @@ class TreatmentAction(MessageModel):
 
         self.take_hour = time(msg.take_hour.hour, msg.take_hour.minute)
 
+    def to_message(self):
+        msg = super(TreatmentAction,self).to_message()
+
+        m = self.medicament.get()
+        msg.medicament = m.to_message()
+        msg.action_type = self.action_type
+        msg.time_interval = self.time_interval
+
+        return msg
 
 class Treatment(MessageModel):
 
@@ -184,6 +228,24 @@ class Treatment(MessageModel):
 
             action = TreatmentAction(message=a)
             self.actions.append(action)
+
+    def to_message(self):
+
+
+        msg = super(Treatment,self).to_message()
+
+        msg.display_code = self.display_code
+        msg.is_active = self.is_active
+        msg.objetives = self.objetives
+        msg.patient_key = self.key.parent().urlsafe()
+
+        actions_msgs = []
+        for action in self.actions:
+            actions_msgs.append(action.to_message())
+
+        msg.actions = actions_msgs
+
+        return msg
 
     def generate_code(self):
 
@@ -207,6 +269,16 @@ class Treatment(MessageModel):
                 partition = ''
 
         self.display_code = code
+
+    @classmethod
+    def by_code(cls, code):
+        query = cls.query(cls.display_code == code).fetch(1)
+
+        if len(query) > 0:
+            return query[0]
+        else:
+            return None
+
 
 
 class Medicament(MessageModel):
