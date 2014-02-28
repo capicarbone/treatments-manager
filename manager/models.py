@@ -38,7 +38,7 @@ class MessageModel(ndb.Model):
             for field in msg.all_fields():
 
                 try:
-                    if field.name in self.ignore_fields:
+                    if field.name is 'key' or field.name in self.ignore_fields:
                         continue
                 except AttributeError:
                     pass
@@ -212,7 +212,7 @@ class TreatmentAction(MessageModel):
 class Treatment(MessageModel):
 
     message_class = TreatmentMsg
-    ignore_fields = ('patient_key', 'actions')
+    ignore_fields = ('patient_key',)
 
     display_code = ndb.StringProperty()
     is_active = ndb.BooleanProperty(default=False)
@@ -266,7 +266,7 @@ class Treatment(MessageModel):
 
     def get_actions(self):
 
-        actions = TreatmentAction.query().filter(parent=self.key)
+        actions = TreatmentAction.query(ancestor=self.key)
 
         return actions
 

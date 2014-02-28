@@ -36,6 +36,7 @@ class ForDoctorApi(remote.Service):
         treatment = Treatment(message=treatment_msg, parent=ndb.Key(urlsafe=treatment_msg.patient_key))
         treatment.put()
         treatment.generate_code()
+        treatment.is_active = True
         treatment.put()
 
         for a in treatment_msg.actions:
