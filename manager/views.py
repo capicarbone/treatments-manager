@@ -29,12 +29,12 @@ class ManagerPage(webapp.RequestHandler):
         doctor = None
 
         if user:
-            if users.is_current_user_admin():
-                self.redirect('/amministratore')
-            else:
-                doctor = Doctor.by_email(user.email())
+            doctor = Doctor.by_email(user.email())
 
-                if not doctor:
+            if not doctor:
+                if users.is_current_user_admin():
+                    self.redirect('/amministratore')
+                else:
                     self.redirect('/')
                     return
 

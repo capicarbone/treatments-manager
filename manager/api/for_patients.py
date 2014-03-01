@@ -27,12 +27,12 @@ class ForPatientApi(remote.Service):
 
 
         entire_msg = EntireTreatment()
-        treatment_msg = treatment.to_message()
-        actions_msgs = treatment.get_actions_messages()
+        treatment_msg = treatment.to_message(ignore_fields=['patient_key'])
+        actions_msgs = treatment.get_actions_messages(ignore_fields=['key', 'medicament__key'])
         treatment_msg.actions = actions_msgs
 
         entire_msg.treatment = treatment_msg
-        entire_msg.doctor = doctor.to_message()
-        entire_msg.patient = patient.to_message()
+        entire_msg.doctor = doctor.to_message(ignore_fields=['key'])
+        entire_msg.patient = patient.to_message(ignore_fields=['key','doctor_key'])
 
         return entire_msg

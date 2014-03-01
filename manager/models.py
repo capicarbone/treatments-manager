@@ -4,13 +4,15 @@ Created on 11/02/2014
 @author: Capi
 '''
 
-from google.appengine.ext import ndb
-import manager.api.treatments_messages
-from manager.api.treatments_messages import SpecialityMsg, PatientMsg, PersonMsg,\
-    DoctorMsg, TreatmentMsg, MedicamentMsg, MappedObjectMsg, TreatmentActionMsg
-from protorpc import message_types, messages
-
 from datetime import time
+import datetime
+
+from google.appengine.ext import ndb
+from protorpc import message_types
+
+from manager.api.treatments_messages import SpecialityMsg, PatientMsg, PersonMsg, \
+    DoctorMsg, TreatmentMsg, MedicamentMsg, MappedObjectMsg, TreatmentActionMsg
+
 
 class MessageModel(ndb.Model):
 
@@ -61,14 +63,15 @@ class MessageModel(ndb.Model):
                     except AttributeError:
                         setattr(self, field.name, value)
 
-    def to_message(self):
+    def to_message(self, ignore_fields=[]):
 
         msg = self.message_class()
 
-        try:
-            msg.key = self.key.urlsafe()
-        except AttributeError:
-            pass
+        if not 'key' in ignore_fields:
+            try:
+                msg.key = self.key.urlsafe()
+            except AttributeError:
+                pass
 
         return msg
 
@@ -115,9 +118,9 @@ class Doctor(MessageModel):
 
         self.specialities = specialities_keys
 
-    def to_message(self):
+    def to_message(self,ignore_fields=[]):
 
-        msg = super(Doctor, self).to_message()
+        msg = super(Doctor, self).to_message(ignore_fields=ignore_fields)
 
         msg.email = self.email
         msg.person = self.person.to_message()
@@ -168,14 +171,17 @@ class Patient(MessageModel):
         self.blood_type = patient_msg.blood_type
         self.allergies = patient_msg.allergies
 
-    def to_message(self):
+    def to_message(self,ignore_fields=[]):
 
-        msg = super(Patient, self).to_message()
+        msg = super(Patient, self).to_message(ignore_fields=ignore_fields)
 
         msg.person = self.person.to_message()
         msg.blood_type = self.blood_type
         msg.allergies = self.allergies
-        msg.doctor_key = self.key.parent().urlsafe()
+        msg.birthday = datetime.datetime.fromordinal(self.birthday.toordinal())
+
+        if not 'doctor_key' in ignore_fields:
+            msg.doctor_key = self.key.parent().urlsafe()
 
         return msg
 
@@ -199,13 +205,21 @@ class TreatmentAction(MessageModel):
 
         self.take_hour = time(msg.take_hour.hour, msg.take_hour.minute)
 
-    def to_message(self):
-        msg = super(TreatmentAction,self).to_message()
+    def to_message(self, ignore_fields=[]):
+        msg = super(TreatmentAction,self).to_message(ignore_fields)
 
         m = self.medicament.get()
-        msg.medicament = m.to_message()
+
+        if 'medicament__key' in ignore_fields:
+            msg.medicament = m.to_message(ignore_fields=['key'])
+        else:
+            msg.medicament = m.to_message()
+
         msg.action_type = self.action_type
         msg.time_interval = self.time_interval
+        msg.id =str(self.key.id())
+        if self.take_hour:
+            msg.take_hour = datetime.datetime(1990,1,1,self.take_hour.hour, self.take_hour.minute, 0)
 
         return msg
 
@@ -221,14 +235,16 @@ class Treatment(MessageModel):
     created_at = ndb.DateTimeProperty(auto_now_add=True)
 
 
-    def to_message(self):
+    def to_message(self, ignore_fields=[]):
 
-        msg = super(Treatment,self).to_message()
+        msg = super(Treatment,self).to_message(ignore_fields)
 
         msg.display_code = self.display_code
         msg.is_active = self.is_active
         msg.objetives = self.objetives
-        msg.patient_key = self.key.parent().urlsafe()
+
+        if not 'patient_key' in ignore_fields:
+            msg.patient_key = self.key.parent().urlsafe()
 
         return msg
 
@@ -270,13 +286,13 @@ class Treatment(MessageModel):
 
         return actions
 
-    def get_actions_messages(self):
+    def get_actions_messages(self, ignore_fields=[]):
 
         actions = self.get_actions()
 
         actions_msgs = []
         for a in actions:
-            actions_msgs.append(a.to_message())
+            actions_msgs.append(a.to_message(ignore_fields=ignore_fields))
 
         return actions_msgs
 
@@ -303,15 +319,14 @@ class Medicament(MessageModel):
         self.registered_by = ndb.Key(urlsafe=msg.registered_by)
         self.presentation = msg.presentation.for_db
 
-    def to_message(self):
+    def to_message(self, ignore_fields=[]):
 
-        msg = MedicamentMsg()
-
-        msg.key = self.key.urlsafe()
+        msg = super(Medicament,self).to_message(ignore_fields=ignore_fields)
         msg.name = self.name
         msg.dose = self.dose
         msg.description = self.description
         msg.presentation = MappedObjectMsg(for_db=self.presentation)
+        msg.id = str(self.key.id())
 
         return msg
 

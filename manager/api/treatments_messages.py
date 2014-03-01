@@ -42,7 +42,7 @@ class PatientMsg(messages.Message):
     blood_type = messages.StringField(4)
     allergies = messages.StringField(5)
 
-    doctor_key = messages.StringField(6, required=True)
+    doctor_key = messages.StringField(6)
 
 class MedicamentMsg(messages.Message):
 
@@ -55,9 +55,12 @@ class MedicamentMsg(messages.Message):
 
     registered_by = messages.StringField(6)
 
+    id = messages.StringField(7)
+
 class TreatmentActionMsg(messages.Message):
 
     key = messages.StringField(5)
+    id = messages.StringField(6)
     time_interval = messages.IntegerField(1)
     action_type = messages.StringField(2)
     take_hour = message_types.DateTimeField(3)
