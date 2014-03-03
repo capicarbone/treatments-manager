@@ -44,6 +44,9 @@ class PatientMsg(messages.Message):
 
     doctor_key = messages.StringField(6)
 
+class PatientsCollection(messages.Message):
+    patients = messages.MessageField(PatientMsg,1, repeated=True)
+
 class MedicamentMsg(messages.Message):
 
     key = messages.StringField(1)

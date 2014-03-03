@@ -51,12 +51,14 @@ class MainPage(webapp.RequestHandler):
         user = users.get_current_user()
 
         if user:
-            url_destiny = '/manager'
+
             if users.is_current_user_admin():
                 self.redirect('/amministratore')
+                return
 
             if Doctor.by_email(user.email()):
                 self.redirect('/manager')
+                return
 
         template = JE.get_template('index.html')
         login_url = users.create_login_url('/manager')

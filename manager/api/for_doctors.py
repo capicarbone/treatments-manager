@@ -66,10 +66,10 @@ class ForDoctorApi(remote.Service):
 
         items = [
             MappedObjectMsg(description='Tabletas', for_db='t'),
-            MappedObjectMsg(description='Cápsulas', for_db='t'),
+            MappedObjectMsg(description='Cápsulas'.decode('utf-8'), for_db='c'),
             MappedObjectMsg(description='Jarabe', for_db='j'),
             MappedObjectMsg(description='Ampolla', for_db='a'),
-            MappedObjectMsg(description='Inyección', for_db='i')
+            MappedObjectMsg(description='Inyección'.decode('utf-8'), for_db='i')
          ]
 
         return treatments_messages.Presentations(presentations=items)
@@ -86,6 +86,25 @@ class ForDoctorApi(remote.Service):
             medicament_msgs.append(m.to_message())
 
         return treatments_messages.MedicamentsCollection(medicaments=medicament_msgs)
+
+
+    KEY_CONTAINER = endpoints.ResourceContainer(key=messages.StringField(1))
+
+    @endpoints.method(KEY_CONTAINER, treatments_messages.PatientsCollection,
+                      path="patients", http_method="GET", name="patients.all")
+    def patients(self, request):
+
+        doctor = ndb.Key(urlsafe=request.key).get()
+
+        patients = doctor.patients()
+
+        patients_msg = []
+        for p in patients:
+            patients_msg.append(p.to_message(ignore_fields=('doctor_key',)))
+
+        return treatments_messages.PatientsCollection(patients=patients_msg)
+
+
 
 
 

@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 '''
 Created on 11/02/2014
 
@@ -96,6 +97,37 @@ class Person(MessageModel):
 
         return msg
 
+
+class Patient(MessageModel):
+
+    message_class = PatientMsg
+
+    person = ndb.StructuredProperty(Person)
+    birthday = ndb.DateProperty()
+    blood_type = ndb.StringProperty()
+    allergies = ndb.StringProperty()
+
+    def from_message(self, patient_msg):
+
+        self.person = Person(message=patient_msg.person)
+        self.birthday = patient_msg.birthday
+        self.blood_type = patient_msg.blood_type
+        self.allergies = patient_msg.allergies
+
+    def to_message(self,ignore_fields=[]):
+
+        msg = super(Patient, self).to_message(ignore_fields=ignore_fields)
+
+        msg.person = self.person.to_message()
+        msg.blood_type = self.blood_type
+        msg.allergies = self.allergies
+        msg.birthday = datetime.datetime.fromordinal(self.birthday.toordinal())
+
+        if not 'doctor_key' in ignore_fields:
+            msg.doctor_key = self.key.parent().urlsafe()
+
+        return msg
+
 class Doctor(MessageModel):
 
     message_class = DoctorMsg
@@ -137,6 +169,11 @@ class Doctor(MessageModel):
         else:
             return None
 
+    def patients(self):
+
+        patients = Patient.query(ancestor=self.key)
+        return patients
+
 
 
 
@@ -155,35 +192,6 @@ class Speciality(MessageModel):
 
         return speciality_msg
 
-class Patient(MessageModel):
-
-    message_class = PatientMsg
-
-    person = ndb.StructuredProperty(Person)
-    birthday = ndb.DateProperty()
-    blood_type = ndb.StringProperty()
-    allergies = ndb.StringProperty()
-
-    def from_message(self, patient_msg):
-
-        self.person = Person(message=patient_msg.person)
-        self.birthday = patient_msg.birthday
-        self.blood_type = patient_msg.blood_type
-        self.allergies = patient_msg.allergies
-
-    def to_message(self,ignore_fields=[]):
-
-        msg = super(Patient, self).to_message(ignore_fields=ignore_fields)
-
-        msg.person = self.person.to_message()
-        msg.blood_type = self.blood_type
-        msg.allergies = self.allergies
-        msg.birthday = datetime.datetime.fromordinal(self.birthday.toordinal())
-
-        if not 'doctor_key' in ignore_fields:
-            msg.doctor_key = self.key.parent().urlsafe()
-
-        return msg
 
 
 class TreatmentAction(MessageModel):
