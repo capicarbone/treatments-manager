@@ -7,6 +7,7 @@ Created on 11/02/2014
 
 from datetime import time
 import datetime
+import calendar
 
 from google.appengine.ext import ndb
 from protorpc import message_types
@@ -211,7 +212,9 @@ class TreatmentAction(MessageModel):
         if msg.medicament:
             self.medicament = ndb.Key(urlsafe=msg.medicament.key)
 
-        self.take_hour = time(msg.take_hour.hour, msg.take_hour.minute)
+        if msg.take_hour:
+            take_hour = datetime.datetime.fromtimestamp(msg.take_hour)
+            self.take_hour = time(take_hour.hour, take_hour.minute)
 
     def to_message(self, ignore_fields=[]):
         msg = super(TreatmentAction,self).to_message(ignore_fields)
@@ -226,8 +229,10 @@ class TreatmentAction(MessageModel):
         msg.action_type = self.action_type
         msg.time_interval = self.time_interval
         msg.id =str(self.key.id())
+
         if self.take_hour:
-            msg.take_hour = datetime.datetime(1990,1,1,self.take_hour.hour, self.take_hour.minute, 0)
+            take_hour = datetime.datetime(1990,1,1,self.take_hour.hour, self.take_hour.minute, 0)
+            msg.take_hour = calendar.timegm(take_hour.utctimetuple())
 
         return msg
 
