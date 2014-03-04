@@ -122,7 +122,7 @@ class Patient(MessageModel):
         msg.person = self.person.to_message()
         msg.blood_type = self.blood_type
         msg.allergies = self.allergies
-        msg.birthday = datetime.datetime.fromordinal(self.birthday.toordinal())
+        #msg.birthday = datetime.datetime.fromordinal(self.birthday.toordinal())
 
         if not 'doctor_key' in ignore_fields:
             msg.doctor_key = self.key.parent().urlsafe()
@@ -206,8 +206,12 @@ class TreatmentAction(MessageModel):
 
     medicament = ndb.KeyProperty()
 
+    take_hour_stamp = ndb.IntegerProperty()
+
     def from_message(self, msg):
         super(TreatmentAction, self).from_message(msg)
+
+        self.take_hour_stamp = msg.take_hour
 
         if msg.medicament:
             self.medicament = ndb.Key(urlsafe=msg.medicament.key)
@@ -231,7 +235,7 @@ class TreatmentAction(MessageModel):
         msg.id =str(self.key.id())
 
         if self.take_hour:
-            take_hour = datetime.datetime(1990,1,1,self.take_hour.hour, self.take_hour.minute, 0)
+            take_hour = datetime.datetime(1970,1,1,self.take_hour.hour, self.take_hour.minute, 0)
             msg.take_hour = calendar.timegm(take_hour.utctimetuple())
 
         return msg

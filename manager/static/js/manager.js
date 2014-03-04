@@ -161,7 +161,7 @@ angular.module('logic', ['ngRoute'])
 				$scope.action.readable_take_hour = document.getElementById("take_hour").value			
 
 				var moment_date = moment($scope.action.readable_take_hour, "hh:mm a");
-				$scope.action.take_hour = moment_date.format();	
+				$scope.action.take_hour = Math.round( moment_date.toDate().getTime() / 1000	);
 			});
 			
 		})
