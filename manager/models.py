@@ -235,8 +235,13 @@ class TreatmentAction(MessageModel):
         msg.id =str(self.key.id())
 
         if self.take_hour:
-            take_hour = datetime.datetime(1970,1,1,self.take_hour.hour, self.take_hour.minute, 0)
-            msg.take_hour = calendar.timegm(take_hour.utctimetuple())
+            now = datetime.datetime.now()
+            take_hour = datetime.datetime(now.year,now.month,now.day,self.take_hour.hour, self.take_hour.minute, 0)
+            init_day = datetime.datetime(now.year,now.month,now.day,0,0,0)
+            timestamp_take_hour = calendar.timegm(take_hour.utctimetuple())
+            timestamp_init_day = calendar.timegm(init_day.utctimetuple())
+
+            msg.take_hour = timestamp_take_hour - timestamp_init_day
 
         return msg
 
