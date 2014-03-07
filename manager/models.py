@@ -8,6 +8,7 @@ Created on 11/02/2014
 from datetime import time
 import datetime
 import calendar
+import dateutil.parser
 
 from google.appengine.ext import ndb
 from protorpc import message_types
@@ -206,18 +207,14 @@ class TreatmentAction(MessageModel):
 
     medicament = ndb.KeyProperty()
 
-    take_hour_stamp = ndb.IntegerProperty()
-
     def from_message(self, msg):
         super(TreatmentAction, self).from_message(msg)
-
-        self.take_hour_stamp = msg.take_hour
 
         if msg.medicament:
             self.medicament = ndb.Key(urlsafe=msg.medicament.key)
 
         if msg.take_hour:
-            take_hour = datetime.datetime.fromtimestamp(msg.take_hour)
+            take_hour = dateutil.parser.parse(msg.take_hour)
             self.take_hour = time(take_hour.hour, take_hour.minute)
 
     def to_message(self, ignore_fields=[]):
@@ -235,13 +232,7 @@ class TreatmentAction(MessageModel):
         msg.id =str(self.key.id())
 
         if self.take_hour:
-            now = datetime.datetime.now()
-            take_hour = datetime.datetime(now.year,now.month,now.day,self.take_hour.hour, self.take_hour.minute, 0)
-            init_day = datetime.datetime(now.year,now.month,now.day,0,0,0)
-            timestamp_take_hour = calendar.timegm(take_hour.utctimetuple())
-            timestamp_init_day = calendar.timegm(init_day.utctimetuple())
-
-            msg.take_hour = timestamp_take_hour - timestamp_init_day
+            msg.take_hour = self.take_hour.isoformat()
 
         return msg
 
