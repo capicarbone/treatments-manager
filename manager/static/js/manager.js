@@ -160,6 +160,12 @@ angular.module('logic', ['ngRoute'])
 
 			$scope.treatment = response.treatment;
 			$scope.patient = response.patient;
+
+			var actions = $scope.treatment.actions;
+
+			for (i = 0; i < actions.length; i++)
+				actions[i].readable_take_hour = moment(actions[i].take_hour, "hh:mm").format("hh:mm a").toUpperCase();
+
 			$scope.$apply();
 		});
 	}
