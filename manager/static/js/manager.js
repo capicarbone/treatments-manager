@@ -24,9 +24,13 @@ angular.module('logic', ['ngRoute'])
 		controller: 'TreatmentsManagerCtrl',
 		templateUrl:'template/treatments_manager.html'
 	})
-	.when('/paciente/:patient_key/tratamiento/form',{
+	.when('/paciente/:patient_id/tratamiento/form',{
 		controller: 'TreatmentFormCtrl',
 		templateUrl:'template/treatment_form.html'
+	})
+	.when('/tratamiento/:treatment_key',{
+		controller: 'TreatmentDetailCtrl',
+		templateUrl:'template/treatment_details.html'
 	})
 
 	// Medicaments Routes
@@ -47,7 +51,7 @@ angular.module('logic', ['ngRoute'])
 
 .controller('DoctorDashboardCtrl', function($scope, $rootScope){
 
-	
+
 	$rootScope.section_title = "Inicio"
 })
 
@@ -64,8 +68,8 @@ angular.module('logic', ['ngRoute'])
 		$rootScope.api.patients.all({key: $rootScope.doctor_key})
 		.execute( function(res){
 			$scope.$apply(function(){
-				$scope.patients = res.result.patients;	
-			})			
+				$scope.patients = res.result.patients;
+			})
 		});
 	};
 
@@ -74,6 +78,8 @@ angular.module('logic', ['ngRoute'])
 })
 
 .controller('PatientFormCtrl', function($scope, $location, $rootScope){
+
+	var birthday_format = "dd / mm / yyyy";
 
 	$rootScope.section_title = "Registro de Paciente";
 
@@ -91,33 +97,37 @@ angular.module('logic', ['ngRoute'])
 		console.log("Ejecutado");
 
 	    $(".input-group.date").datepicker({
-	    	format: "yyyy-mm-ddT00:00:00.00Z",
+	    	format: birthday_format,
+	    	endDate: moment(new Date()).format(birthday_format.toUpperCase()),
     		language: "es",
-    		startView: 'decade'
+    		startView: 'decade',
+    		autoclose: true
 	    })
 	    .on('changeDate', function(e){
 
 	    	$scope.$apply(function(){
-	    		$scope.patient.birthday = e.format();
+	    		$scope.patient.readable_birthday = e.format();
+	    		$scope.patient.birthday = moment(e).format();
 	    	})
 	    })
-	  
+
 	}
 
-	$scope.savePatient = function(){	
+	$scope.savePatient = function(){
 
 		var patient = $scope.patient
 
-		patient.person.gender = patient.person.gender.key;	
+		patient.person.gender = patient.person.gender.key;
 		patient.doctor_key = $rootScope.doctor_key;
 
 		$rootScope.api.patient.save(patient).execute(function(res){
-			console.log(res);	
+			console.log(res);
 
 			patient.key = res.key;
+			patient.id = res.id;
 			$rootScope.patient = patient;
-			
-			$location.path('/paciente/'+ res.key +'/tratamiento/form').replace();
+
+			$location.path('/paciente/'+ res.id +'/tratamiento/form').replace();
 			$scope.$apply();
 
 
@@ -135,9 +145,32 @@ angular.module('logic', ['ngRoute'])
 
 })
 
+.controller('TreatmentDetailCtrl', function($scope, $rootScope, $routeParams){
+
+	$rootScope.section_title = ""
+
+	$scope.treatment = {}
+	$scope.patient = {}
+
+	$scope.init = function(){
+
+		var treatment_key = $routeParams.treatment_key
+
+		$rootScope.api.treatment.details({key: treatment_key}).execute(function(response){
+
+			$scope.treatment = response.treatment;
+			$scope.patient = response.patient;
+			$scope.$apply();
+		});
+	}
+
+	$scope.init()
+
+})
+
 // ######## Treatment Form Controller ########
 
-.controller('TreatmentFormCtrl', function($scope, $rootScope, $routeParams){
+.controller('TreatmentFormCtrl', function($scope, $rootScope, $routeParams, $location){
 
 	$rootScope.section_title = "Registro de tratamiento"
 
@@ -158,27 +191,26 @@ angular.module('logic', ['ngRoute'])
 		})
 		.on('change.dp', function(e){
 			$scope.$apply(function(){
-				$scope.action.readable_take_hour = document.getElementById("take_hour").value			
+				$scope.action.readable_take_hour = document.getElementById("take_hour").value
 
 				var moment_date = moment($scope.action.readable_take_hour, "hh:mm a");
-				//$scope.action.take_hour = Math.round( moment_date.toDate().getTime() / 1000	);
 				$scope.action.take_hour = moment_date.format();
 			});
-			
+
 		})
 
 	}
 
 	$scope.medicaments = []
-	
+
 	$scope.action = {}
 	$scope.action.regime_type = 'E';
 
-	$scope.actions = []	
+	$scope.actions = []
 
 
 	$scope.medicament_take_form_fl = false;
-	
+
 	$scope.specific_hour_selected = function(){
 		return $scope.action.regime_type == 'E';
 	}
@@ -186,7 +218,7 @@ angular.module('logic', ['ngRoute'])
 
 	$scope.medicament_take_form = function(){
 		$scope.medicament_take_form_fl = true;
-	}	
+	}
 
 	$scope.register_medicament = function(){
 
@@ -194,7 +226,7 @@ angular.module('logic', ['ngRoute'])
 
 		action.action_type = 'M';
 		action.medicament = $scope.action.medicament;
-		action.regime_type = $scope.action.regime_type;	
+		action.regime_type = $scope.action.regime_type;
 		action.take_hour = $scope.action.take_hour;
 		action.readable_take_hour = $scope.action.readable_take_hour;
 
@@ -216,6 +248,11 @@ angular.module('logic', ['ngRoute'])
 
 		$rootScope.api.treatment.save(treatment).execute(function(res){
 			console.log(res);
+			treatment_id = res.id;
+
+			$location.path('tratamiento/' + res.key).replace();
+			$scope.$apply();
+
 		});
 	}
 
@@ -247,7 +284,7 @@ angular.module('logic', ['ngRoute'])
 
 	$scope.save = function(){
 
-		medicament = $scope.medicament;	
+		medicament = $scope.medicament;
 
 		medicament.registered_by = $rootScope.doctor_key;
 
@@ -262,7 +299,7 @@ angular.module('logic', ['ngRoute'])
 })
 
 .run(function($rootScope, $window, $location){
-	
+
 	$rootScope.is_backend_ready = false;
 	$rootScope.section_title = 'Inicio';
 
@@ -282,7 +319,7 @@ angular.module('logic', ['ngRoute'])
 
 	$rootScope.load_endpoints = function(){
 
-		
+
 		//var API_ROOT = 'https://capicptest.appspot.com/_ah/api'
 		var API_ROOT = complete_api_url('/_ah/api');
 
@@ -297,9 +334,9 @@ angular.module('logic', ['ngRoute'])
 });
 
 init_app = function(){
-	
-	window.init();	
-		
+
+	window.init();
+
 }
 
 

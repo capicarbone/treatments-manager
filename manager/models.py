@@ -70,11 +70,17 @@ class MessageModel(ndb.Model):
 
         msg = self.message_class()
 
+        fields_names = [f.name for f in msg.all_fields() ]
+
         if not 'key' in ignore_fields:
             try:
                 msg.key = self.key.urlsafe()
             except AttributeError:
                 pass
+
+        if 'id' in fields_names and 'id' not in ignore_fields:
+            if self.key:
+                msg.id = str(self.key.id())
 
         return msg
 
@@ -103,6 +109,7 @@ class Person(MessageModel):
 class Patient(MessageModel):
 
     message_class = PatientMsg
+    ignore_fields = ('birthday',)
 
     person = ndb.StructuredProperty(Person)
     birthday = ndb.DateProperty()
@@ -112,9 +119,11 @@ class Patient(MessageModel):
     def from_message(self, patient_msg):
 
         self.person = Person(message=patient_msg.person)
-        self.birthday = patient_msg.birthday
         self.blood_type = patient_msg.blood_type
         self.allergies = patient_msg.allergies
+
+        if patient_msg.birthday:
+            self.birthday = dateutil.parser.parse(patient_msg.birthday)
 
     def to_message(self,ignore_fields=[]):
 
@@ -123,10 +132,14 @@ class Patient(MessageModel):
         msg.person = self.person.to_message()
         msg.blood_type = self.blood_type
         msg.allergies = self.allergies
-        #msg.birthday = datetime.datetime.fromordinal(self.birthday.toordinal())
+
+        if self.birthday:
+            msg.birthday = self.birthday.isoformat()
 
         if not 'doctor_key' in ignore_fields:
             msg.doctor_key = self.key.parent().urlsafe()
+
+        msg.id = str(self.key.id())
 
         return msg
 
@@ -248,7 +261,7 @@ class Treatment(MessageModel):
     created_at = ndb.DateTimeProperty(auto_now_add=True)
 
 
-    def to_message(self, ignore_fields=[]):
+    def to_message(self, ignore_fields=['patient_key']):
 
         msg = super(Treatment,self).to_message(ignore_fields)
 

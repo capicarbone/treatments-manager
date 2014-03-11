@@ -1,0 +1,72 @@
+
+{% raw %}
+<div class="page-header">
+	<h3>Paciente</h3>
+</div>
+
+
+<div class="row">
+	<div class="col-md-4">
+		<strong>Nombres : </strong> {{patient.person.first_name}}
+	</div>
+	<div class="col-md-4">
+		<strong>Apellidos : </strong> {{patient.person.last_name}}
+	</div>
+	<div class="col-md-4">
+		<strong>Sexo : </strong> {{patient.person.gender}}
+	</div>
+</div>
+
+<div class="page-header">
+	<h3>
+		Tratamiento <span class="label label-success">Activo</span>
+	</h3>
+</div>
+
+<div class="row">
+	<div class="col-md-2">
+		<strong>Código : </strong> {{treatment.display_code}}
+	</div>
+	<div class="col-md-10">
+		<strong>Objectivos : </strong>
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur deserunt dolorem fuga alias obcaecati sequi eum maxime magnam eius animi sed reiciendis fugiat officiis iste ipsam possimus provident soluta porro.
+	</div>
+</div>
+
+<div class="page-header">
+	<h4>Acciones</h4>
+</div>
+
+<div class="row">
+	<div class="col-md-6" ng-repeat="a in treatment.actions" >
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				{{a.medicament.name}} {{a.medicament.dose}}
+			</div>
+			<div class="panel-body">
+				<div class="col-md-8">
+					adfasdfasdf
+				</div>
+				<div class="col-md-4">
+					<strong>
+						3:00 PM
+					</strong>
+				</div>
+
+				Cumplimiento
+
+				<div class="col-md-12">
+					<div class="progress">
+						<div class="progress-bar" style="width: 60%">
+							60%
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel-footer">
+			</div>
+		</div>
+	</div>
+
+</div>
+{% endraw %}

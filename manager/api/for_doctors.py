@@ -17,6 +17,11 @@ from protorpc import remote, message_types, messages
                description="API for doctor users.")
 class ForDoctorApi(remote.Service):
 
+    # Resource Containers
+
+    KEY_CONTAINER = endpoints.ResourceContainer(key=messages.StringField(1))
+    ID_CONTAINER = endpoints.ResourceContainer(id=messages.StringField(1))
+
     @endpoints.method(treatments_messages.PatientMsg, treatments_messages.PatientMsg,
                       path="patient", http_method="POST", name="patient.save")
     def patient_save(self, patient_msg):
@@ -25,9 +30,13 @@ class ForDoctorApi(remote.Service):
         patient = Patient(message=patient_msg, parent=ndb.Key(urlsafe=patient_msg.doctor_key))
         patient.put()
 
-        patient_msg.key = patient.key.urlsafe()
+        patient_msg = patient.to_message(ignore_fields=('doctor_key',))
 
         return patient_msg
+
+
+
+    # --------------- Treatments ---------------
 
     @endpoints.method(treatments_messages.TreatmentMsg, treatments_messages.TreatmentMsg,
                       path="treatment", http_method="POST", name="treatment.save")
@@ -45,9 +54,24 @@ class ForDoctorApi(remote.Service):
             action.put()
             a.key = action.key.urlsafe()
 
-        treatment_msg.key = treatment.key.urlsafe()
+        treatment_msg = treatment.to_message()
 
         return treatment_msg
+
+    @endpoints.method(KEY_CONTAINER, treatments_messages.EntireTreatment,
+                      path="treatment/details", http_method="GET", name="treatment.details")
+    def treatment_details(self,request):
+
+        treatment = ndb.Key(urlsafe=request.key).get()
+        patient = treatment.key.parent().get()
+
+        treatment_msg = treatment.to_message()
+        treatment_msg.actions = treatment.get_actions_messages()
+
+        treatment_details = EntireTreatment(treatment=treatment_msg, patient=patient.to_message())
+
+        return treatment_details
+
 
     @endpoints.method(treatments_messages.MedicamentMsg, treatments_messages.MedicamentMsg,
                       path="medicament", http_method="POST", name="medicament.save")
@@ -86,9 +110,6 @@ class ForDoctorApi(remote.Service):
             medicament_msgs.append(m.to_message())
 
         return treatments_messages.MedicamentsCollection(medicaments=medicament_msgs)
-
-
-    KEY_CONTAINER = endpoints.ResourceContainer(key=messages.StringField(1))
 
     @endpoints.method(KEY_CONTAINER, treatments_messages.PatientsCollection,
                       path="patients", http_method="GET", name="patients.all")

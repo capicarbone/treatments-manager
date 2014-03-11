@@ -1,10 +1,10 @@
 
 {% import "includes/forms.html" as forms %}
-	
+
 <form action="" class="form-horizontal" name="form" ng-submit="savePatient()">
-	
+
 	{{forms.person_form('patient')}}
-	
+
 	<div class="form-group">
 		<label for="Tipo de sangre" class="control-label col-md-2">
 			Tipo de sangre
@@ -12,7 +12,7 @@
 		<div class="col-md-4">
 			<select type="text" class="form-control"
 				name="blood_type"
-			 	ng-model="patient.blood_type" 
+			 	ng-model="patient.blood_type"
 			 	ng-options="bt for bt in blood_types">
 				<option value=""> - Tipo de sangre - </option>
 			</select>
@@ -25,7 +25,7 @@
 		</label>
 		<div class="col-md-4">
 			<div class="input-group date">
-			  <input type="text" class="form-control" ng-model="patient.birthday" name="birthday" disabled>
+			  <input type="text" class="form-control" ng-model="patient.readable_birthday" name="birthday" disabled>
 			  <span class="input-group-addon">
 			  	<i class="glyphicon glyphicon-th"></i>
 			  </span>
@@ -38,7 +38,7 @@
 			Alergias
 		</label>
 		<div class="col-md-4">
-			<textarea type="textarea" class="form-control" ng-model="patient.allergies" name="allergies"></textarea>				
+			<textarea type="textarea" class="form-control" ng-model="patient.allergies" name="allergies"></textarea>
 		</div>
 	</div>
 

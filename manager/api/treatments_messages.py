@@ -38,11 +38,13 @@ class DoctorMsg(messages.Message):
 class PatientMsg(messages.Message):
     key = messages.StringField(1)
     person = messages.MessageField(PersonMsg, 2, required=True)
-    birthday = message_types.DateTimeField(3)
+    birthday = messages.StringField(3)
     blood_type = messages.StringField(4)
     allergies = messages.StringField(5)
 
     doctor_key = messages.StringField(6)
+
+    id = messages.StringField(7)
 
 class PatientsCollection(messages.Message):
     patients = messages.MessageField(PatientMsg,1, repeated=True)
@@ -70,6 +72,7 @@ class TreatmentActionMsg(messages.Message):
 
     medicament = messages.MessageField(MedicamentMsg, 4)
 
+
 class TreatmentMsg(messages.Message):
 
     key = messages.StringField(1)
@@ -78,7 +81,15 @@ class TreatmentMsg(messages.Message):
     objetives = messages.StringField(4)
     patient_key = messages.StringField(7)
 
+    id = messages.StringField(8)
+
     actions = messages.MessageField(TreatmentActionMsg,5, repeated=True)
+
+class EntireTreatment(messages.Message):
+
+    treatment = messages.MessageField(TreatmentMsg,1)
+    doctor = messages.MessageField(DoctorMsg,2)
+    patient = messages.MessageField(PatientMsg,3)
 
 class Presentations(messages.Message):
 
@@ -88,10 +99,6 @@ class MedicamentsCollection(messages.Message):
     medicaments = messages.MessageField(MedicamentMsg, 1, repeated=True)
 
 
-class EntireTreatment(messages.Message):
 
-    treatment = messages.MessageField(TreatmentMsg,1)
-    doctor = messages.MessageField(DoctorMsg,2)
-    patient = messages.MessageField(PatientMsg,3)
 
 
