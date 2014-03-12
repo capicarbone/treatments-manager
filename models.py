@@ -8,13 +8,13 @@ Created on 11/02/2014
 from datetime import time
 import datetime
 import calendar
-from thirdparties import dateutil
+from thirdparties.dateutil import parser
 
 from google.appengine.ext import ndb
 from protorpc import message_types
 
 from api.treatments_messages import SpecialityMsg, PatientMsg, PersonMsg, \
-    DoctorMsg, TreatmentMsg, MedicamentMsg, MappedObjectMsg, TreatmentActionMsg
+    DoctorMsg, TreatmentMsg, MedicamentMsg, MappedObjectMsg, TreatmentActionMsg, FulfillmentMsg
 
 
 class MessageModel(ndb.Model):
@@ -123,7 +123,7 @@ class Patient(MessageModel):
         self.allergies = patient_msg.allergies
 
         if patient_msg.birthday:
-            self.birthday = dateutil.parser.parse(patient_msg.birthday)
+            self.birthday = parser.parse(patient_msg.birthday)
 
     def to_message(self,ignore_fields=[]):
 
@@ -227,7 +227,7 @@ class TreatmentAction(MessageModel):
             self.medicament = ndb.Key(urlsafe=msg.medicament.key)
 
         if msg.take_hour:
-            take_hour = dateutil.parser.parse(msg.take_hour)
+            take_hour = parser.parse(msg.take_hour)
             self.take_hour = time(take_hour.hour, take_hour.minute)
 
     def to_message(self, ignore_fields=[]):
@@ -355,6 +355,26 @@ class Medicament(MessageModel):
         msg.id = str(self.key.id())
 
         return msg
+
+class Fulfillment(MessageModel):
+
+    message_class = FulfillmentMsg
+    ignore_fields = ('action_id','action_moment')
+
+    decision = ndb.StringProperty()
+    reason = ndb.StringProperty()
+    action_moment = ndb.DateTimeProperty()
+    minutes_delayed = ndb.IntegerProperty(default=1)
+
+    def from_message(self, msg):
+        super(Fulfillment, self).from_message(msg)
+
+        if msg.action_moment:
+            action_moment = parser.parse(msg.action_moment)
+
+
+
+
 
 
 

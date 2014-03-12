@@ -105,14 +105,14 @@ class FulfillmentMsg(messages.Message):
 
     action_id = messages.StringField(1, required=True)
     decision = messages.StringField(2)
-    actionMoment = messages.StringField(3)  # Corresponde a una fecha
+    action_moment = messages.StringField(3)  # Corresponde a una fecha
     reason = messages.StringField(4)
     minutes_delayed = messages.StringField(5)
 
 class ReportFulfillmentMsg(messages.Message):
 
     treatment_key = messages.StringField(1, required=True)
-    fulfillments = messages.MessageField(FulfillmentMsg,2)
+    fulfillments = messages.MessageField(FulfillmentMsg,2, repeated=True)
 
 
 

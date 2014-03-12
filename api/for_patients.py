@@ -6,7 +6,7 @@ Created on 27/02/2014
 
 import endpoints
 from google.appengine.ext import ndb
-from models import Patient, Treatment, Medicament
+from models import Patient, Treatment, Medicament, TreatmentAction, Fulfillment
 from api import treatments_messages
 from api.treatments_messages import MappedObjectMsg, EntireTreatment
 from protorpc import remote, message_types, messages
@@ -36,3 +36,19 @@ class ForPatients(remote.Service):
         entire_msg.patient = patient.to_message(ignore_fields=['key','doctor_key'])
 
         return entire_msg
+
+    @endpoints.method(treatments_messages.ReportFulfillmentMsg, message_types.VoidMessage,
+                      path="treatment/report", http_method="POST", name="treatment.report")
+    def report_treatment(self, report):
+
+        for f in report.fulfillments:
+
+            action_key = ndb.Key(TreatmentAction, f.action_id, parent=ndb.Key(urlsafe=report.treatment_key))
+
+            fulfillment = Fulfillment(message=f, parent=action_key)
+            fulfillment.put()
+
+        return message_types.VoidMessage()
+
+
+
