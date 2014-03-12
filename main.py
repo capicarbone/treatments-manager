@@ -6,16 +6,16 @@ Created on 11/02/2014
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
-from manager.urls import routers
+from urls import routers
 import endpoints
 
-from manager.api import admin, for_doctors, for_patients
+from api import admin, for_doctors, for_patients
 
 
 ENDPOINTS = endpoints.api_server([
-                                  admin.AdminApi,
-                                  for_doctors.ForDoctorApi,
-                                  for_patients.ForPatientApi
+                                  admin.ForAdmins,
+                                  for_doctors.ForDoctors,
+                                  for_patients.ForPatients
                                   ])
 
 def main():

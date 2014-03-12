@@ -8,14 +8,14 @@ Created on 14/02/2014
 
 import endpoints
 from google.appengine.ext import ndb
-from manager.models import *
-from manager.api import treatments_messages
-from manager.api.treatments_messages import MappedObjectMsg, EntireTreatment
+from models import *
+from api import treatments_messages
+from api.treatments_messages import MappedObjectMsg, EntireTreatment
 from protorpc import remote, message_types, messages
 
 @endpoints.api(name="doctor", version="v1",
                description="API for doctor users.")
-class ForDoctorApi(remote.Service):
+class ForDoctors(remote.Service):
 
     # Resource Containers
 

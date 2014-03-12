@@ -99,6 +99,22 @@ class MedicamentsCollection(messages.Message):
     medicaments = messages.MessageField(MedicamentMsg, 1, repeated=True)
 
 
+# ---------- Fulfillments messages ----------
+
+class FulfillmentMsg(messages.Message):
+
+    action_id = messages.StringField(1, required=True)
+    decision = messages.StringField(2)
+    actionMoment = messages.StringField(3)  # Corresponde a una fecha
+    reason = messages.StringField(4)
+    minutes_delayed = messages.StringField(5)
+
+class ReportFulfillmentMsg(messages.Message):
+
+    treatment_key = messages.StringField(1, required=True)
+    fulfillments = messages.MessageField(FulfillmentMsg,2)
+
+
 
 
 

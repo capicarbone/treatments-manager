@@ -6,14 +6,14 @@ Created on 27/02/2014
 
 import endpoints
 from google.appengine.ext import ndb
-from manager.models import Patient, Treatment, Medicament
-from manager.api import treatments_messages
-from manager.api.treatments_messages import MappedObjectMsg, EntireTreatment
+from models import Patient, Treatment, Medicament
+from api import treatments_messages
+from api.treatments_messages import MappedObjectMsg, EntireTreatment
 from protorpc import remote, message_types, messages
 
 @endpoints.api(name="patient", version="v1",
                description="API for patients clients.")
-class ForPatientApi(remote.Service):
+class ForPatients(remote.Service):
 
     CODE_CONTAINER = endpoints.ResourceContainer(code=messages.StringField(2))
 

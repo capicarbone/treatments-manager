@@ -8,12 +8,12 @@ Created on 11/02/2014
 from datetime import time
 import datetime
 import calendar
-import dateutil.parser
+from thirdparties import dateutil
 
 from google.appengine.ext import ndb
 from protorpc import message_types
 
-from manager.api.treatments_messages import SpecialityMsg, PatientMsg, PersonMsg, \
+from api.treatments_messages import SpecialityMsg, PatientMsg, PersonMsg, \
     DoctorMsg, TreatmentMsg, MedicamentMsg, MappedObjectMsg, TreatmentActionMsg
 
 

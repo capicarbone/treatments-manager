@@ -6,15 +6,15 @@ Created on 13/02/2014
 
 import endpoints
 from treatments_messages import *
-from manager.models import Doctor, Speciality
+from models import Doctor, Speciality
 from protorpc import remote, message_types
-from manager.api import treatments_messages
+from api import treatments_messages
 
 from google.appengine.api import users
 
 @endpoints.api(name="admin", version="v1",
                description="API only for admin users operations")
-class AdminApi(remote.Service):
+class ForAdmins(remote.Service):
 
     @endpoints.method(treatments_messages.DoctorMsg, treatments_messages.DoctorMsg,
                       path="doctor", http_method='POST',

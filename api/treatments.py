@@ -6,7 +6,7 @@ Created on 11/02/2014
 
 import endpoints
 from messages import *
-from manager.models import Doctor
+from models import Doctor
 
 package = "Treatments"
 
