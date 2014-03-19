@@ -65,10 +65,11 @@ angular.module('logic', ['ngRoute'])
 
 		$('.dropdown-toggle').dropdown();
 
-		$rootScope.api.patients.all({key: $rootScope.doctor_key})
+		$rootScope.api.patients.all({ekey: $rootScope.doctor_key})
 		.execute( function(res){
 			$scope.$apply(function(){
-				$scope.patients = res.result.patients;
+				console.log(res);
+				$scope.patients = res.patients;
 			})
 		});
 	};
@@ -143,6 +144,26 @@ angular.module('logic', ['ngRoute'])
 
 	$rootScope.section_title = "Tratamientos activos"
 
+	$scope.treatments = [];
+
+	$scope.init = function(){
+
+		$rootScope.api.treatments.all({ekey: $rootScope.doctor_key}).execute(function(response){
+
+			$scope.$apply(function(){
+				
+				angular.forEach(response.treatments, function(t){
+					t.created_at_readable = moment(t.created_at).format("DD / MM / YY");
+				});
+
+				$scope.treatments = response.treatments;
+			});
+
+		});
+	}
+
+	$scope.init()
+
 })
 
 .controller('TreatmentDetailCtrl', function($scope, $rootScope, $routeParams){
@@ -156,7 +177,7 @@ angular.module('logic', ['ngRoute'])
 
 		var treatment_key = $routeParams.treatment_key
 
-		$rootScope.api.treatment.details({key: treatment_key}).execute(function(response){
+		$rootScope.api.treatment.details({ekey: treatment_key}).execute(function(response){
 
 			$scope.treatment = response.treatment;
 			$scope.patient = response.patient;

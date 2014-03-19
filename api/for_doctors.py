@@ -10,7 +10,8 @@ import endpoints
 from google.appengine.ext import ndb
 from models import *
 from api import treatments_messages
-from api.treatments_messages import MappedObjectMsg, EntireTreatment
+from api.treatments_messages import MappedObjectMsg, EntireTreatment,\
+    TreatmentsCollection
 from protorpc import remote, message_types, messages
 
 @endpoints.api(name="doctor", version="v1",
@@ -19,7 +20,7 @@ class ForDoctors(remote.Service):
 
     # Resource Containers
 
-    KEY_CONTAINER = endpoints.ResourceContainer(key=messages.StringField(1))
+    KEY_CONTAINER = endpoints.ResourceContainer(ekey=messages.StringField(1))
     ID_CONTAINER = endpoints.ResourceContainer(id=messages.StringField(1))
 
     @endpoints.method(treatments_messages.PatientMsg, treatments_messages.PatientMsg,
@@ -62,7 +63,7 @@ class ForDoctors(remote.Service):
                       path="treatment/details", http_method="GET", name="treatment.details")
     def treatment_details(self,request):
 
-        treatment = ndb.Key(urlsafe=request.key).get()
+        treatment = ndb.Key(urlsafe=request.ekey).get()
         patient = treatment.key.parent().get()
 
         treatment_msg = treatment.to_message()
@@ -71,6 +72,20 @@ class ForDoctors(remote.Service):
         treatment_details = EntireTreatment(treatment=treatment_msg, patient=patient.to_message())
 
         return treatment_details
+
+    @endpoints.method(KEY_CONTAINER, treatments_messages.TreatmentsCollection,
+                      path="treatments", http_method="GET", name="treatments.all")
+    def treatments(self, request):
+
+        treatments = Treatment.get_actives_by_doctor(ndb.Key(urlsafe=request.ekey))
+
+        treatments_msg = []
+
+        for t in treatments:
+            treatments_msg.append(t.to_message(with_patient=True))
+
+        return TreatmentsCollection(treatments=treatments_msg)
+
 
 
     @endpoints.method(treatments_messages.MedicamentMsg, treatments_messages.MedicamentMsg,
@@ -115,13 +130,13 @@ class ForDoctors(remote.Service):
                       path="patients", http_method="GET", name="patients.all")
     def patients(self, request):
 
-        doctor = ndb.Key(urlsafe=request.key).get()
+        doctor = ndb.Key(urlsafe=request.ekey).get()
 
         patients = doctor.patients()
 
         patients_msg = []
         for p in patients:
-            patients_msg.append(p.to_message(ignore_fields=('doctor_key',)))
+            patients_msg.append(p.to_message(ignore_fields=('doctor_key',), with_active_treatment=True))
 
         return treatments_messages.PatientsCollection(patients=patients_msg)
 

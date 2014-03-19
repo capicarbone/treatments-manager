@@ -46,6 +46,9 @@ class PatientMsg(messages.Message):
 
     id = messages.StringField(7)
 
+    with_active_treatment = messages.BooleanField(8)
+    active_treatment_key = messages.StringField(9)
+
 class PatientsCollection(messages.Message):
     patients = messages.MessageField(PatientMsg,1, repeated=True)
 
@@ -83,7 +86,15 @@ class TreatmentMsg(messages.Message):
 
     id = messages.StringField(8)
 
+    patient = messages.MessageField(PatientMsg, 9)
+
     actions = messages.MessageField(TreatmentActionMsg,5, repeated=True)
+
+    created_at = messages.StringField(10)
+
+class TreatmentsCollection(messages.Message):
+    treatments = messages.MessageField(TreatmentMsg, 1, repeated=True)
+
 
 class EntireTreatment(messages.Message):
 
@@ -105,9 +116,11 @@ class FulfillmentMsg(messages.Message):
 
     action_id = messages.StringField(1, required=True)
     decision = messages.StringField(2)
-    action_moment = messages.StringField(3)  # Corresponde a una fecha
+    action_moment = messages.StringField(3)  # Momento en que se especificó el cumplimiento
     reason = messages.StringField(4)
-    minutes_delayed = messages.StringField(5)
+    minutes_delayed = messages.IntegerField(5)
+
+    for_moment = messages.StringField(6)    # Momento en el que debe cumplirse el cumplimiento
 
 class ReportFulfillmentMsg(messages.Message):
 

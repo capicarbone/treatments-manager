@@ -34,7 +34,10 @@
 						      <span class="caret"></span>
 						    </button>
 						    <ul class="dropdown-menu">
-						      <li><a href="#">Asignar tratamiento</a></li>
+						      <li>
+						      	<a ng-hide="patient.active_treatment_key" href="#/paciente/{{patient.id}}/tratamiento/form">Asignar tratamiento</a>
+						      	<a ng-show="patient.active_treatment_key" href="#/tratamiento/{{patient.active_treatment_key}}">Ver tratamiento</a>
+						      </li>
 						      <li><a href="#">Eliminar</a></li>
 						    </ul>
 						  </div>

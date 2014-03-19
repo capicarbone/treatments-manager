@@ -1,0 +1,34 @@
+{% raw %}
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Paciente</th>
+				<th>Asignado el</th>
+				<th>Objetivos</th>
+				<th>Cumplimiento General</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="treatment in treatments">
+				<td> {{treatment.patient.person.first_name}} {{treatment.patient.person.last_name}}</td>
+				<td> {{treatment.created_at_readable}}</td>
+				<td> {{treatment.objetives}}</td>
+				<td>
+					<div class="progress">
+						<div class="progress-bar">
+							0%
+						</div>
+					</div>
+				</td>
+				<td>		
+					<div class="btn-group">
+						<a class="btn btn-default" href="#/tratamiento/{{treatment.key}}">
+							<i class="glyphicon glyphicon-eye-open" ></i>
+						</a>
+					</div>			
+				</td>
+			</tr>
+		</tbody>
+	</table>
+{% endraw %}
