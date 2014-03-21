@@ -12,17 +12,29 @@
 {% endblock module_css %}
 
 {% block sidebar_options %}
-	<li class="active">
-		<a href="#/">Inicio</a>
-	</li>
 	<li>
-		<a href="#/pacientes">Pacientes</a>
+		<a href="#/" class="active">
+			<i class="glyphicon glyphicon-home"></i>
+			Dashboard
+		</a>
 	</li>
-	<li>
-		<a href="#/tratamientos">Tratamientos</a>
+	<li>		
+		<a href="#/pacientes">
+			<i class="glyphicon glyphicon-user"></i>
+			Pacientes
+		</a>
 	</li>
-	<li>
-		<a href="#/medicamentos">Vademecu</a> 
+	<li>		
+		<a href="#/tratamientos">
+			<i class="glyphicon glyphicon-phone"></i>
+			Tratamientos
+		</a>
+	</li>
+	<li>		
+		<a href="#/medicamentos">
+			<i class="glyphicon glyphicon-tint"></i>
+			Vademecu
+		</a> 
 	</li>
 {% endblock %}
 
