@@ -26,14 +26,16 @@
 						Treatments Manager 
 						<span class="black light lateral">							
 							{% if doctor %}
-								Dr. {{doctor.person.first_name}} {{doctor.person.last_name}}</a>						
+								Dr. {{doctor.person.first_name}} {{doctor.person.last_name}}</a>
+							{% else %}
+								Amministratore
 							{% endif %}
 						</span>
 					</a>
 				</div>
 				<div class="navbar-right ">
 					<ul>
-						<li class="left-border-dotted">
+						<li class="left-border-dotted clickable">
 							<a href="{{logout_url}}" class="glyphicon glyphicon-log-out"></a>
 						</li>
 					</ul>
@@ -58,12 +60,12 @@
 		<div class="container-fluid ng-hide" ng-show="is_backend_ready">
 			<div class="row">
 				<nav class="col-md-2 sidebar">
-					<ul id="nav-side" class="nav nav-sidebar">
+					<tm-menu>
 
 						{% block sidebar_options %}
 
 						{% endblock %}					
-					</ul>
+					</tm-menu>
 				</nav>
 				<section class="col-md-10 col-md-offset-2 main">
 					<div class="row-fluid">
@@ -73,7 +75,7 @@
 									{% raw %}
 										{{section_title}}
 									{% endraw %}	
-									<a class="lateral">
+									<a class="lateral clickable">
 										Añadir
 									</a>																
 								</h1>

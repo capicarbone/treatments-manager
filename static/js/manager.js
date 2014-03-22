@@ -1,6 +1,70 @@
 
 angular.module('logic', ['ngRoute'])
 
+.directive('tmMenu', function(){
+
+	return {
+		restrict: 'E',		
+		scope: {},
+		replace: true,
+		transclude: true,
+		controller: function($scope, $element){					
+
+			var empty = false
+
+			this.addOption = function(option)	{
+				if (empty){
+					$scope.select(option);
+					empty = true;
+				} 					
+          		
+			}
+		},
+		template:			
+			'<ul id="nav-side" class="nav nav-sidebar" ng-transclude></ul>' 			
+	}
+})
+
+.directive('tmOption', function() {
+	return {
+	  require: '^tmMenu',
+	  restrict: 'E',
+	  transclude: true,
+	  replace:true,
+	  scope: { title: '@' , url: '@', iconclass: '@'},
+	  link: function(scope, element, attrs, tmMenuCtrl) {
+	    tmMenuCtrl.addOption(scope);
+
+	  },
+	  controller: function($scope){
+	
+			$scope.selectThis = function(){
+				var sibling = $scope.$$nextSibling;
+				
+				while(sibling){
+					sibling.selected = false;
+					sibling = sibling.$$nextSibling;
+				}
+					
+				sibling = $scope.$$prevSibling;
+
+				while(sibling){
+					sibling.selected = false;
+					sibling = sibling.$$prevSibling;
+				}
+
+				$scope.selected = true;
+
+			}
+
+	  },
+	  template:'<li ng-class="{active:selected}" ng-click="selectThis()">'+
+	  			  '<i class="{{iconclass}}"></i>' +
+	           	  '<a href="{{url}}">{{title}}</a>' +
+	           '</li>' 
+	};
+})
+
 .config(function($routeProvider){
 
 	$routeProvider
