@@ -12,34 +12,10 @@
 {% endblock module_css %}
 
 {% block sidebar_options %}
-	<!-- <li>
-		<a href="#/" class="active">
-			<i class="glyphicon glyphicon-home"></i>
-			Dashboard
-		</a>
-	</li>
-	<li>		
-		<a href="#/pacientes">
-			<i class="glyphicon glyphicon-user"></i>
-			Pacientes
-		</a>
-	</li>
-	<li>		
-		<a href="#/tratamientos">
-			<i class="glyphicon glyphicon-phone"></i>
-			Tratamientos
-		</a>
-	</li>
-	<li>		
-		<a href="#/medicamentos">
-			<i class="glyphicon glyphicon-tint"></i>
-			Vademecu
-		</a> 
-	</li> -->
-
-	<tm-option url="#/" title="Option" iconclass="glyphicon glyphicon-tint"></tm-option>	
-	<tm-option url="#/" title="Option" iconclass="glyphicon glyphicon-tint"></tm-option>	
-	<tm-option url="#/" title="Option" iconclass="glyphicon glyphicon-tint"></tm-option>	
+	<tm-option url="#/" title="Dashboard" iconclass="glyphicon glyphicon-home"></tm-option>	
+	<tm-option url="#/pacientes" title="Pacientes" iconclass="glyphicon glyphicon-user"></tm-option>	
+	<tm-option url="#/tratamientos" title="Tratamientos" iconclass="glyphicon glyphicon-phone"></tm-option>	
+	<tm-option url="#/medicamentos" title="Vademecu" iconclass="glyphicon glyphicon-tint"></tm-option>	
 {% endblock %}
 
 {% block hiddens %}
@@ -52,6 +28,7 @@
 	<script src="static/js/vendor/bootstrap.min.js"></script>
 	<script src="static/js/vendor/bootstrap-datepicker.js"></script>
 	<script src="static/js/utils.js"></script>
+	<script src="static/js/tmComponents.js"></script>	
 	<script src="static/js/manager.js"></script>	
 
 	<script src="https://apis.google.com/js/client.js?onload=init_app"></script>

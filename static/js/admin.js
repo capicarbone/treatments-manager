@@ -1,5 +1,5 @@
 
-angular.module('logic', ['ngRoute'])
+angular.module('logic', ['ngRoute', 'tmComponents'])
 
 .config(function($routeProvider){
 
