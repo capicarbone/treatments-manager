@@ -7,9 +7,11 @@ topnav_height = 52px
 body
 	padding-top topnav_height
 	font-size 16px
+	font-family font_light
 
 h1
 	margin 0px	
+	margin-bottom 1em
 	font-family font_light
 	letter-spacing 0.1em
 	text-transform uppercase
@@ -134,6 +136,25 @@ a
 
 	img
 		width 38px
+
+.table
+	font-family font_light
+
+	th		
+		color principal
+
+	& > tbody > tr > td 
+		border-bottom 1px dotted #eee
+		border-top @border-bottom
+
+	tr
+		border-right 4px solid transparent
+		border-left 4px solid transparent
+		&:hover
+			background-color #eee
+			border-right 4px solid principal
+			border-left 4px solid principal			
+		
 
 .main
 	padding-left 5em

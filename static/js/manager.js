@@ -52,7 +52,7 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 .controller('DoctorDashboardCtrl', function($scope, $rootScope){
 
 
-	$rootScope.section_title = "Inicio"
+	$rootScope.section_title = "Dashboard"
 })
 
 .controller('PatientsManagerCtrl', function($scope, $location, $rootScope){
@@ -204,6 +204,16 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 	$scope.patient = $rootScope.patient;
 	$scope.treatment = {is_active: true};
 
+	$scope.medicaments = []
+
+	$scope.action = {}
+	$scope.action.regime_type = 'E';
+
+	$scope.actions = []
+
+
+	$scope.medicament_take_form_fl = false;
+
 	$scope.init = function(){
 
 		$rootScope.api.medicaments.all().execute(function(res){
@@ -221,22 +231,17 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 				$scope.action.readable_take_hour = document.getElementById("take_hour").value
 
 				var moment_date = moment($scope.action.readable_take_hour, "hh:mm a");
-				$scope.action.take_hour = moment_date.format();
+
+				if ( moment_date.isValid() )
+					$scope.action.take_hour = moment_date.format();
+				else
+					$scope.action.take_hour = undefined;
+
 			});
 
 		})
 
-	}
-
-	$scope.medicaments = []
-
-	$scope.action = {}
-	$scope.action.regime_type = 'E';
-
-	$scope.actions = []
-
-
-	$scope.medicament_take_form_fl = false;
+	}	
 
 	$scope.specific_hour_selected = function(){
 		return $scope.action.regime_type == 'E';
@@ -247,23 +252,48 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 		$scope.medicament_take_form_fl = true;
 	}
 
+	$scope.valid_action = function(){
+
+		if ( $scope.action.action_type == 'M' ){
+
+			if ( !$scope.action.medicament || $scope.action_type == "")
+				return false;
+
+			if ( $scope.action.regime_type == 'E')
+				if ( !$scope.action.take_hour || $scope.action.take_hour == "")
+					return false
+		}
+
+		return true;
+	}
+
 	$scope.register_medicament = function(){
 
 		var action = {}
+		$scope.action.action_type = 'M';
 
-		action.action_type = 'M';
-		action.medicament = $scope.action.medicament;
-		action.regime_type = $scope.action.regime_type;
-		action.take_hour = $scope.action.take_hour;
-		action.readable_take_hour = $scope.action.readable_take_hour;
+		if ( $scope.valid_action() ){
 
-		$scope.actions.push(action);
+			action.action_type = $scope.action.action_type;			
+			action.medicament = $scope.action.medicament;
+			action.regime_type = $scope.action.regime_type;
+			action.take_hour = $scope.action.take_hour;
+			action.readable_take_hour = $scope.action.readable_take_hour;
 
-		$scope.medicament_take_form_fl = false;
+			$scope.actions.push(action);
 
-		$scope.action.medicament = "";
-		$scope.action.take_hour = "";
-		$scope.form.take_hour = "";
+			$scope.medicament_take_form_fl = false;
+
+			$scope.action.medicament = "";
+			$scope.action.take_hour = "";
+			$scope.form.take_hour = "";
+			$scope.action.readable_take_hour = "";
+
+			$action = {};
+
+		}
+
+		
 
 	}
 
@@ -281,6 +311,13 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 			$scope.$apply();
 
 		});
+	}
+
+	$scope.delete_action = function(index){
+
+		$scope.actions.pop(index);
+		console.log("Hola");
+
 	}
 
 	$scope.init();

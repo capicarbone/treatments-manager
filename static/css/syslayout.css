@@ -1,8 +1,8 @@
 @font-face{font-family:'robotolight';src:url("../fonts/roboto-light-webfont.eot");src:url("../fonts/roboto-light-webfont.eot?#iefix") format('embedded-opentype'),url("../fonts/roboto-light-webfont.woff") format('woff'),url("../fonts/roboto-light-webfont.ttf") format('truetype'),url("../fonts/roboto-light-webfont.svg#robotolight") format('svg');font-weight:normal;font-style:normal}
 @font-face{font-family:'robotoregular';src:url("../fonts/roboto-regular-webfont.eot");src:url("../fonts/roboto-regular-webfont.eot?#iefix") format('embedded-opentype'),url("../fonts/roboto-regular-webfont.woff") format('woff'),url("../fonts/roboto-regular-webfont.ttf") format('truetype'),url("../fonts/roboto-regular-webfont.svg#robotoregular") format('svg');font-weight:normal;font-style:normal}
 @font-face{font-family:'robotothin';src:url("../fonts/roboto-thin-webfont.eot");src:url("../fonts/roboto-thin-webfont.eot?#iefix") format('embedded-opentype'),url("../fonts/roboto-thin-webfont.woff") format('woff'),url("../fonts/roboto-thin-webfont.ttf") format('truetype'),url("../fonts/roboto-thin-webfont.svg#robotothin") format('svg');font-weight:normal;font-style:normal}
-body{padding-top:52px;font-size:16px}
-h1{margin:0;font-family:'robotolight';letter-spacing:.1em;text-transform:uppercase}
+body{padding-top:52px;font-size:16px;font-family:'robotolight'}
+h1{margin:0;margin-bottom:1em;font-family:'robotolight';letter-spacing:.1em;text-transform:uppercase}
 a{color:#2ca02c;cursor:pointer;}
 a:hover{color:#2ca02c}
 .clickable:active{background-color:#2ca02c;color:#fff;text-decoration:none}
@@ -29,4 +29,9 @@ a:hover{color:#2ca02c}
 .light{font-family:'robotolight'}
 .box-logo{background-color:#2ca02c;width:52px;position:absolute;top:0;bottom:0;left:0;padding:.4em;}
 .box-logo img{width:38px}
+.table{font-family:'robotolight';}
+.table th{color:#2ca02c}
+.table > tbody > tr > td{border-bottom:1px dotted #eee;border-top:1px dotted #eee}
+.table tr{border-right:4px solid transparent;border-left:4px solid transparent;}
+.table tr:hover{background-color:#eee;border-right:4px solid #2ca02c;border-left:4px solid #2ca02c}
 .main{padding-left:5em;padding-top:2.5em}

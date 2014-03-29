@@ -27,7 +27,6 @@ class ForDoctors(remote.Service):
                       path="patient", http_method="POST", name="patient.save")
     def patient_save(self, patient_msg):
 
-
         patient = Patient(message=patient_msg, parent=ndb.Key(urlsafe=patient_msg.doctor_key))
         patient.put()
 
