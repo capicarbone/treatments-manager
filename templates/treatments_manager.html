@@ -7,8 +7,7 @@
 	<table class="table table-hover">
 		<thead>
 			<tr>
-				<th>Paciente</th>
-				<th>Asignado el</th>
+				<th>Paciente</th>				
 				<th>Objetivos</th>
 				<th>Cumplimiento General</th>
 				<th></th>
@@ -16,8 +15,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="treatment in treatments">
-				<td> {{treatment.patient.person.first_name}} {{treatment.patient.person.last_name}}</td>
-				<td> {{treatment.created_at_readable}}</td>
+				<td> {{treatment.patient.person.first_name}} {{treatment.patient.person.last_name}}</td>				
 				<td> {{treatment.objetives}}</td>
 				<td>
 					<div class="progress">

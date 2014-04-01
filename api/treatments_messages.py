@@ -83,6 +83,8 @@ class TreatmentMsg(messages.Message):
     is_active = messages.BooleanField(3, default=True)
     objetives = messages.StringField(4)
     patient_key = messages.StringField(7)
+    past_actions_count = messages.IntegerField(11, default=0)
+    made_actions_count = messages.IntegerField(12, default=0)
 
     id = messages.StringField(8)
 

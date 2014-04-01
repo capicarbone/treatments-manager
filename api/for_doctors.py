@@ -46,6 +46,8 @@ class ForDoctors(remote.Service):
         treatment.put()
         treatment.generate_code()
         treatment.is_active = True
+        treatment.made_actions_count = 0
+        treatment.past_actions_count = 0
         treatment.put()
 
         for a in treatment_msg.actions:

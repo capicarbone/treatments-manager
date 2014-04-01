@@ -171,6 +171,8 @@ class Treatment(MessageModel):
     display_code = ndb.StringProperty()
     is_active = ndb.BooleanProperty(default=False)
     objetives = ndb.StringProperty()
+    past_actions_count = ndb.IntegerProperty(default=0)
+    made_actions_count = ndb.IntegerProperty(default=0)
 
     created_at = ndb.DateTimeProperty(auto_now_add=True)
 
@@ -385,6 +387,10 @@ class Medicament(MessageModel):
 
 class Fulfillment(MessageModel):
 
+    DESICION_REALIZED = 'T'
+    DESICION_NOT_REALIZED = 'N'
+    DECISION_DELAYED = 'P'
+
     message_class = FulfillmentMsg
     ignore_fields = ('action_id','action_moment', 'for_moment')
 
@@ -403,6 +409,12 @@ class Fulfillment(MessageModel):
 
         if msg.for_moment:
             self.for_moment = parser.parse(msg.for_moment)
+
+    def is_not_realized(self):
+        return self.decision == self.DESICION_NOT_REALIZED
+
+    def is_realized(self):
+        return self.decision == self.DESICION_REALIZED
 
 
 

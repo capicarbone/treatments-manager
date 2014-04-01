@@ -48,6 +48,15 @@ class ForPatients(remote.Service):
             fulfillment = Fulfillment(message=f, parent=action_key)
             fulfillment.put()
 
+            treatment = action_key.parent().get()
+            treatment.past_actions_count = treatment.past_actions_count + 1
+
+            if fulfillment.is_realized():
+                treatment.made_actions_count = treatment.made_actions_count + 1
+
+            treatment.put()
+
+
         return message_types.VoidMessage()
 
 
