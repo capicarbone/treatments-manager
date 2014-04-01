@@ -166,7 +166,7 @@ class TreatmentAction(MessageModel):
 class Treatment(MessageModel):
 
     message_class = TreatmentMsg
-    ignore_fields = ('patient_key','created_at', 'patient')
+    ignore_fields = ('patient_key','created_at', 'patient', 'fulfillment_porcentage')
 
     display_code = ndb.StringProperty()
     is_active = ndb.BooleanProperty(default=False)
@@ -185,6 +185,11 @@ class Treatment(MessageModel):
         msg.is_active = self.is_active
         msg.objetives = self.objetives
         msg.created_at = self.created_at.isoformat()
+        msg.past_actions_count = self.past_actions_count
+        msg.made_actions_count = self.made_actions_count
+
+        if self.past_actions_count and self.past_actions_count != 0:
+            msg.fulfillment_porcentage = float(float(self.made_actions_count) / float(self.past_actions_count))*100.0
 
         if not 'patient_key' in ignore_fields:
             msg.patient_key = self.key.parent().urlsafe()

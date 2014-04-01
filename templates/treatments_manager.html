@@ -19,8 +19,8 @@
 				<td> {{treatment.objetives}}</td>
 				<td>
 					<div class="progress">
-						<div class="progress-bar">
-							0%
+						<div class="progress-bar" style="width:{{treatment.fulfillment_porcentage}}%">
+							{{treatment.fulfillment_porcentage | number:1}}%
 						</div>
 					</div>
 				</td>

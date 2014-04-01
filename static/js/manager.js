@@ -154,6 +154,7 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 				
 				angular.forEach(response.treatments, function(t){
 					t.created_at_readable = moment(t.created_at).format("DD / MM / YY");
+					
 				});
 
 				$scope.treatments = response.treatments;

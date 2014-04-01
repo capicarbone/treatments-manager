@@ -86,6 +86,8 @@ class TreatmentMsg(messages.Message):
     past_actions_count = messages.IntegerField(11, default=0)
     made_actions_count = messages.IntegerField(12, default=0)
 
+    fulfillment_porcentage = messages.FloatField(13)
+
     id = messages.StringField(8)
 
     patient = messages.MessageField(PatientMsg, 9)
