@@ -78,6 +78,8 @@ class TreatmentActionMsg(messages.Message):
     made_count = messages.IntegerField(7)
     past_count = messages.IntegerField(8)
 
+    fulfillment_porcentage = messages.FloatField(9)
+
 
 class TreatmentMsg(messages.Message):
 

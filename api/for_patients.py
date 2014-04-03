@@ -43,7 +43,7 @@ class ForPatients(remote.Service):
 
         for f in report.fulfillments:
 
-            action_key = ndb.Key(TreatmentAction, f.action_id, parent=ndb.Key(urlsafe=report.treatment_key))
+            action_key = ndb.Key(TreatmentAction, int(f.action_id), parent=ndb.Key(urlsafe=report.treatment_key))
 
             fulfillment = Fulfillment(message=f, parent=action_key)
             fulfillment.put()
@@ -56,11 +56,10 @@ class ForPatients(remote.Service):
 
             if fulfillment.is_realized():
                 treatment.made_actions_count = treatment.made_actions_count + 1
-                action.made_action = action.made_action + 1
+                action.made_count = action.made_count + 1
 
             action.put()
             treatment.put()
-
 
         return message_types.VoidMessage()
 

@@ -163,6 +163,9 @@ class TreatmentAction(MessageModel):
         msg.past_count = self.past_count
         msg.id =str(self.key.id())
 
+        if self.past_count and self.past_count != 0:
+            msg.fulfillment_porcentage = float(float(self.made_count) / float(self.past_count))*100.0
+
         if self.take_hour:
             msg.take_hour = self.take_hour.isoformat()
 
