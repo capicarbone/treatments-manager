@@ -103,10 +103,9 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 	$rootScope.load_endpoints = function(){
 
-		var host = window.location.host;
-		var API_ROOT = '//' + host + '/_ah/api';
-		//var API_ROOT = 'https://capicptest.appspot.com/_ah/api'
-
+		
+		var API_ROOT = complete_api_url('/_ah/api');
+		
 		gapi.client.load('admin', 'v1', function(){
 			$rootScope.is_backend_ready = true;
 			$rootScope.$apply();

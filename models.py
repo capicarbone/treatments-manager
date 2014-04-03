@@ -132,6 +132,9 @@ class TreatmentAction(MessageModel):
     action_type = ndb.StringProperty()
     take_hour = ndb.TimeProperty()
 
+    past_count = ndb.IntegerProperty(default=0)
+    made_count = ndb.IntegerProperty(default=0)
+
     medicament = ndb.KeyProperty()
 
     def from_message(self, msg):
@@ -156,6 +159,8 @@ class TreatmentAction(MessageModel):
 
         msg.action_type = self.action_type
         msg.time_interval = self.time_interval
+        msg.made_count = self.made_count
+        msg.past_count = self.past_count
         msg.id =str(self.key.id())
 
         if self.take_hour:

@@ -75,6 +75,9 @@ class TreatmentActionMsg(messages.Message):
 
     medicament = messages.MessageField(MedicamentMsg, 4)
 
+    made_count = messages.IntegerField(7)
+    past_count = messages.IntegerField(8)
+
 
 class TreatmentMsg(messages.Message):
 

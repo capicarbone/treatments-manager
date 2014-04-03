@@ -383,9 +383,7 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 	};
 
 	$rootScope.load_endpoints = function(){
-
-
-		//var API_ROOT = 'https://capicptest.appspot.com/_ah/api'
+		
 		var API_ROOT = complete_api_url('/_ah/api');
 
 		gapi.client.load('doctor', 'v1', function(){

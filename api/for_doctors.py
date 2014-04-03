@@ -53,6 +53,8 @@ class ForDoctors(remote.Service):
         for a in treatment_msg.actions:
 
             action = TreatmentAction(message=a, parent=treatment.key)
+            action.made_count = 0
+            action.past_count = 0
             action.put()
             a.key = action.key.urlsafe()
 

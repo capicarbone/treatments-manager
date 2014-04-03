@@ -48,12 +48,17 @@ class ForPatients(remote.Service):
             fulfillment = Fulfillment(message=f, parent=action_key)
             fulfillment.put()
 
+            action = action_key.get()
             treatment = action_key.parent().get()
             treatment.past_actions_count = treatment.past_actions_count + 1
+            action.past_count = action.past_count + 1
+
 
             if fulfillment.is_realized():
                 treatment.made_actions_count = treatment.made_actions_count + 1
+                action.made_action = action.made_action + 1
 
+            action.put()
             treatment.put()
 
 
