@@ -14,7 +14,8 @@ from google.appengine.ext import ndb
 from protorpc import message_types
 
 from api.treatments_messages import SpecialityMsg, PatientMsg, PersonMsg, \
-    DoctorMsg, TreatmentMsg, MedicamentMsg, MappedObjectMsg, TreatmentActionMsg, FulfillmentMsg
+    DoctorMsg, TreatmentMsg, MedicamentMsg, MappedObjectMsg, TreatmentActionMsg, FulfillmentMsg,\
+    DiaryFulfillmentMsg
 
 
 class MessageModel(ndb.Model):
@@ -428,6 +429,26 @@ class Fulfillment(MessageModel):
 
     def is_realized(self):
         return self.decision == self.DESICION_REALIZED
+
+class DiaryFulfillment(MessageModel):
+    """
+        Representa el cumplimiento de un dia, conteniendo el total de acciones que deberieron
+        ser cumplidas y el total de acciones cumplidas
+    """
+
+    message_class = DiaryFulfillmentMsg
+    ignore_fields = ('day',)
+
+    day = ndb.DateProperty()
+    made_actions = ndb.IntegerProperty()
+    total_actions = ndb.IntegerProperty()
+
+    def from_message(self, msg):
+        super(DiaryFulfillment, self).from_message(msg)
+
+        if msg.day:
+            self.day = parser.parse(msg.day)
+
 
 
 

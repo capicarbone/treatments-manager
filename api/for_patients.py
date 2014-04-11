@@ -6,7 +6,8 @@ Created on 27/02/2014
 
 import endpoints
 from google.appengine.ext import ndb
-from models import Patient, Treatment, Medicament, TreatmentAction, Fulfillment
+from models import Patient, Treatment, Medicament, TreatmentAction, Fulfillment,\
+    DiaryFulfillment
 from api import treatments_messages
 from api.treatments_messages import MappedObjectMsg, EntireTreatment
 from protorpc import remote, message_types, messages
@@ -60,6 +61,10 @@ class ForPatients(remote.Service):
 
             action.put()
             treatment.put()
+
+        for d in report.diary_fulfillments:
+            day_fulfillment = DiaryFulfillment(message=d, parent=ndb.Key(urlsafe=report.treatment_key))
+            day_fulfillment.put()
 
         return message_types.VoidMessage()
 

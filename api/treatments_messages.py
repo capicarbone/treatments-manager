@@ -131,10 +131,22 @@ class FulfillmentMsg(messages.Message):
 
     for_moment = messages.StringField(6)    # Momento en el que debe cumplirse el cumplimiento
 
+
+
+class DiaryFulfillmentMsg(messages.Message):
+    """
+        Mensage para el recibimiento del cumplimineto de un día.
+    """
+
+    day = messages.StringField(1, required=True)
+    total_actions = messages.IntegerField(2)
+    made_actions = messages.IntegerField(3)
+
 class ReportFulfillmentMsg(messages.Message):
 
     treatment_key = messages.StringField(1, required=True)
     fulfillments = messages.MessageField(FulfillmentMsg,2, repeated=True)
+    diary_fulfillments = messages.MessageField(DiaryFulfillmentMsg,3, repeated=True)
 
 
 
