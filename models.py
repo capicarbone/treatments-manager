@@ -185,6 +185,8 @@ class Treatment(MessageModel):
 
     created_at = ndb.DateTimeProperty(auto_now_add=True)
 
+    update_time = ndb.TimeProperty()
+
 
     def to_message(self, ignore_fields=['patient_key'], with_patient=False):
 
