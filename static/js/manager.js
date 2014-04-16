@@ -169,7 +169,7 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 .controller('TreatmentDetailCtrl', function($scope, $rootScope, $routeParams){
 
-	$rootScope.section_title = ""
+	$rootScope.section_title = "Tratamiento"
 
 	$scope.treatment = {}
 	$scope.patient = {}

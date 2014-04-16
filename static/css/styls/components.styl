@@ -1,0 +1,81 @@
+.sidebar
+	position fixed
+	top 51px
+	bottom 0
+	left 0
+	z-index 1000
+	display block	
+	overflow-x hidden
+	overflow-y auto 	
+	color neutral
+	font-family font_light
+	padding 0px
+
+	li
+		color neutral	
+
+		a
+			padding-left 2.2em
+			color neutral !important
+
+			&:hover				
+				color neutral
+				border-right 4px solid lighten(neutral, 70%)
+
+			&.active
+				background-color #eee
+				border-right 4px solid principal
+				color principal !important
+
+			&:active
+				border-right 2px solid principal
+				box-shadow inset 1px 1px 2px rgba(0,0,0,0.25)
+				transform 
+				
+				
+
+		i
+			padding-right 2em
+
+	.nav-sidebar
+		
+		padding-top 2.5em
+
+
+.section-title
+	margin-bottom 1em
+	font-size 2.5em
+
+	*
+		font-family font_light
+
+	.title
+		font-size 1em
+		margin 0px				
+		letter-spacing 0.1em
+		text-transform uppercase
+
+	.complement
+		margin 0px
+		font-size 0.5em
+
+
+.sidebox
+	background-color lighten(neutral, 90%)	
+	padding 0.3em
+
+	.body
+		padding 0.5em
+		width 100%
+		height 100%
+		padding 0.5em
+
+.subtitle
+	text-transform uppercase
+	font-family font_light
+	margin 0px
+	width 100%
+	border-bottom 1px solid neutral
+	font-size 2.3rem
+	margin-top 2.5em
+	

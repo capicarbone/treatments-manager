@@ -1,37 +1,96 @@
 
 {% raw %}
-<div class="page-header">
-	<h3>Paciente</h3>
+
+<div class="section-title">
+	<h1 class="title">{{section_title}}</h1>
+	<h3 class="complement">Asignado el 09 / 06 / 13</h3>
 </div>
 
+<div class="row-fluid clearfix">
+	<div class="col-md-5 sidebox">
+		<h4 class="subtitle text-center without-margin">Paciente</h4>
+		<div class="body">
+			<p class="text-center standout-more">
+				{{patient.person.first_name}} {{patient.person.last_name}}
+			</p>
+			
+			<div class="row-fluid clearfix">
+				<div class="col-md-4">
+					<span class="standout">Sexo: </span>
+					<br/>
+					Masculino
+				</div>
+				<div class="col-md-4">
+					<span class="standout">Edad: </span>
+					<br/>
+					23
+				</div>
+				<div class="col-md-4">
+					<span class="standout">Nació el: </span>
+					<br/>
+					03 / 11 / 1990
+				</div>
+			</div>
 
-<div class="row">
-	<div class="col-md-4">
-		<strong>Nombres : </strong> {{patient.person.first_name}}
+			<p class="standout separate">Alergias:</p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odit, quia placeat nisi veniam sequi facilis inventore ipsa suscipit deleniti fugit alias soluta sed animi tenetur velit corporis facere quis ab.</p>
+		</div>
+		
 	</div>
-	<div class="col-md-4">
-		<strong>Apellidos : </strong> {{patient.person.last_name}}
-	</div>
-	<div class="col-md-4">
-		<strong>Sexo : </strong> {{patient.person.gender}}
+	<div class="col-md-7">
+		<p class="standout-more">Objetivos</p>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, deleniti incidunt quae atque minima officia libero. Excepturi, accusantium commodi amet esse accusamus quis sapiente mollitia atque. Atque, sed expedita aspernatur.</p>
+
+		<div class="row-fluid clearfix">
+			<div class="col-md-6">
+				<p class="standout-more">Inicio:</p>
+				Martes 15 de Abril del 2014
+			</div>
+			<div class="col-md-6">
+				<p class="standout-more">Finalización:</p>
+				Domingo 15 de Junio del 2014
+			</div>
+		</div>
 	</div>
 </div>
 
-<div class="page-header">
-	<h3>
-		Tratamiento <span class="label label-success">Activo</span>
-	</h3>
+<div class="row-fluid clearfix tiny-separate">
+	<div class="col-md-5 sidebox">
+		<div class="body">
+			<div class="row-fluid clearfix">
+				<div class="col-md-6">
+					<p class="standout text-center without-margin">Código</p>
+					<p class="standout-more text-center without-margin display-code">{{treatment.display_code}}</p>
+				</div>
+				<div class="col-md-6">
+					<p class="standout-more without-margin red text-center">
+						<span class="glyphicon glyphicon-remove"></span> <br/>
+						No Sincronizado
+					</p>
+				</div>
+			</div>
+			<p class="separate help-text">
+				Para que su paciente pueda recibir su tratamiento
+				médico en su móvil debe especificarle el código
+				arriba. Una vez introducido en el móvil inciará
+				la sincronización de la información.
+			</p>
+		</div>
+	</div>
+	<div class="col-md-7 squash">
+		<p class="standout-more text-center">Cumplimiento general</p>
+
+		<div>
+			<p class="text-center standout-more-more">82%</p>
+			<div class="progress">
+				<div class="progress-bar" style="width: 82%"></div>
+			</div>
+		</div>
+		
+	</div>
 </div>
 
-<div class="row">
-	<div class="col-md-2">
-		<strong>Código : </strong> {{treatment.display_code}}
-	</div>
-	<div class="col-md-10">
-		<strong>Objectivos : </strong>
-		{{treatment.objetives}}
-	</div>
-</div>
+<h4 class="subtitle">Detalles del cumplimiento</h4>
 
 <div class="page-header">
 	<h4>Acciones</h4>

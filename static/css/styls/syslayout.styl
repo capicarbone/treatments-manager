@@ -1,6 +1,7 @@
 
 @import fonts
 @import colors
+@import components
 
 topnav_height = 52px
 
@@ -8,13 +9,6 @@ body
 	padding-top topnav_height
 	font-size 16px
 	font-family font_light
-
-h1
-	margin 0px	
-	margin-bottom 1em
-	font-family font_light
-	letter-spacing 0.1em
-	text-transform uppercase
 
 a
 	color principal
@@ -33,56 +27,45 @@ a
 	&:active *
 		color white
 
+
+//  ---------- About Text   --------
 .green
 	color principal
 
 .black 
 	color neutral
 
-.sidebar
-	position fixed
-	top 51px
-	bottom 0
-	left 0
-	z-index 1000
-	display block	
-	overflow-x hidden
-	overflow-y auto 	
-	color neutral
+.red
+	color red
+
+.text-center
+	text-align center
+
+.standout
+	font-size 1.25em
 	font-family font_light
-	padding 0px
+	margin-top 0.6em
 
-	li
-		color neutral	
+.standout-more
+	font-size 1.5em
+	margin-top 0.5em
+	margin-bottom 0.5em
 
-		a
-			padding-left 2.2em
-			color neutral !important
+.standout-more-more
+	font-size 2.8em
 
-			&:hover				
-				color neutral
-				border-right 4px solid lighten(neutral, 70%)
+.help-text
+	font-size 0.9em
 
-			&.active
-				background-color #eee
-				border-right 4px solid principal
-				color principal !important
+// ----------- About spaces --------------
+.without-margin
+	margin 0px
 
-			&:active
-				border-right 2px solid principal
-				box-shadow inset 1px 1px 2px rgba(0,0,0,0.25)
-				transform 
-				
-				
+.separate 	
+	margin-top 1.2em
 
-		i
-			padding-right 2em
-
-
-
-	.nav-sidebar
-		
-		padding-top 2.5em
+.tiny-separate
+	margin-top 0.3em
 
 .navbar-default 
 	background-color white
@@ -96,6 +79,9 @@ a
 .navbar-brand
 	font-size 1.4em
 	color principal !important
+
+.squash
+	padding 0px 7em
 
 
 .lateral
@@ -159,3 +145,14 @@ a
 .main
 	padding-left 5em
 	padding-top 2.5em
+
+// Changes on bootstrap components
+
+.progress
+	background-color dark_grey
+
+// Especificos para campos de informacion
+
+.display-code
+	font-weight bolder
+	letter-spacing 0.08em

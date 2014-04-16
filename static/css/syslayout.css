@@ -1,14 +1,6 @@
 @font-face{font-family:'robotolight';src:url("../fonts/roboto-light-webfont.eot");src:url("../fonts/roboto-light-webfont.eot?#iefix") format('embedded-opentype'),url("../fonts/roboto-light-webfont.woff") format('woff'),url("../fonts/roboto-light-webfont.ttf") format('truetype'),url("../fonts/roboto-light-webfont.svg#robotolight") format('svg');font-weight:normal;font-style:normal}
 @font-face{font-family:'robotoregular';src:url("../fonts/roboto-regular-webfont.eot");src:url("../fonts/roboto-regular-webfont.eot?#iefix") format('embedded-opentype'),url("../fonts/roboto-regular-webfont.woff") format('woff'),url("../fonts/roboto-regular-webfont.ttf") format('truetype'),url("../fonts/roboto-regular-webfont.svg#robotoregular") format('svg');font-weight:normal;font-style:normal}
 @font-face{font-family:'robotothin';src:url("../fonts/roboto-thin-webfont.eot");src:url("../fonts/roboto-thin-webfont.eot?#iefix") format('embedded-opentype'),url("../fonts/roboto-thin-webfont.woff") format('woff'),url("../fonts/roboto-thin-webfont.ttf") format('truetype'),url("../fonts/roboto-thin-webfont.svg#robotothin") format('svg');font-weight:normal;font-style:normal}
-body{padding-top:52px;font-size:16px;font-family:'robotolight'}
-h1{margin:0;margin-bottom:1em;font-family:'robotolight';letter-spacing:.1em;text-transform:uppercase}
-a{color:#2ca02c;cursor:pointer;}
-a:hover{color:#2ca02c}
-.clickable:active{background-color:#2ca02c;color:#fff;text-decoration:none}
-.clickable:active *{color:#fff}
-.green{color:#2ca02c}
-.black{color:#333}
 .sidebar{position:fixed;top:51px;bottom:0;left:0;z-index:1000;display:block;overflow-x:hidden;overflow-y:auto;color:#333;font-family:'robotolight';padding:0;}
 .sidebar li{color:#333;}
 .sidebar li a{padding-left:2.2em;color:#333 !important;}
@@ -17,9 +9,33 @@ a:hover{color:#2ca02c}
 .sidebar li a:active{border-right:2px solid #2ca02c;box-shadow:inset 1px 1px 2px rgba(0,0,0,0.25);transform}
 .sidebar li i{padding-right:2em}
 .sidebar .nav-sidebar{padding-top:2.5em}
+.section-title{margin-bottom:1em;font-size:2.5em;}
+.section-title *{font-family:'robotolight'}
+.section-title .title{font-size:1em;margin:0;letter-spacing:.1em;text-transform:uppercase}
+.section-title .complement{margin:0;font-size:.5em}
+.sidebox{background-color:#ebebeb;padding:.3em;}
+.sidebox .body{padding:.5em;width:100%;height:100%;padding:.5em}
+.subtitle{text-transform:uppercase;font-family:'robotolight';margin:0;width:100%;border-bottom:1px solid #333;font-size:2.3rem;margin-top:2.5em}
+body{padding-top:52px;font-size:16px;font-family:'robotolight'}
+a{color:#2ca02c;cursor:pointer;}
+a:hover{color:#2ca02c}
+.clickable:active{background-color:#2ca02c;color:#fff;text-decoration:none}
+.clickable:active *{color:#fff}
+.green{color:#2ca02c}
+.black{color:#333}
+.red{color:#800000}
+.text-center{text-align:center}
+.standout{font-size:1.25em;font-family:'robotolight';margin-top:.6em}
+.standout-more{font-size:1.5em;margin-top:.5em;margin-bottom:.5em}
+.standout-more-more{font-size:2.8em}
+.help-text{font-size:.9em}
+.without-margin{margin:0}
+.separate{margin-top:1.2em}
+.tiny-separate{margin-top:.3em}
 .navbar-default{background-color:#fff;border-bottom:0;box-shadow:0 1px 2px rgba(0,0,0,0.15)}
 .navbar-header{font-family:'robotolight';margin-left:52px}
 .navbar-brand{font-size:1.4em;color:#2ca02c !important}
+.squash{padding:0 7em}
 .lateral{border-left:1px solid #999;font-size:.8em;letter-spacing:0;padding:0 .3em;text-transform:none}
 .navbar-right{line-height:52px;}
 .navbar-right ul{margin:0;padding:0;}
@@ -35,3 +51,5 @@ a:hover{color:#2ca02c}
 .table tr{border-right:4px solid transparent;border-left:4px solid transparent;}
 .table tr:hover{background-color:#eee;border-right:4px solid #2ca02c;border-left:4px solid #2ca02c}
 .main{padding-left:5em;padding-top:2.5em}
+.progress{background-color:#d6d6d6}
+.display-code{font-weight:bolder;letter-spacing:.08em}
