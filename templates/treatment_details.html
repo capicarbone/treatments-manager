@@ -8,7 +8,10 @@
 
 <div class="row-fluid clearfix">
 	<div class="col-md-5 sidebox">
-		<h4 class="subtitle text-center without-margin">Paciente</h4>
+		<div class="subtitle-wrapper without-margin">
+			<h4 class="subtitle text-center">Paciente</h4>	
+		</div>
+		
 		<div class="body">
 			<p class="text-center standout-more">
 				{{patient.person.first_name}} {{patient.person.last_name}}
@@ -90,39 +93,77 @@
 	</div>
 </div>
 
-<h4 class="subtitle">Detalles del cumplimiento</h4>
-
-<div class="page-header">
-	<h4>Acciones</h4>
+<div class="subtitle-wrapper">
+	<h4 class="subtitle">
+		Detalles del cumplimiento	
+	</h4>	
+	<p class="subtitle-complement push">
+		Último reporte del 12 / 05 / 2013 a las 2:05 PM
+	</p>
 </div>
+
+
+<p class="separate standout-more">Comportamiento del cumplimiento diario </p>
+<div id="diary_fulfillment_chart" ></div>
+
+<p class="separate standout-more">Últimos 5 dias</p>
+
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>Dia</th>
+			<th>Cumplimiento</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Martes 5 de Marzo</td>
+			<td>
+				<div class="progress">
+					<div class="progress-bar" style="width: 20%">						
+					</div>
+				</div>
+			</td>
+			<td>
+				<div class="btn-group">
+					<a href="" class="btn btn-default">
+						<i class="glyphicon glyphicon-eye-open"></i>
+					</a>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="subtitle-wrapper">
+	<h4 class="subtitle">Medicamentos</h4>
+</div>
+
 
 <div class="row">
 	<div class="col-md-6" ng-repeat="a in treatment.actions" >
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				{{a.medicament.name}} {{a.medicament.dose}}
+		<div class="tm-panel">			
+			<div class="icon-box push">
+				<img src="static/img/ic_capsule.png" alt="">
 			</div>
-			<div class="panel-body">
-				<div class="col-md-8">
-					{{a.medicament.description}}
-				</div>
-				<div class="col-md-4">
-					<strong>
-						{{a.readable_take_hour}}
-					</strong>
-				</div>
-
-				Cumplimiento
-
-				<div class="col-md-12">
-					<div class="progress">
-						<div class="progress-bar" style="width: {{a.fulfillment_porcentage}}%">
-							{{a.fulfillment_porcentage | number: 1}}%
-						</div>
+			<a class="simple-button push">
+				Ver detalles
+			</a>
+			<div class="tm-panel-heading">
+				<span class="standout-more">{{a.medicament.name}} </span> {{a.medicament.dose}}				
+			</div>
+			<div class="tm-panel-body fix-height separate">
+				Todos los dias a las 7:00 PM
+								
+			</div>
+			<div class="tm-panel-footer">
+				<p class="text-center">Cumplimiento general</p>
+				<div class="progress">
+					<div class="progress-bar" style="width: {{a.fulfillment_porcentage}}%">
+						{{a.fulfillment_porcentage | number: 1}}%
 					</div>
 				</div>
-			</div>
-			<div class="panel-footer">
 			</div>
 		</div>
 	</div>

@@ -1,3 +1,10 @@
+
+.simple-button
+	background-color dark_grey
+	padding 0px 2em
+	display inline-block
+	color neutral
+
 .sidebar
 	position fixed
 	top 51px
@@ -61,7 +68,7 @@
 
 
 .sidebox
-	background-color lighten(neutral, 90%)	
+	background-color light_background
 	padding 0.3em
 
 	.body
@@ -70,12 +77,61 @@
 		height 100%
 		padding 0.5em
 
-.subtitle
-	text-transform uppercase
-	font-family font_light
-	margin 0px
-	width 100%
-	border-bottom 1px solid neutral
-	font-size 2.3rem
+.subtitle-wrapper
 	margin-top 2.5em
+	margin-bottom 1.2em
 	
+	*
+		font-family font_light
+	
+	.subtitle
+		margin 0px
+		width 100%
+		border-bottom 1px solid neutral
+		text-transform uppercase
+		font-size 2.3rem
+
+	.subtitle-complement
+		margin 0px
+		
+	
+
+.tm-panel
+	background-color light_background
+	border-left 4px solid principal
+	border-top 2px solid principal
+	border-right 1px solid dark_grey
+	margin-bottom 1em
+	position relative
+
+	.tm-panel-heading, .tm-panel-body
+		padding-left 2em
+
+	.tm-panel-heading
+		padding-top 0.6em
+
+	.tm-panel-body
+		&.fix-height
+			height 4em
+
+	.tm-panel-footer
+		border-top 1px solid dark_grey
+		margin 0em 1em
+		padding 0.5em 0em
+
+	.icon-box
+		background-color principal
+		width 3em
+		height @width		
+		padding 0.3em
+
+		img
+			width 2.2em
+
+	
+		
+	
+	
+	
+	
+

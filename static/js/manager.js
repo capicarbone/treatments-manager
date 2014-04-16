@@ -174,6 +174,30 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 	$scope.treatment = {}
 	$scope.patient = {}
 
+	$scope.setupChart = function (){
+		console.log("Charts Loaded");
+
+		var data = google.visualization.arrayToDataTable([
+		['Dia', 'Cumplimiento'],
+		['12/04', 20],
+		['13/04', 25],
+		['14/04', 50],
+		['15/04', 80],
+		['16/04', 20],
+		], false);
+
+		var container = document.getElementById('diary_fulfillment_chart');
+
+		var options = {			
+			'width': container.offsetWidth,
+			'height': 300
+		};
+
+		var chart = new google.visualization.LineChart(container);
+		chart.draw(data, options);
+
+	}
+
 	$scope.init = function(){
 
 		var treatment_key = $routeParams.treatment_key
@@ -189,7 +213,11 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 				actions[i].readable_take_hour = moment(actions[i].take_hour, "hh:mm").format("hh:mm a").toUpperCase();
 
 			$scope.$apply();
+
+			google.load('visualization', '1.0', {'packages':['corechart'], 'language': 'es', 'callback': $scope.setupChart });
+
 		});
+
 	}
 
 	$scope.init()
