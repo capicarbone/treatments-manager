@@ -175,7 +175,7 @@ class TreatmentAction(MessageModel):
 class Treatment(MessageModel):
 
     message_class = TreatmentMsg
-    ignore_fields = ('patient_key','created_at', 'patient', 'fulfillment_porcentage')
+    ignore_fields = ('patient_key','created_at', 'patient', 'fulfillment_porcentage', 'last_syncronize_at', 'last_resport_time')
 
     display_code = ndb.StringProperty()
     is_active = ndb.BooleanProperty(default=False)
@@ -184,8 +184,11 @@ class Treatment(MessageModel):
     made_actions_count = ndb.IntegerProperty(default=0)
 
     created_at = ndb.DateTimeProperty(auto_now_add=True)
+    last_syncronize_at = ndb.DateTimeProperty()
 
     update_time = ndb.TimeProperty()
+
+    last_resport_time = ndb.DateTimeProperty()
 
 
     def to_message(self, ignore_fields=['patient_key'], with_patient=False):
@@ -196,11 +199,17 @@ class Treatment(MessageModel):
         msg.is_active = self.is_active
         msg.objetives = self.objetives
         msg.created_at = self.created_at.isoformat()
+        msg.init_date = msg.created_at     # TODO: Deberia ser la fecha guardada en la bd
         msg.past_actions_count = self.past_actions_count
         msg.made_actions_count = self.made_actions_count
+        msg.last_report_time = self.last_report_time.isoformat() if self.last_resport_time else None
 
         if self.past_actions_count and self.past_actions_count != 0:
             msg.fulfillment_porcentage = float(float(self.made_actions_count) / float(self.past_actions_count))*100.0
+        else:
+            msg.fulfillment_porcentage = 0.0
+
+        msg.is_sync = self.last_syncronize_at is not None
 
         if not 'patient_key' in ignore_fields:
             msg.patient_key = self.key.parent().urlsafe()

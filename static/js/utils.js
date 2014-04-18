@@ -9,3 +9,20 @@ function complete_api_url(api_url){
 	else
 		return 'https:' + url;
 }
+
+Utils = {
+
+	messageForBlank: function(field){
+
+		if (!field || field == "" || field == " " )
+			return "No especificado.";
+
+		return field;
+	}
+}
+
+// Courtesy of Steve Hansell
+
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}

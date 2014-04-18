@@ -104,11 +104,12 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
     		startView: 'decade',
     		autoclose: true
 	    })
-	    .on('changeDate', function(e){
+	    .on('changeDate', function(e){	    	
 
-	    	$scope.$apply(function(){
+	    	$scope.$apply(function(){	    		
 	    		$scope.patient.readable_birthday = e.format();
-	    		$scope.patient.birthday = moment(e).format();
+	    		console.log(e);
+	    		$scope.patient.birthday = moment(e.date).format();
 	    	})
 	    })
 
@@ -119,7 +120,7 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 		var patient = $scope.patient
 
 		patient.person.gender = patient.person.gender.key;
-		patient.doctor_key = $rootScope.doctor_key;
+		patient.doctor_key = $rootScope.doctor_key;		
 
 		$rootScope.api.patient.save(patient).execute(function(res){
 			console.log(res);
@@ -206,6 +207,16 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 			$scope.treatment = response.treatment;
 			$scope.patient = response.patient;
+
+			$scope.treatment.created_at_readable = moment($scope.treatment.created_at).format("l");
+			$scope.treatment.init_date_readable = moment($scope.treatment.init_date).format("dddd DD [de] MMMM [de] YYYY").capitalize();
+			$scope.treatment.last_report_time_readable = moment($scope.treatment.last_report_time).format("DD / MM YY [a las] H:mm A");
+
+			$scope.patient.birthday_readable = moment($scope.patient.birthday).format("l");
+			$scope.patient.age = moment($scope.patient.birthday).fromNow(true);
+
+			$scope.patient.allergies = Utils.messageForBlank($scope.patient.allergies);
+			$scope.treatment.objetives = Utils.messageForBlank($scope.treatment.objetives);
 
 			var actions = $scope.treatment.actions;
 
@@ -392,6 +403,8 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 })
 
 .run(function($rootScope, $window, $location){
+
+	moment.lang('es');
 
 	$rootScope.is_backend_ready = false;
 	$rootScope.section_title = 'Inicio';

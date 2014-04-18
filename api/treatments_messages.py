@@ -100,6 +100,11 @@ class TreatmentMsg(messages.Message):
     actions = messages.MessageField(TreatmentActionMsg,5, repeated=True)
 
     created_at = messages.StringField(10)
+    last_syncronize_at = messages.StringField(14)
+    is_sync = messages.BooleanField(15)
+
+    init_date = messages.StringField(16)
+    last_report_time = messages.StringField(17)
 
 class TreatmentsCollection(messages.Message):
     treatments = messages.MessageField(TreatmentMsg, 1, repeated=True)

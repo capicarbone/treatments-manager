@@ -12,7 +12,7 @@ from api import treatments_messages
 from api.treatments_messages import MappedObjectMsg, EntireTreatment
 from protorpc import remote, message_types, messages
 
-from datetime import time
+from datetime import time, datetime
 from thirdparties.dateutil import parser
 
 @endpoints.api(name="patient", version="v1",
@@ -53,6 +53,7 @@ class ForPatients(remote.Service):
         update_time = parser.parse(request.update_time)
 
         treatment.update_time = time(update_time.hour, update_time.minute)
+        treatment.last_syncronize_at = datetime.now()
         treatment.put()
 
         return message_types.VoidMessage()
@@ -60,6 +61,9 @@ class ForPatients(remote.Service):
     @endpoints.method(treatments_messages.ReportFulfillmentMsg, message_types.VoidMessage,
                       path="treatment/report", http_method="POST", name="treatment.report")
     def report_treatment(self, report):
+
+        treatment = ndb.Key(urlsafe=report.treatment_key).get()
+        treatment.last_report_time = datetime.now()
 
         for f in report.fulfillments:
 
@@ -69,7 +73,7 @@ class ForPatients(remote.Service):
             fulfillment.put()
 
             action = action_key.get()
-            treatment = action_key.parent().get()
+
             treatment.past_actions_count = treatment.past_actions_count + 1
             action.past_count = action.past_count + 1
 
@@ -79,11 +83,12 @@ class ForPatients(remote.Service):
                 action.made_count = action.made_count + 1
 
             action.put()
-            treatment.put()
 
         for d in report.diary_fulfillments:
             day_fulfillment = DiaryFulfillment(message=d, parent=ndb.Key(urlsafe=report.treatment_key))
             day_fulfillment.put()
+
+        treatment.put()
 
         return message_types.VoidMessage()
 
