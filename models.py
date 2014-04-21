@@ -188,7 +188,7 @@ class Treatment(MessageModel):
 
     update_time = ndb.TimeProperty()
 
-    last_resport_time = ndb.DateTimeProperty()
+    last_report_time = ndb.DateTimeProperty()
 
 
     def to_message(self, ignore_fields=['patient_key'], with_patient=False):
@@ -202,7 +202,7 @@ class Treatment(MessageModel):
         msg.init_date = msg.created_at     # TODO: Deberia ser la fecha guardada en la bd
         msg.past_actions_count = self.past_actions_count
         msg.made_actions_count = self.made_actions_count
-        msg.last_report_time = self.last_report_time.isoformat() if self.last_resport_time else None
+        msg.last_report_time = self.last_report_time.isoformat() if self.last_report_time else None
 
         if self.past_actions_count and self.past_actions_count != 0:
             msg.fulfillment_porcentage = float(float(self.made_actions_count) / float(self.past_actions_count))*100.0

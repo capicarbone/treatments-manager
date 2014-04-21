@@ -210,7 +210,7 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 			$scope.treatment.created_at_readable = moment($scope.treatment.created_at).format("l");
 			$scope.treatment.init_date_readable = moment($scope.treatment.init_date).format("dddd DD [de] MMMM [de] YYYY").capitalize();
-			$scope.treatment.last_report_time_readable = moment($scope.treatment.last_report_time).format("DD / MM YY [a las] H:mm A");
+			$scope.treatment.last_report_time_readable = moment($scope.treatment.last_report_time).format("DD / MM / YY [a las] H:mm A");
 
 			$scope.patient.birthday_readable = moment($scope.patient.birthday).format("l");
 			$scope.patient.age = moment($scope.patient.birthday).fromNow(true);
