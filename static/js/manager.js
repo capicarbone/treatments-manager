@@ -220,8 +220,11 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 			var actions = $scope.treatment.actions;
 
-			for (i = 0; i < actions.length; i++)
+			for (i = 0; i < actions.length; i++){
 				actions[i].readable_take_hour = moment(actions[i].take_hour, "hh:mm").format("hh:mm a").toUpperCase();
+				actions[i].regime_description = "";
+			}
+				
 
 			$scope.$apply();
 
@@ -263,7 +266,8 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 		});
 
 		$("#take_time_picker").datetimepicker({
-			language: 'es',
+			language: 'en',
+			minuteStepping: 5,
 			pickDate: false
 		})
 		.on('change.dp', function(e){
