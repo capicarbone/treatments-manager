@@ -460,6 +460,15 @@ class DiaryFulfillment(MessageModel):
         if msg.day:
             self.day = parser.parse(msg.day)
 
+    def to_message(self):
+
+        message = DiaryFulfillmentMsg()
+        message.made_actions = self.made_actions
+        message.total_actions = self.total_actions
+        message.day = str(self.day)
+
+        return message
+
 
 
 

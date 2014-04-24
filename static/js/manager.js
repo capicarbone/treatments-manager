@@ -178,14 +178,7 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 	$scope.setupChart = function (){
 		console.log("Charts Loaded");
 
-		var data = google.visualization.arrayToDataTable([
-		['Dia', 'Cumplimiento'],
-		['12/04', 20],
-		['13/04', 25],
-		['14/04', 50],
-		['15/04', 80],
-		['16/04', 20],
-		], false);
+		var data = google.visualization.arrayToDataTable($scope.diary_fulfillments_chartdata, false);
 
 		var container = document.getElementById('diary_fulfillment_chart');
 
@@ -216,7 +209,26 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 			$scope.$apply();
 
-			google.load('visualization', '1.0', {'packages':['corechart'], 'language': 'es', 'callback': $scope.setupChart });
+			$rootScope.api.treatment.diary_fulfillments({ekey: treatment_key}).execute(function(response){			
+
+				var diary_fulfillments_chartdata = [['Dia', 'Cumplimiento']];
+
+				for (var i = response.diary_fulfillments.length - 1; i >= 0; i--) {
+
+					var diary_fulfillment = response.diary_fulfillments[i];
+					var data_point = []
+
+					data_point[0] = diary_fulfillment.day;
+					data_point[1] = (diary_fulfillment.made_actions / diary_fulfillment.total_actions)*100;
+
+					diary_fulfillments_chartdata[i+1] = data_point;
+
+				};
+
+				$scope.diary_fulfillments_chartdata = diary_fulfillments_chartdata;
+
+				google.load('visualization', '1.0', {'packages':['corechart'], 'language': 'es', 'callback': $scope.setupChart });
+			});		
 
 		});
 

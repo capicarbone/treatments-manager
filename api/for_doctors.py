@@ -11,7 +11,7 @@ from google.appengine.ext import ndb
 from models import *
 from api import treatments_messages
 from api.treatments_messages import MappedObjectMsg, EntireTreatment,\
-    TreatmentsCollection
+    TreatmentsCollection, DiaryFulfillmentCollectionMsg
 from protorpc import remote, message_types, messages
 
 @endpoints.api(name="doctor", version="v1",
@@ -75,6 +75,22 @@ class ForDoctors(remote.Service):
         treatment_details = EntireTreatment(treatment=treatment_msg, patient=patient.to_message())
 
         return treatment_details
+
+    @endpoints.method(KEY_CONTAINER, treatments_messages.DiaryFulfillmentCollectionMsg,
+                      path="treatment/diary_fullfilments", http_method="GET", name="treatment.diary_fulfillments")
+    def diary_fulfillments(self, request):
+
+        response = DiaryFulfillmentCollectionMsg()
+
+        treatment_key = ndb.Key(urlsafe=request.ekey)
+
+        result = DiaryFulfillment.query(ancestor=treatment_key)
+
+        for r in result:
+            response.diary_fulfillments.append(r.to_message())
+
+        return response
+
 
     @endpoints.method(KEY_CONTAINER, treatments_messages.TreatmentsCollection,
                       path="treatments", http_method="GET", name="treatments.all")

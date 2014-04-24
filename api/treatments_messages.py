@@ -147,6 +147,10 @@ class DiaryFulfillmentMsg(messages.Message):
     total_actions = messages.IntegerField(2)
     made_actions = messages.IntegerField(3)
 
+class DiaryFulfillmentCollectionMsg(messages.Message):
+
+    diary_fulfillments = messages.MessageField(DiaryFulfillmentMsg, 1, repeated=True)
+
 class ReportFulfillmentMsg(messages.Message):
 
     treatment_key = messages.StringField(1, required=True)
