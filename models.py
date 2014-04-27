@@ -131,6 +131,15 @@ class Measurement(MessageModel):
     unit = ndb.StringProperty()
     indications = ndb.StringProperty()
 
+    def to_message(self):
+         msg = self.message_class()
+
+         msg.name = self.name
+         msg.unit = self.unit
+         msg.indications = self.indications
+
+         return msg
+
 class TreatmentAction(MessageModel):
 
     MEDICAMENT_TYPE = 'M'
@@ -173,6 +182,11 @@ class TreatmentAction(MessageModel):
             else:
                 msg.medicament = m.to_message()
 
+        if (self.isForMeasurement()):
+            m = self.measurement
+
+            msg.measurement = self.measurement.to_message()
+
         msg.action_type = self.action_type
         msg.time_interval = self.time_interval
         msg.made_count = self.made_count
@@ -189,6 +203,9 @@ class TreatmentAction(MessageModel):
 
     def isForMedicamentTake(self):
         return self.action_type == self.MEDICAMENT_TYPE
+
+    def isForMeasurement(self):
+        return self.action_type == self.MEASUREMENT_TYPE
 
 class Treatment(MessageModel):
 
