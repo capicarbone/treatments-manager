@@ -65,6 +65,11 @@ class MedicamentMsg(messages.Message):
 
     id = messages.StringField(7)
 
+class MeasurementMsg(messages.Message):
+    name = messages.StringField(1)
+    unit = messages.StringField(2)
+    indications = messages.StringField(3)
+
 class TreatmentActionMsg(messages.Message):
 
     key = messages.StringField(5)
@@ -74,6 +79,7 @@ class TreatmentActionMsg(messages.Message):
     take_hour = messages.StringField(3)
 
     medicament = messages.MessageField(MedicamentMsg, 4)
+    measurement = messages.MessageField(MeasurementMsg, 10)
 
     made_count = messages.IntegerField(7)
     past_count = messages.IntegerField(8)

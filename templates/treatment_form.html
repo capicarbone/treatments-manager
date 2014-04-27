@@ -17,17 +17,33 @@
 			<h4 class="page-header">
 				Acciones
 			</h4>
-			<button class="btn btn-primary" ng-click="medicament_take_form()">Agregar medicamento</button>
-			
-			<div ng-show="medicament_take_form_fl">
 
-				<form ng-submit="register_medicament()">
+			<div class="btn-group btn-group-justified">
+				<div class="btn-group">
+					<button class="btn btn-default" ng-click="medicament_take_form()">Agregar medicamento</button>
+				</div>
+				<div class="btn-group"><button class="btn btn-default" ng-click="measurement_take_form()">Agregar indicador</button></div>
+			</div>					
 
-					<h3>Medicamento</h3>
+			<div class="measurement_form" ng-show="measurement_take_form_fl">
 
-					{{ fields.select('', 'action.medicament', 'medicament', 'm.name for m in medicaments', 'Seleccione un medicamento', label_cols="0", input_cols="12" ) }}
+				<h3>Indicador</h3>
 
-					<h3>Régimen</h3>
+				{{ fields.input('Nombre', 'action.measurement.name', 'measurement_name', label_cols='4', input_cols='8')}}
+				{{ fields.input('Unidad', 'action.measurement.unit', 'measurement_unit', label_cols='4', input_cols='8')}}
+				
+			</div>
+
+			<div class="medicament_form" ng-show="medicament_take_form_fl">
+
+				<h3>Medicamento</h3>
+
+				{{ fields.select('', 'action.medicament', 'medicament', 'm.name for m in medicaments', 'Seleccione un medicamento', label_cols="0", input_cols="12" ) }}			
+				
+			</div>
+
+			<div ng-show="isFormActive()">
+				<h3>Régimen</h3>
 		
 					<div class="row-fluid">
 						<div class="col-md-6">
@@ -53,15 +69,14 @@
 						</div>
 					</div>
 
-					<button class="btn btn-primary" ng-click="register_medicament()">Registrar</button>
-					<button class="btn" ng-click="cancel()">Cancelar</button>
-						
+					<div class="buttons" ng-show="isFormActive()">
+						<button class="btn btn-primary" ng-click="register_action()">Registrar</button>
+						<button class="btn" ng-click="cancel()">Cancelar</button>	
+					</div>
+					
 
-					</form>
-													
+
 			</div>
-			
-			
 
 		</form>
 	</div>	
@@ -82,12 +97,42 @@
 			</div>
 
 		</div>
+
+		<div class="page-header">
+			<h4>Indicadores</h4>			
+		</div>		
+
+		<div ng-repeat="action in actions|filter:{action_type:'I'}" class="panel panel-success">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-md-10">
+						<h4>{{action.measurement.name}}</h4>
+						
+					</div>
+					<div class="col-md-2">
+						<button class="close pull-right" ng-click="$parent.delete_action($index)">&times;</button>	
+					</div>
+				</div>							
+			</div>
+			<div class="panel-body">
+				<div class="row-fluid">
+					<div class="col-md-8">
+						{{action.medicament.description}}
+					</div>
+					<div class="col-md-4">
+					<strong>{{action.readable_take_hour}}</strong>
+						
+					</div>
+				</div>
+				
+			</div>				
+		</div>
 		
 		<div class="page-header">
 			<h4>Medicamentos</h4>			
 		</div>		
 
-		<div ng-repeat="action in actions" class="panel panel-success">
+		<div ng-repeat="action in actions|filter:{action_type:'M'}" class="panel panel-success">
 			<div class="panel-heading">
 				<div class="row">
 					<div class="col-md-10">

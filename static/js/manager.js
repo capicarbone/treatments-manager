@@ -256,6 +256,11 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 
 	$scope.medicament_take_form_fl = false;
+	$scope.measurement_take_form_fl = false;
+
+	$scope.isFormActive = function(){
+		return $scope.medicament_take_form_fl || $scope.measurement_take_form_fl;
+	}
 
 	$scope.init = function(){
 
@@ -294,6 +299,13 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 	$scope.medicament_take_form = function(){
 		$scope.medicament_take_form_fl = true;
+		$scope.measurement_take_form_fl = false;
+
+	}
+
+	$scope.measurement_take_form = function(){
+		$scope.medicament_take_form_fl = false;
+		$scope.measurement_take_form_fl = true;
 	}
 
 	$scope.valid_action = function(){
@@ -311,33 +323,32 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 		return true;
 	}
 
-	$scope.register_medicament = function(){
+	$scope.register_action = function(){
 
 		var action = {}
-		$scope.action.action_type = 'M';
+
+		if ($scope.medicament_take_form_fl )
+			$scope.action.action_type = 'M';
+
+		if ($scope.measurement_take_form_fl )
+			$scope.action.action_type = 'I';
 
 		if ( $scope.valid_action() ){
 
-			action.action_type = $scope.action.action_type;			
-			action.medicament = $scope.action.medicament;
-			action.regime_type = $scope.action.regime_type;
-			action.take_hour = $scope.action.take_hour;
+			angular.copy($scope.action, action);
+
 			action.readable_take_hour = $scope.action.readable_take_hour;
 
-			$scope.actions.push(action);
+			$scope.actions.push(action);			
 
-			$scope.medicament_take_form_fl = false;
-
-			$scope.action.medicament = "";
+			delete $scope.action.medicament;
 			$scope.action.take_hour = "";
 			$scope.form.take_hour = "";
 			$scope.action.readable_take_hour = "";
 
-			$action = {};
+			$scope.cancel();
 
-		}
-
-		
+		}		
 
 	}
 
@@ -362,6 +373,11 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 		$scope.actions.pop(index);
 		console.log("Hola");
 
+	}
+
+	$scope.cancel = function(){
+		$scope.medicament_take_form_fl = false;
+		$scope.measurement_take_form_fl = false;
 	}
 
 	$scope.init();

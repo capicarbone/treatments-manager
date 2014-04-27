@@ -15,7 +15,7 @@ from protorpc import message_types
 
 from api.treatments_messages import SpecialityMsg, PatientMsg, PersonMsg, \
     DoctorMsg, TreatmentMsg, MedicamentMsg, MappedObjectMsg, TreatmentActionMsg, FulfillmentMsg,\
-    DiaryFulfillmentMsg
+    DiaryFulfillmentMsg, MeasurementMsg
 
 
 class MessageModel(ndb.Model):
@@ -123,11 +123,21 @@ class Speciality(MessageModel):
         return speciality_msg
 
 
+class Measurement(MessageModel):
+
+    message_class = MeasurementMsg
+
+    name = ndb.StringProperty(required=True)
+    unit = ndb.StringProperty()
+    indications = ndb.StringProperty()
 
 class TreatmentAction(MessageModel):
 
+    MEDICAMENT_TYPE = 'M'
+    MEASUREMENT_TYPE = 'I'
+
     message_class = TreatmentActionMsg
-    ignore_fields = ('medicament', 'take_hour')
+    ignore_fields = ('medicament', 'measurement', 'take_hour')
 
     time_interval = ndb.IntegerProperty()
     action_type = ndb.StringProperty()
@@ -137,12 +147,16 @@ class TreatmentAction(MessageModel):
     made_count = ndb.IntegerProperty(default=0)
 
     medicament = ndb.KeyProperty()
+    measurement = ndb.StructuredProperty(Measurement)
 
     def from_message(self, msg):
         super(TreatmentAction, self).from_message(msg)
 
         if msg.medicament:
             self.medicament = ndb.Key(urlsafe=msg.medicament.key)
+
+        if msg.measurement:
+            self.measurement = Measurement(message=msg.measurement)
 
         if msg.take_hour:
             take_hour = parser.parse(msg.take_hour)
@@ -151,12 +165,13 @@ class TreatmentAction(MessageModel):
     def to_message(self, ignore_fields=[]):
         msg = super(TreatmentAction,self).to_message(ignore_fields)
 
-        m = self.medicament.get()
+        if (self.isForMedicamentTake()):
+            m = self.medicament.get()
 
-        if 'medicament__key' in ignore_fields:
-            msg.medicament = m.to_message(ignore_fields=['key'])
-        else:
-            msg.medicament = m.to_message()
+            if 'medicament__key' in ignore_fields:
+                msg.medicament = m.to_message(ignore_fields=['key'])
+            else:
+                msg.medicament = m.to_message()
 
         msg.action_type = self.action_type
         msg.time_interval = self.time_interval
@@ -171,6 +186,9 @@ class TreatmentAction(MessageModel):
             msg.take_hour = self.take_hour.isoformat()
 
         return msg
+
+    def isForMedicamentTake(self):
+        return self.action_type == self.MEDICAMENT_TYPE
 
 class Treatment(MessageModel):
 
