@@ -461,6 +461,8 @@ class Fulfillment(MessageModel):
 
     for_moment = ndb.DateTimeProperty()
 
+    value = ndb.IntegerProperty()
+
     def from_message(self, msg):
         super(Fulfillment, self).from_message(msg)
 
