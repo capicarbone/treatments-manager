@@ -184,7 +184,19 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 		var options = {			
 			'width': container.offsetWidth,
-			'height': 300
+			'height': 300,
+			'pointSize': 5,
+			'vAxis':{
+				'title': '% Cumplimiento',
+				'maxValue': 100,
+				'minValue': 0
+			},
+			'hAxis':{
+				'title': 'Días'
+			},
+			'animation':{
+				'duration': 1000,				
+			}
 		};
 
 		var chart = new google.visualization.LineChart(container);
@@ -211,27 +223,27 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 			$rootScope.api.treatment.diary_fulfillments({ekey: treatment_key}).execute(function(response){			
 
-				var diary_fulfillments_chartdata = [['Dia', 'Cumplimiento']];
+				if (!angular.isUndefined(response)){
+					var diary_fulfillments_chartdata = [['Dia', 'Cumplimiento']];
 
-				for (var i = response.diary_fulfillments.length - 1; i >= 0; i--) {
+					for (var i = response.diary_fulfillments.length - 1; i >= 0; i--) {
 
-					var diary_fulfillment = response.diary_fulfillments[i];
-					var data_point = []
+						var diary_fulfillment = response.diary_fulfillments[i];
+						var data_point = []
 
-					data_point[0] = diary_fulfillment.day;
-					data_point[1] = (diary_fulfillment.made_actions / diary_fulfillment.total_actions)*100;
+						data_point[0] = moment(diary_fulfillment.day).toDate();
+						data_point[1] = (diary_fulfillment.made_actions / diary_fulfillment.total_actions)*100;
 
-					diary_fulfillments_chartdata[i+1] = data_point;
+						diary_fulfillments_chartdata[i+1] = data_point;
 
-				};
+					};
 
-				$scope.diary_fulfillments_chartdata = diary_fulfillments_chartdata;
+					$scope.diary_fulfillments_chartdata = diary_fulfillments_chartdata;
 
-				google.load('visualization', '1.0', {'packages':['corechart'], 'language': 'es', 'callback': $scope.setupChart });
+					google.load('visualization', '1.0', {'packages':['corechart'], 'language': 'es', 'callback': $scope.setupChart });	
+				}				
 			});		
-
 		});
-
 	}
 
 	$scope.init()

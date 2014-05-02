@@ -83,7 +83,7 @@ class ForDoctors(remote.Service):
 
         treatment_key = ndb.Key(urlsafe=request.ekey)
 
-        result = DiaryFulfillment.query(ancestor=treatment_key)
+        result = DiaryFulfillment.query(ancestor=treatment_key).order(DiaryFulfillment.day)
 
         for r in result:
             response.diary_fulfillments.append(r.to_message())
