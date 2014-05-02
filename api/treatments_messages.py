@@ -142,7 +142,7 @@ class FulfillmentMsg(messages.Message):
 
     for_moment = messages.StringField(6)    # Momento en el que debe cumplirse el cumplimiento
 
-
+    value = messages.IntegerField(7)        # Valor de una medición
 
 class DiaryFulfillmentMsg(messages.Message):
     """
