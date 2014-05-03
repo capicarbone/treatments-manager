@@ -104,7 +104,7 @@
 			Detalles del cumplimiento	
 		</h4>	
 		<p class="subtitle-complement push" ng-show="treatment.last_report_time">
-			Último reporte del {{treatment.last_report_time_readable}}
+			Último reporte del {{treatment.last_report_time_readable()}}
 		</p>
 	</div>
 
@@ -122,11 +122,12 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td>Martes 5 de Marzo</td>
+			<tr ng-repeat="f in diaryFulfillments">
+				<td>{{f.day_readable()}}</td>
 				<td>
 					<div class="progress">
-						<div class="progress-bar" style="width: 20%">						
+						<div class="progress-bar" style="width: {{f.general_porcentage}}%">						
+							{{f.general_porcentage|number:1}}
 						</div>
 					</div>
 				</td>
@@ -149,7 +150,7 @@
 
 
 <div class="row">
-	<div class="col-md-6" ng-repeat="a in treatment.actions" >
+	<div class="col-md-6" ng-repeat="a in treatment.actions | filter:{isForMedicamentTake: true}" >
 		<div class="tm-panel">			
 			<div class="icon-box push">
 				<img src="static/img/ic_capsule.png" alt="">
@@ -170,6 +171,46 @@
 					<div class="progress-bar" style="width: {{a.fulfillment_porcentage}}%">
 						{{a.fulfillment_porcentage | number: 1}}%
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="subtitle-wrapper">
+	<h4 class="subtitle">Indicadores</h4>
+</div>
+
+
+<div class="row">
+	<div class="col-md-6" ng-repeat="a in treatment.actions | filter:{isForMeasurement: true}" >
+		<div class="tm-panel">			
+			<div class="icon-box push">
+				<img src="static/img/ic_measurement.png" alt="">
+			</div>
+			<a class="simple-button push">
+				Ver detalles
+			</a>
+			<div class="tm-panel-heading">
+				<span class="standout-more">{{a.measurement.name}} </span> {{a.measurement.unit}}				
+			</div>
+			<div class="tm-panel-body fix-height separate">
+				{{a.description()}}
+								
+			</div>
+			<div class="tm-panel-footer">
+				<p class="text-center">Cumplimiento general</p>
+				<div class="progress">
+					<div class="progress-bar" style="width: {{a.fulfillment_porcentage}}%">
+						{{a.fulfillment_porcentage | number: 1}}%
+					</div>
+				</div>
+			</div>
+
+			<div class="tm-panel-footer">
+				<p class="text-center">Comportamiento diario</p>
+				<div class="chart-container" id="{{a.id}}">
+					
 				</div>
 			</div>
 		</div>

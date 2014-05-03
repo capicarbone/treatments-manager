@@ -1,4 +1,18 @@
 
+function DiaryFulfillment(DiaryFulfillmentData){
+
+	var diary_fulfillment = DiaryFulfillmentData;
+
+	diary_fulfillment.day_readable = function(){
+
+		return moment(diary_fulfillment.day).format("dddd DD [de] MMMM [de] YYYY").capitalize();
+	}
+
+	diary_fulfillment.general_porcentage = (diary_fulfillment.made_actions / diary_fulfillment.total_actions)*100;
+
+	return diary_fulfillment;
+}
+
 function TreatmentAction (treatment_action_data) {
 	
 	var treatment_action = treatment_action_data;
@@ -9,6 +23,10 @@ function TreatmentAction (treatment_action_data) {
 
 		return "Todos los dias a las " + treatment_action.take_hour_readable;
 	}
+
+	treatment_action.isForMedicamentTake = treatment_action.action_type == 'M';
+
+	treatment_action.isForMeasurement = treatment_action.action_type == 'I';
 
 	return treatment_action;
 

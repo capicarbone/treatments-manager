@@ -13,6 +13,15 @@ class MappedObjectMsg(messages.Message):
     description = messages.StringField(1)
     for_db = messages.StringField(2)
 
+class ChartPoint(messages.Message):
+
+    value = messages.FloatField(1, required=True)
+    tag = messages.StringField(2, required=True)
+
+class ChartData(messages.Message):
+
+    points = messages.MessageField(ChartPoint,1, repeated=True)
+
 class SpecialityMsg(messages.Message):
     key = messages.StringField(1)
     name = messages.StringField(2, required=True)
@@ -69,6 +78,8 @@ class MeasurementMsg(messages.Message):
     name = messages.StringField(1)
     unit = messages.StringField(2)
     indications = messages.StringField(3)
+
+    chart_data = messages.MessageField(ChartData, 4)
 
 class TreatmentActionMsg(messages.Message):
 
@@ -162,6 +173,7 @@ class ReportFulfillmentMsg(messages.Message):
     treatment_key = messages.StringField(1, required=True)
     fulfillments = messages.MessageField(FulfillmentMsg,2, repeated=True)
     diary_fulfillments = messages.MessageField(DiaryFulfillmentMsg,3, repeated=True)
+
 
 
 

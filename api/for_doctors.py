@@ -8,11 +8,13 @@ Created on 14/02/2014
 
 import endpoints
 from google.appengine.ext import ndb
-from models import *
-from api import treatments_messages
-from api.treatments_messages import MappedObjectMsg, EntireTreatment,\
-    TreatmentsCollection, DiaryFulfillmentCollectionMsg
 from protorpc import remote, message_types, messages
+
+from api import treatments_messages
+from api.treatments_messages import MappedObjectMsg, EntireTreatment, \
+    TreatmentsCollection, DiaryFulfillmentCollectionMsg, ChartPoint, ChartData
+from models import *
+
 
 @endpoints.api(name="doctor", version="v1",
                description="API for doctor users.")
@@ -71,6 +73,22 @@ class ForDoctors(remote.Service):
         treatment_msg = treatment.to_message()
         treatment_msg.actions = treatment.get_actions_messages()
 
+        for action_msg in treatment_msg.actions:
+
+            action = TreatmentAction(action_msg)
+
+            if (action_msg.measurement):   # Revisar por qué no funciona isMeasurement
+                action_msg.measurement.chart_data = ChartData(points=[])
+                chart_points = []
+
+                fulfillments = Fulfillment.query(ancestor=ndb.Key(urlsafe=action_msg.key))
+
+                for f in fulfillments:
+                    point = ChartPoint(value=float(f.value), tag=str(f.action_moment))
+                    chart_points.append(point)
+
+                action_msg.measurement.chart_data = ChartData(points=chart_points)
+
         treatment_details = EntireTreatment(treatment=treatment_msg, patient=patient.to_message())
 
         return treatment_details
@@ -104,6 +122,19 @@ class ForDoctors(remote.Service):
 
         return TreatmentsCollection(treatments=treatments_msg)
 
+    @endpoints.method(KEY_CONTAINER, treatments_messages.ChartData,
+                      path="treatment/measurement/behavior", http_method="GET", name="treatments.measurement.behavior")
+    def measurement_behavior(self, request):
+
+        chart_points = []
+
+        fulfillments = Fulfillment.query(ancestor=ndb.Key(urlsafe=request.ekey))
+
+        for f in fulfillments:
+            point = ChartPoint(value=f.value, tag=str(f.day))
+            chart_points.append(point)
+
+        return ChartData(points=chart_points)
 
 
     @endpoints.method(treatments_messages.MedicamentMsg, treatments_messages.MedicamentMsg,
