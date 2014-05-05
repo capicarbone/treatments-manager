@@ -126,6 +126,7 @@ class Speciality(MessageModel):
 class Measurement(MessageModel):
 
     message_class = MeasurementMsg
+    ignore_fields = ('chart_data',)
 
     name = ndb.StringProperty(required=True)
     unit = ndb.StringProperty()
