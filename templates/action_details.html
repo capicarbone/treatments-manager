@@ -33,7 +33,7 @@
 		
 	</div>
 	<div class="col-md-6 squash">
-		<p class="standout-more text-center">Cumplimiento general</p>
+		<p class="standout-more text-center">Cumplimiento</p>
 
 		<div>
 			<p class="text-center standout-more-more">{{action.fulfillment_porcentage | number:1}}%</p>
@@ -45,13 +45,78 @@
 </div>
 
 <div class="subtitle-wrapper">
-		<h4 class="subtitle">
-			Detalles
-		</h4>	
-		<p class="subtitle-complement push" ng-show="treatment.last_report_time">
-			Último reporte del {{treatment.last_report_time_readable()}}
-		</p>
+	<h4 class="subtitle">
+		Detalles
+	</h4>	
+	<p class="subtitle-complement push" ng-show="treatment.last_report_time">
+		Último reporte del {{treatment.last_report_time_readable()}}
+	</p>
+</div>
+
+
+<div class="row-fluid clearfix">
+	<div class="col-md-4">
+		<p class="text-center standout more">Promedio</p>
+		<p class="text-center standout too-much without-margin fit-line">200</p>
+		<p class="text-center">mmHg</p>
 	</div>
+	<div class="col-md-4">
+		<p class="text-center standout more">Registro más alto</p>
+		<p class="text-center standout too-much without-margin fit-line">200</p>
+		<p class="text-center">mmHg</p>
+	</div>
+	<div class="col-md-4">
+		<p class="text-center standout more">Registro más abajo</p>
+		<p class="text-center standout too-much without-margin fit-line">200</p>
+		<p class="text-center">mmHg</p>
+	</div>
+</div>
+
+<div id="measurement_chart" class="separate">
+	
+</div>
+
+<div class="separate">
+	<span class="standout more">
+		Últimos 30 días	
+	</span>	
+	<div class="btn-group push">
+		<button class="btn btn-default" type="button">Todos</button>
+		<button class="btn btn-default" type="button">No realizados</button>
+		<button class="btn btn-default" type="button">Realizados</button>
+	</div>
+</div>
+
+<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Dia</th>
+				<th>Realizado a las</th>
+				<th>Debió realizar</th>
+				<th>Diferencia</th>
+				<th>Medición</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="f in diaryFulfillments | limitTo: 5">
+				<td>{{f.day_readable()}}</td>
+				<td>
+					<div class="progress">
+						<div class="progress-bar" style="width: {{f.general_porcentage}}%">						
+							{{f.general_porcentage|number:1}}
+						</div>
+					</div>
+				</td>
+				<td>
+					<div class="btn-group">
+						<a href="" class="btn btn-default">
+							<i class="glyphicon glyphicon-eye-open"></i>
+						</a>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 
 
 {% endraw %}

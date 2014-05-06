@@ -38,7 +38,10 @@ a:hover{color:#2ca02c}
 .black{color:#333}
 .red{color:#800000}
 .text-center{text-align:center}
-.standout{font-size:1.25em;font-family:'robotolight';margin-top:.6em}
+.fit-line{line-height:1em}
+.standout{font-size:1.25em;font-family:'robotolight';margin-top:.6em;}
+.standout.more{font-size:1.5em;margin-top:.5em;margin-bottom:.5em}
+.standout.too-much{font-size:2.8em}
 .standout-more{font-size:1.5em;margin-top:.5em;margin-bottom:.5em}
 .standout-more-more{font-size:2.8em}
 .help-text{font-size:.9em}
