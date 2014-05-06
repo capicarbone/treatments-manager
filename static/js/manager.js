@@ -32,6 +32,10 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 		controller: 'TreatmentDetailCtrl',
 		templateUrl:'template/treatment_details.html'
 	})
+	.when('/tratamiento/accion/:action_key',{
+		controller: 'TreatmentActionDetailCtrl',
+		templateUrl:'template/action_details.html'
+	})
 
 	// Medicaments Routes
 
@@ -303,6 +307,11 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 	}
 
 	$scope.init()
+
+})
+
+.controller('TreatmentActionDetailCtrl', function($scope, $rootScope){
+
 
 })
 
