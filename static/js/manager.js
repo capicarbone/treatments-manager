@@ -211,7 +211,6 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 		var chart = new google.visualization.LineChart(container);
 		chart.draw(data, options);
 
-
 		var actions = $scope.treatment.actions;
 
 		for (var i = actions.length - 1; i >= 0; i--) {
@@ -278,7 +277,7 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 			$rootScope.api.treatment.diary_fulfillments({ekey: treatment_key}).execute(function(response){			
 
-				if (!angular.isUndefined(response)){
+				if (!angular.isUndefined(response) && !angular.isUndefined(response.diary_fulfillments)){
 					var diary_fulfillments_chartdata = [['Dia', 'Cumplimiento']];
 
 					$scope.diaryFulfillments = response.diary_fulfillments;
