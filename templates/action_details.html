@@ -1,0 +1,57 @@
+
+{% raw %}
+
+<div class="section-title">
+	<h1 class="title">{{section_title}}</h1>
+	<h3 class="complement">Paciente: Abelardo Torres</h3>
+</div>
+
+<div class="row-fluid clearfix">
+	<div class="col-md-6 sidebox">
+		<div class="subtitle-wrapper without-margin">
+			<h4 class="subtitle text-center">Descripción</h4>	
+		</div>
+		
+		<div class="body">			
+			
+			<div class="row-fluid clearfix">
+				<div class="col-md-8">
+					<span class="standout">Régimen: </span>
+					<br/>
+					Todos los dias a las 8:30 PM
+				</div>
+				<div class="col-md-4">
+					<span class="standout">Medido en: </span>
+					<br/>
+					mmHg
+				</div>				
+			</div>
+
+			<p class="standout separate">Indicaciones:</p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque, nulla aliquid quidem quis maiores a amet perspiciatis similique inventore? Harum, illo iusto maxime nulla magnam excepturi asperiores repellat ea commodi?</p>
+		</div>
+		
+	</div>
+	<div class="col-md-6 squash">
+		<p class="standout-more text-center">Cumplimiento general</p>
+
+		<div>
+			<p class="text-center standout-more-more">{{action.fulfillment_porcentage | number:1}}%</p>
+			<div class="progress">
+				<div class="progress-bar" style="width: {{action.fulfillment_porcentage}}%"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="subtitle-wrapper">
+		<h4 class="subtitle">
+			Detalles
+		</h4>	
+		<p class="subtitle-complement push" ng-show="treatment.last_report_time">
+			Último reporte del {{treatment.last_report_time_readable()}}
+		</p>
+	</div>
+
+
+{% endraw %}

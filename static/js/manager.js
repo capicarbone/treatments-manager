@@ -311,7 +311,12 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 .controller('TreatmentActionDetailCtrl', function($scope, $rootScope){
 
+	$scope.init = function(){
 
+		$rootScope.section_title = "Tensión arterial"
+	}
+
+	$scope.init();
 })
 
 // ######## Treatment Form Controller ########
