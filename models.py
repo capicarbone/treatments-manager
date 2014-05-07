@@ -147,7 +147,7 @@ class TreatmentAction(MessageModel):
     MEASUREMENT_TYPE = 'I'
 
     message_class = TreatmentActionMsg
-    ignore_fields = ('medicament', 'measurement', 'take_hour')
+    ignore_fields = ('medicament', 'measurement', 'take_hour', 'fulfillments')
 
     time_interval = ndb.IntegerProperty()
     action_type = ndb.StringProperty()

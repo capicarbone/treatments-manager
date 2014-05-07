@@ -309,11 +309,35 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 })
 
-.controller('TreatmentActionDetailCtrl', function($scope, $rootScope){
+.controller('TreatmentActionDetailCtrl', function($scope, $rootScope, $routeParams){
 
 	$scope.init = function(){
 
-		$rootScope.section_title = "Tensión arterial"
+		$rootScope.section_title = "";
+
+		var action_key = $routeParams.action_key;
+
+		var request_params = {
+			fulfillments_range_init : 0,
+			fulfillments_range_init : 30,
+			ekey: action_key
+		}
+
+		$rootScope.api.treatment.action.get(request_params).execute(function (response) {
+			
+			$scope.action = new TreatmentAction(response);
+
+			if ($scope.action.isForMeasurement){
+				$rootScope.section_title = $scope.action.measurement.name
+			}
+
+			if ($scope.action.isForMedicamentTake){
+
+			}
+
+			$scope.$apply();
+			
+		})
 	}
 
 	$scope.init();

@@ -25,6 +25,11 @@ class ForDoctors(remote.Service):
     KEY_CONTAINER = endpoints.ResourceContainer(ekey=messages.StringField(1))
     ID_CONTAINER = endpoints.ResourceContainer(id=messages.StringField(1))
 
+    ACTION_REQUEST_PARAMS = endpoints.ResourceContainer(fulfillments_range_init=messages.IntegerField(1),
+                                                        fulfillments_range_finish=messages.IntegerField(2),
+                                                        ekey=messages.StringField(4)
+                                                        )
+
     @endpoints.method(treatments_messages.PatientMsg, treatments_messages.PatientMsg,
                       path="patient", http_method="POST", name="patient.save")
     def patient_save(self, patient_msg):
@@ -35,8 +40,6 @@ class ForDoctors(remote.Service):
         patient_msg = patient.to_message(ignore_fields=('doctor_key',))
 
         return patient_msg
-
-
 
     # --------------- Treatments ---------------
 
@@ -188,6 +191,29 @@ class ForDoctors(remote.Service):
             patients_msg.append(p.to_message(ignore_fields=('doctor_key',), with_active_treatment=True))
 
         return treatments_messages.PatientsCollection(patients=patients_msg)
+
+    @endpoints.method(ACTION_REQUEST_PARAMS, treatments_messages.TreatmentActionMsg,
+                      path="treatment/action", http_method="GET", name="treatment.action.get")
+    def action_details(self, request):
+
+        action = ndb.Key(urlsafe=request.ekey).get()
+
+        action_msg = action.to_message()
+
+        if request.fulfillments_range_init and request.fulfillments_range_finish:
+            query = Fulfillment.query()
+            fulfillments = query.fetch(request.fulfillments_range_finish, ancestor=action.key()).order(Fulfillment.for_moment)
+
+            fulfillments_msgs = []
+
+            for f in fulfillments:
+
+                fulfillments_msgs.append(f.to_message)
+
+            action_msg.fulfillments = fulfillments_msgs
+
+        return action_msg
+
 
 
 

@@ -97,6 +97,9 @@ class TreatmentActionMsg(messages.Message):
 
     fulfillment_porcentage = messages.FloatField(9)
 
+    # Not in model
+
+    fulfillments = messages.MessageField('FulfillmentMsg', 11, repeated=True)
 
 class TreatmentMsg(messages.Message):
 
