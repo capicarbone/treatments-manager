@@ -319,7 +319,7 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 		var request_params = {
 			fulfillments_range_init : 0,
-			fulfillments_range_init : 30,
+			fulfillments_range_finish : 30,
 			ekey: action_key
 		}
 

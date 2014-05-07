@@ -14,3 +14,8 @@ indexes:
   ancestor: yes
   properties:
   - name: day
+
+- kind: Fulfillment
+  ancestor: yes
+  properties:
+  - name: for_moment

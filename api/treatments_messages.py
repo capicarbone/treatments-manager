@@ -148,7 +148,7 @@ class MedicamentsCollection(messages.Message):
 
 class FulfillmentMsg(messages.Message):
 
-    action_id = messages.StringField(1, required=True)
+    action_id = messages.StringField(1)
     decision = messages.StringField(2)
     action_moment = messages.StringField(3)  # Momento en que se especificó el cumplimiento
     reason = messages.StringField(4)

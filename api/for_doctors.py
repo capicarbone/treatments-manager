@@ -200,15 +200,15 @@ class ForDoctors(remote.Service):
 
         action_msg = action.to_message()
 
-        if request.fulfillments_range_init and request.fulfillments_range_finish:
-            query = Fulfillment.query()
-            fulfillments = query.fetch(request.fulfillments_range_finish, ancestor=action.key()).order(Fulfillment.for_moment)
+        if request.fulfillments_range_init is not None and request.fulfillments_range_finish is not None:
+            query = Fulfillment.query(ancestor=action.key).order(Fulfillment.for_moment)
+            fulfillments = query.fetch(request.fulfillments_range_finish)
 
             fulfillments_msgs = []
 
             for f in fulfillments:
 
-                fulfillments_msgs.append(f.to_message)
+                fulfillments_msgs.append(f.to_message())
 
             action_msg.fulfillments = fulfillments_msgs
 

@@ -13,6 +13,62 @@ function DiaryFulfillment(DiaryFulfillmentData){
 	return diary_fulfillment;
 }
 
+function Fulfillment(fulfillment_data){
+
+	var fulfillment = fulfillment_data;
+
+	fulfillment.day_readable = moment(fulfillment.for_moment).format("DD/MM/YY")
+
+	fulfillment.realization_time = moment(fulfillment.for_moment).format("hh:mm a");
+	fulfillment.realized_time = moment(fulfillment.action_moment).format("hh:mm a");
+	fulfillment.difference_time = moment(fulfillment.for_moment).from(fulfillment.action_moment, true);
+
+	return fulfillment;
+}
+
+function Measurement(measurement_data, fulfillments){
+
+	var measurement = measurement_data;
+	measurement.fulfillments = fulfillments;
+
+	measurement.highter_record = function(){
+
+		var highter_value = 0;
+
+		for (var i = measurement.fulfillments.length - 1; i >= 0; i--) {
+			if ( measurement.fulfillments[i].value > highter_value)
+				highter_value = measurement.fulfillments[i].value;
+		}	
+
+		return highter_value;
+	}
+
+	measurement.lowest_record = function(){
+
+		var lowest_value = measurement.fulfillments[0];
+
+		for (var i = measurement.fulfillments.length - 1; i >= 0; i--) {
+			if ( measurement.fulfillments[i].value < lowest_value)
+				lowest_value = measurement.fulfillments[i].value;
+		}	
+
+		return lowest_value;
+	}
+
+	measurement.average= function(){
+
+		var sum = 0;
+
+		for (var i = measurement.fulfillments.length - 1; i >= 1; i--) {			
+				sum = sum + measurement.fulfillments[i].value;
+		}	
+
+		return sum / measurement.fulfillments.length;
+	}
+
+	return measurement;
+}
+
 function TreatmentAction (treatment_action_data) {
 	
 	var treatment_action = treatment_action_data;
@@ -27,6 +83,22 @@ function TreatmentAction (treatment_action_data) {
 	treatment_action.isForMedicamentTake = treatment_action.action_type == 'M';
 
 	treatment_action.isForMeasurement = treatment_action.action_type == 'I';
+
+	if (treatment_action.isForMeasurement){
+		treatment_action.measurement = new Measurement(treatment_action.measurement, treatment_action.fulfillments);
+	}
+
+	if (treatment_action.fulfillments){
+
+		var fulfillments = [];
+
+		for (var i = treatment_action.fulfillments.length - 1; i >= 0; i--) {
+
+			fulfillments[i] = new Fulfillment(treatment_action.fulfillments[i]);
+		};
+
+		treatment_action.fulfillments = fulfillments;
+	}
 
 	return treatment_action;
 

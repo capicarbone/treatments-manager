@@ -18,17 +18,17 @@
 				<div class="col-md-8">
 					<span class="standout">Régimen: </span>
 					<br/>
-					Todos los dias a las 8:30 PM
+					{{action.description()}}
 				</div>
 				<div class="col-md-4">
 					<span class="standout">Medido en: </span>
 					<br/>
-					mmHg
+					{{action.measurement.unit}}
 				</div>				
 			</div>
 
 			<p class="standout separate">Indicaciones:</p>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque, nulla aliquid quidem quis maiores a amet perspiciatis similique inventore? Harum, illo iusto maxime nulla magnam excepturi asperiores repellat ea commodi?</p>
+			<p>{{action.measurement.indications}}</p>
 		</div>
 		
 	</div>
@@ -57,18 +57,18 @@
 <div class="row-fluid clearfix">
 	<div class="col-md-4">
 		<p class="text-center standout more">Promedio</p>
-		<p class="text-center standout too-much without-margin fit-line">200</p>
-		<p class="text-center">mmHg</p>
+		<p class="text-center standout too-much without-margin fit-line">{{action.measurement.average() | number:2}}</p>
+		<p class="text-center">{{action.measurement.unit}}</p>
 	</div>
 	<div class="col-md-4">
 		<p class="text-center standout more">Registro más alto</p>
-		<p class="text-center standout too-much without-margin fit-line">200</p>
-		<p class="text-center">mmHg</p>
+		<p class="text-center standout too-much without-margin fit-line">{{action.measurement.highter_record()}}</p>
+		<p class="text-center">{{action.measurement.unit}}</p>
 	</div>
 	<div class="col-md-4">
-		<p class="text-center standout more">Registro más abajo</p>
-		<p class="text-center standout too-much without-margin fit-line">200</p>
-		<p class="text-center">mmHg</p>
+		<p class="text-center standout more">Registro más bajo</p>
+		<p class="text-center standout too-much without-margin fit-line">{{action.measurement.lowest_record()}}</p>
+		<p class="text-center">{{action.measurement.unit}}</p>
 	</div>
 </div>
 
@@ -98,22 +98,12 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="f in diaryFulfillments | limitTo: 5">
-				<td>{{f.day_readable()}}</td>
-				<td>
-					<div class="progress">
-						<div class="progress-bar" style="width: {{f.general_porcentage}}%">						
-							{{f.general_porcentage|number:1}}
-						</div>
-					</div>
-				</td>
-				<td>
-					<div class="btn-group">
-						<a href="" class="btn btn-default">
-							<i class="glyphicon glyphicon-eye-open"></i>
-						</a>
-					</div>
-				</td>
+			<tr ng-repeat="f in action.fulfillments">
+				<td>{{f.day_readable}}</td>
+				<td>{{f.realization_time}}</td>
+				<td>{{f.realized_time}}</td>
+				<td>{{f.difference_time}}</td>
+				<td>{{f.value}}</td>
 			</tr>
 		</tbody>
 	</table>

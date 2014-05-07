@@ -196,6 +196,8 @@ class TreatmentAction(MessageModel):
 
         if self.past_count and self.past_count != 0:
             msg.fulfillment_porcentage = float(float(self.made_count) / float(self.past_count))*100.0
+        else:
+            msg.fulfillment_porcentage = 0.0
 
         if self.take_hour:
             msg.take_hour = self.take_hour.isoformat()
@@ -472,6 +474,20 @@ class Fulfillment(MessageModel):
 
         if msg.for_moment:
             self.for_moment = parser.parse(msg.for_moment)
+
+    def to_message(self):
+
+        msg = super(Fulfillment, self).to_message()
+
+        msg.decision = self.decision
+        msg.reason = self.reason
+        msg.action_moment = str(self.action_moment)
+        msg.minutes_delayed = self.minutes_delayed
+        msg.for_moment = str(self.for_moment)
+
+        msg.value = self.value
+
+        return msg
 
     def is_not_realized(self):
         return self.decision == self.DESICION_NOT_REALIZED
