@@ -47,7 +47,7 @@ function Measurement(measurement_data, fulfillments){
 
 		var lowest_value = measurement.fulfillments[0];
 
-		for (var i = measurement.fulfillments.length - 1; i >= 0; i--) {
+		for (var i = measurement.fulfillments.length - 1; i >= 1; i--) {
 			if ( measurement.fulfillments[i].value < lowest_value)
 				lowest_value = measurement.fulfillments[i].value;
 		}	
@@ -59,9 +59,9 @@ function Measurement(measurement_data, fulfillments){
 
 		var sum = 0;
 
-		for (var i = measurement.fulfillments.length - 1; i >= 1; i--) {			
-				sum = sum + measurement.fulfillments[i].value;
-		}	
+		for (var i = measurement.fulfillments.length - 1; i >= 0; i--) {			
+			sum = sum + measurement.fulfillments[i].value*1;
+		}		
 
 		return sum / measurement.fulfillments.length;
 	}
