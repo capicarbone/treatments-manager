@@ -31,6 +31,11 @@ function Measurement(measurement_data, fulfillments){
 	var measurement = measurement_data;
 	measurement.fulfillments = fulfillments;
 
+	if (fulfillments)
+		for (var i = measurement.fulfillments.length - 1; i >= 0; i--) {			
+			measurement.fulfillments[i].value = measurement.fulfillments[i].value*1;
+		}	
+
 	measurement.highter_record = function(){
 
 		var highter_value = 0;
@@ -45,7 +50,7 @@ function Measurement(measurement_data, fulfillments){
 
 	measurement.lowest_record = function(){
 
-		var lowest_value = measurement.fulfillments[0];
+		var lowest_value = measurement.fulfillments[0].value;
 
 		for (var i = measurement.fulfillments.length - 1; i >= 1; i--) {
 			if ( measurement.fulfillments[i].value < lowest_value)

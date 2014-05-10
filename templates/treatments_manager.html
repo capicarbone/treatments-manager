@@ -4,6 +4,7 @@
 		<h1 class="title">{{section_title}}</h1>
 	</div>
 
+	<input class="search-input" type="text" ng-model="search" placeholder="Introduzca algun nombre para buscar">
 	<table class="table table-hover">
 		<thead>
 			<tr>
@@ -14,7 +15,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="treatment in treatments">
+			<tr ng-repeat="treatment in treatments | filter: search">
 				<td> {{treatment.patient.person.first_name}} {{treatment.patient.person.last_name}}</td>				
 				<td> {{treatment.objetives}}</td>
 				<td>

@@ -360,13 +360,13 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 			if ($scope.action.isForMeasurement){
 				$rootScope.section_title = $scope.action.measurement.name
 
-				$scope.measurement_chardata = [['Dias', 'Registro']];
+				$scope.measurement_chartdata = [['Dias', 'Registro']];
 
 				for (var i = $scope.action.measurement.fulfillments.length - 1; i >= 0; i--) {
 
-					$scope.measurement_chardata[i+1] = [];
-					$scope.measurement_chardata[i+1][0] = moment($scope.action.measurement.fulfillments[i].for_moment).toDate();
-					$scope.measurement_chardata[i+1][1] = $scope.action.measurement.fulfillments[i].value;
+					$scope.measurement_chartdata[i+1] = [];
+					$scope.measurement_chartdata[i+1][0] = moment($scope.action.measurement.fulfillments[i].for_moment).toDate();
+					$scope.measurement_chartdata[i+1][1] = $scope.action.measurement.fulfillments[i].value*1;
 				};
 			}
 

@@ -69,3 +69,5 @@ a:hover{color:#2ca02c}
 .main{padding-left:5em;padding-top:2.5em}
 .progress{background-color:#d6d6d6}
 .display-code{font-weight:bolder;letter-spacing:.08em}
+.search-input{width:100%;text-align:center;border:0;background-color:#f3f3f3;transition:.2s all ease;padding:.3em;}
+.search-input:focus{padding:.8em;border-bottom:1px dotted #2ca02c}
