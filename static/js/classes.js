@@ -17,12 +17,29 @@ function Fulfillment(fulfillment_data){
 
 	var fulfillment = fulfillment_data;
 
+	fulfillment.DECISIONS = {
+		'T': 'Realizado',
+		'N': 'No realizado',
+		'P': 'Postergado'
+	}
+
+	fulfillment.realized = function(){
+		return fulfillment.decision == 'T';
+	}
+
 	fulfillment.day_readable = moment(fulfillment.for_moment).format("DD/MM/YY")
 
 	fulfillment.realization_time = moment(fulfillment.for_moment).format("hh:mm a");
-	fulfillment.realized_time = moment(fulfillment.action_moment).format("hh:mm a");
-	fulfillment.difference_time = moment(fulfillment.for_moment).from(fulfillment.action_moment, true);
 
+	if (fulfillment.realized()){
+		fulfillment.realized_time = moment(fulfillment.action_moment).format("hh:mm a");
+		fulfillment.difference_time = moment(fulfillment.for_moment).from(fulfillment.action_moment, true);	
+	}else{
+		fulfillment.realized_time = '--';
+		fulfillment.difference_time = '--';
+		fulfillment.value = '--';
+	}
+	
 	return fulfillment;
 }
 
@@ -63,12 +80,17 @@ function Measurement(measurement_data, fulfillments){
 	measurement.average= function(){
 
 		var sum = 0;
+		var totals = measurement.fulfillments.length;
 
-		for (var i = measurement.fulfillments.length - 1; i >= 0; i--) {			
-			sum = sum + measurement.fulfillments[i].value*1;
+		for (var i = totals - 1; i >= 0; i--) {	
+
+			if (measurement.fulfillments[i].realized())		
+				sum = sum + measurement.fulfillments[i].value*1;
+			else
+				totals = totals - 1;
 		}		
 
-		return sum / measurement.fulfillments.length;
+		return sum / totals;
 	}
 
 	return measurement;
