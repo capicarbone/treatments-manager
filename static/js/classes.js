@@ -143,6 +143,10 @@ function Treatment(treatment_data){
 		return moment(treatment.init_date).format("dddd DD [de] MMMM [de] YYYY").capitalize();
 	}
 
+	treatment.init_date_readable_short = function(){
+		return moment(treatment.init_date).format("DD/MM/YY")
+	}
+
 	treatment.last_report_time_readable = function(){
 		return moment(treatment.last_report_time).format("DD / MM / YY [a las] H:mm A");
 	}
@@ -167,7 +171,14 @@ function Patient(patient_data){
 
 	patient.allergies = Utils.messageForBlank(patient.allergies);
 
-	patient.person.gender_readable = patient.GENDERS[patient.person.gender] 
+	patient.person.gender_readable = patient.GENDERS[patient.person.gender];
+
+	patient.person.short_name = function(){
+		var first_name = patient.person.first_name.split(" ")[0];
+		var last_name = patient.person.last_name.split(" ")[0];
+
+		return first_name + " " + last_name;
+	}
 
 	return patient;
 }

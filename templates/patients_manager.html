@@ -15,7 +15,7 @@
 
 	<table class="table table-hover">
 		<thead>
-			<tr>
+			<tr>				
 				<th>Nombre y Apellido</th>
 				<th>Sexo</th>
 				<th></th>
@@ -24,14 +24,14 @@
 		<tbody>
 			<tr ng-repeat="patient in patients">
 				<td>
-					{{patient.person.first_name}} {{patient.person.last_name}}
+					{{patient.person.first_name}} {{patient.person.last_name}}				
 				</td>
-				<td>
-					{{patient.person.gender}}
+				<td>	
+					{{patient.person.gender_readable}}
 				</td>
 				<td>
 					<div class="btn-group">
-						<a href="" class="btn btn-default">
+						<a href="#paciente/{{patient.key}}" class="btn btn-default">
 							<i class="glyphicon glyphicon-eye-open">								
 							</i>		
 						</a>

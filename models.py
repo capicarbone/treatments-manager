@@ -237,7 +237,7 @@ class Treatment(MessageModel):
         msg.is_active = self.is_active
         msg.objetives = self.objetives
         msg.created_at = self.created_at.isoformat()
-        msg.init_date = msg.created_at     # TODO: Deberia ser la fecha guardada en la bd
+        msg.init_date = datetime.date(self.created_at.year, self.created_at.month, self.created_at.day).isoformat()    # TODO: Deberia ser la fecha guardada en la bd
         msg.past_actions_count = self.past_actions_count
         msg.made_actions_count = self.made_actions_count
         msg.last_report_time = self.last_report_time.isoformat() if self.last_report_time else None
@@ -325,6 +325,9 @@ class Patient(MessageModel):
     birthday = ndb.DateProperty()
     blood_type = ndb.StringProperty()
     allergies = ndb.StringProperty()
+
+    created_at = ndb.DateTimeProperty(auto_now_add=True)
+
 
     def from_message(self, patient_msg):
 

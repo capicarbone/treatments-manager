@@ -41,6 +41,30 @@ class ForDoctors(remote.Service):
 
         return patient_msg
 
+    @endpoints.method(KEY_CONTAINER, treatments_messages.PatientMsg,
+                      path="patient/get", http_method="GET", name="patient.details")
+    def patient_details(self, request):
+
+        patient = ndb.Key(urlsafe=request.ekey).get()
+
+        patient_msg = patient.to_message()
+
+        return patient_msg
+
+    @endpoints.method(KEY_CONTAINER, treatments_messages.TreatmentsCollection,
+                      path="patient/treatments", http_method="GET", name="patient.treatments")
+    def patient_treatments(self, request):
+
+        patient_key = ndb.Key(urlsafe=request.ekey)
+        treatments = Treatment.query(ancestor=patient_key)
+
+        treatments_msgs = []
+
+        for t in treatments:
+            treatments_msgs.append(t.to_message())
+
+        return TreatmentsCollection(treatments=treatments_msgs)
+
     # --------------- Treatments ---------------
 
     @endpoints.method(treatments_messages.TreatmentMsg, treatments_messages.TreatmentMsg,
