@@ -24,7 +24,7 @@ angular.module('tmComponents', [])
 	}
 })
 
-.directive('tmOption', function() {
+.directive('tmOption', function($location) {
 	return {
 	  require: '^tmMenu',
 	  restrict: 'E',
@@ -34,8 +34,23 @@ angular.module('tmComponents', [])
 	  link: function(scope, element, attrs, tmMenuCtrl) {
 	    tmMenuCtrl.addOption(scope);
 
+
+	     
 	  },
 	  controller: function($scope){
+
+	  		$scope.location = $location;
+
+	  		// TODO: Se coloca -2 para quitar la S del plural pero no debería ser así
+	  		$scope.url_value = $scope.url.substr(1,$scope.url.length-2);
+
+	    	$scope.$watch('location.path()', function(value){
+
+	    		if ( $scope.url_value != "/" && value.indexOf($scope.url_value) != -1 ){
+	    			$scope.selectThis();
+	    		}
+
+	    	});
 	
 			$scope.selectThis = function(){
 				var sibling = $scope.$$nextSibling;
