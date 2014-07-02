@@ -77,3 +77,29 @@ angular.module('tmComponents', [])
 	           '</li>' 
 	};
 })
+
+.directive('tmBackButton', function($window){
+    return {
+        template: '<a><span>Volver</span></a>',
+        restrict: 'E',
+        link: function(scope, element, attrs){
+            element.on('click', function(e){
+                $window.back();
+            });
+        }
+    }
+})
+
+.directive('tmSectionTitle', function(){
+    return {        
+        templateUrl: 'template/tm-section-title.html',        
+        restrict: 'E',
+        transclude: true,
+        scope: {
+            addUrl: '=add',
+        }
+    }
+})
+           
+
+
