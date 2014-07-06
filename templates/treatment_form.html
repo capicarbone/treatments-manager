@@ -52,11 +52,11 @@
 							<input type="radio" ng-model="action.regime_type" value="E" > Hora específica		
 						</div>
 						<div class="col-md-6">
-							<input type="radio" ng-model="action.regime_type" value="C"> Cada cierto tiempo		
+							<input type="radio" ng-model="action.regime_type" value="I"> Cada cierto tiempo		
 						</div>
 					</div>
 					
-					<div class="form-group" ng-show="specific_hour_selected()">
+					<div class="form-group" ng-show="specificHourSelected()">
 						<label for="Tipo de sangre" class="control-label col-md-2">
 							Hora
 						</label>
@@ -69,6 +69,12 @@
 							</div>
 							
 						</div>
+					</div>
+
+					<div class="form-group" ng-show="rangeHourSelected()">
+						Realizada cada 
+						<input type="text" class="form-control" name="time_interval", ng-model="action.time_interval"
+						>
 					</div>
 
 					<div class="buttons" ng-show="isFormActive()">
@@ -153,7 +159,9 @@
 					</div>
 					<div class="col-md-4">
 					<strong>{{action.readable_take_hour}}</strong>
-						
+					<span ng-show="action.regimeIsTimeInterval">
+						Cada {{action.time_interval}} horas
+					</span>	
 					</div>
 				</div>
 				

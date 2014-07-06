@@ -127,6 +127,8 @@ function TreatmentAction (treatment_action_data) {
 		treatment_action.fulfillments = fulfillments;
 	}
 
+	treatment_action.regimeIsTimeInterval = treatment_action.regime_type ==	 Consts.TreatmentAction.regimeTypes.TIME_INTERVAL
+
 	return treatment_action;
 
 }

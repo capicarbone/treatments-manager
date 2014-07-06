@@ -146,10 +146,20 @@ class TreatmentAction(MessageModel):
     MEDICAMENT_TYPE = 'M'
     MEASUREMENT_TYPE = 'I'
 
+    REGIME_TYPE_SPECIFIC = 'E'
+    REGIME_INTERVAL_TIME = 'I'
+
     message_class = TreatmentActionMsg
     ignore_fields = ('medicament', 'measurement', 'take_hour', 'fulfillments')
 
+    """ Rango de minutos en los que debe repetirse la acción
+    """
     time_interval = ndb.IntegerProperty()
+
+    """ Describe si es una accion para realizarse a una hora específica
+        o cada cierto tiempo
+    """
+    regime_type = ndb.StringProperty()
     action_type = ndb.StringProperty()
     take_hour = ndb.TimeProperty()
 
@@ -189,6 +199,7 @@ class TreatmentAction(MessageModel):
             msg.measurement = self.measurement.to_message()
 
         msg.action_type = self.action_type
+        msg.regime_type = self.regime_type
         msg.time_interval = self.time_interval
         msg.made_count = self.made_count
         msg.past_count = self.past_count

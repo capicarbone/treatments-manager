@@ -86,6 +86,7 @@ class TreatmentActionMsg(messages.Message):
     key = messages.StringField(5)
     id = messages.StringField(6)
     time_interval = messages.IntegerField(1)
+    regime_type = messages.StringField(12)
     action_type = messages.StringField(2)
     take_hour = messages.StringField(3)
 

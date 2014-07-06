@@ -424,7 +424,7 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 	$scope.medicaments = []
 
 	$scope.action = {}
-	$scope.action.regime_type = 'E';
+	$scope.action.regime_type = Consts.TreatmentAction.regimeTypes.SPECIFIC_HOUR;
 
 	$scope.actions = []
 
@@ -466,8 +466,13 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 	}	
 
-	$scope.specific_hour_selected = function(){
-		return $scope.action.regime_type == 'E';
+	$scope.specificHourSelected = function(){
+		return $scope.action.regime_type == Consts.TreatmentAction.regimeTypes.SPECIFIC_HOUR;
+	}
+
+	$scope.rangeHourSelected = function(){
+		console.log("Se ejecuta");
+		return $scope.action.regime_type == Consts.TreatmentAction.regimeTypes.TIME_INTERVAL;
 	}
 
 
@@ -513,7 +518,7 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 			action.readable_take_hour = $scope.action.readable_take_hour;
 
-			$scope.actions.push(action);			
+			$scope.actions.push(new TreatmentAction(action));			
 
 			delete $scope.action.medicament;
 			$scope.action.take_hour = "";
@@ -544,8 +549,7 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 	$scope.delete_action = function(index){
 
-		$scope.actions.pop(index);
-		console.log("Hola");
+		$scope.actions.pop(index);		
 
 	}
 
