@@ -25,7 +25,11 @@
 					<button class="btn btn-default" ng-click="medicament_take_form()">Agregar medicamento</button>
 				</div>
 				<div class="btn-group"><button class="btn btn-default" ng-click="measurement_take_form()">Agregar indicador</button></div>
-			</div>					
+			</div>		
+
+			<p>
+				{{ fields.inputdate('Realizar hasta', 'action.readable_finish_date', 'measurement_finish_date', label_cols='4', input_cols='8')}}			
+			</p>			
 
 			<div class="measurement_form" ng-show="measurement_take_form_fl">
 
@@ -62,7 +66,7 @@
 							Hora
 						</label>
 						<div class="col-md-4">
-							<div class="input-group date" id="take_time_picker">
+							<div class="input-group" id="take_time_picker">
 								<input type="text" class="form-control" name="take_hour" ng-model="action.readable_take_hour" id="take_hour">
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-time"></i>

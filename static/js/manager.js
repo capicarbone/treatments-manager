@@ -123,7 +123,6 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 	    		$scope.patient.birthday = moment(e.date).format();
 	    	})
 	    })
-
 	}
 
 	$scope.savePatient = function(){
@@ -442,7 +441,28 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 		return $scope.medicament_take_form_fl || $scope.measurement_take_form_fl;
 	}
 
+	$scope.initFinishDateField = function(){		
+
+	    $(".input-group.date").datepicker({
+	    	format: "dd / mm / yyyy",	    	
+    		language: "es",    		
+    		autoclose: true
+	    })
+	    .on('changeDate', function(e){	    	
+
+	    	console.log("Cambiado");
+
+	    	$scope.$apply(function(){	    		
+	    		$scope.action.readable_finish_date = e.format();
+	    		console.log(e);
+	    		$scope.action.finish_date = moment(e.date).format();	    		
+	    	})
+	    })
+	}
+
 	$scope.init = function(){
+
+		$scope.initFinishDateField();
 
 		$rootScope.api.medicaments.all().execute(function(res){
 

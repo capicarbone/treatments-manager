@@ -2,11 +2,11 @@
 {% macro input(label='', model='', name='', required=False, label_cols='2', input_cols='4') %}
 
 	<div class="form-group">
-		<label for="Tipo de sangre" class="control-label col-md-{{label_cols}}">
+		<label for="{{name}}" class="control-label col-md-{{label_cols}}">
 			{{label}}
 		</label>
 		<div class="col-md-{{input_cols}}">
-			<input type="text" class="form-control" ng-model="{{model}}" name="{{name}}" 
+			<input type="text" class="form-control" ng-model="{{model}}" name="{{name}}"
 			{% if required %}
 			required
 			{% endif %}
@@ -19,11 +19,11 @@
 {% macro textarea(label='', model='', name='', required=False, label_cols='2', input_cols='4') %}
 
 	<div class="form-group">
-		<label for="Tipo de sangre" class="control-label col-md-{{label_cols}}">
+		<label for="{{name}}" class="control-label col-md-{{label_cols}}">
 			{{label}}
 		</label>
 		<div class="col-md-{{input_cols}}">
-			<textarea class="form-control" ng-model="{{model}}" name="{{name}}" 
+			<textarea class="form-control" ng-model="{{model}}" name="{{name}}"
 			{% if required %}
 			required
 			{% endif %}
@@ -36,11 +36,11 @@
 {% macro select(label='', model='', name='', options='', neutral_option="", required=False, label_cols='2', input_cols='4') %}
 
 	<div class="form-group">
-		<label for="Tipo de sangre" class="control-label col-md-{{label_cols}}">
+		<label for="{{name}}" class="control-label col-md-{{label_cols}}">
 			{{label}}
 		</label>
 		<div class="col-md-{{input_cols}}">
-			<select class="form-control" ng-model="{{model}}" name="{{name}}" 
+			<select class="form-control" ng-model="{{model}}" name="{{name}}"
 			ng-options="{{options}}"
 			{% if required %}
 			required
@@ -54,4 +54,27 @@
 		</div>
 	</div>
 
+{% endmacro %}
+
+{% macro inputdate(label='', model='', name='', options='', neutral_option="", required=False, label_cols='2', input_cols='4') %}
+
+	<div class="form-group">
+		<label for="{{name}}" class="control-label col-md-{{label_cols}}">
+			{{label}}
+		</label>
+		<div class="col-md-{{input_cols}}">
+
+			<div class="input-group date">
+				<input type="text" class="form-control" ng-model="{{model}}" name="{{name}}"
+				{% if required %}
+				required
+				{% endif %}>
+				<span class="input-group-addon">
+				  	<i class="glyphicon glyphicon-th"></i>
+				  </span>
+
+			</div>
+			
+		</div>
+	</div>
 {% endmacro %}

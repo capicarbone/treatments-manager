@@ -98,6 +98,8 @@ class TreatmentActionMsg(messages.Message):
 
     fulfillment_porcentage = messages.FloatField(9)
 
+    finish_date = messages.StringField(13)
+
     # Not in model
 
     fulfillments = messages.MessageField('FulfillmentMsg', 11, repeated=True)
@@ -111,6 +113,7 @@ class TreatmentMsg(messages.Message):
     patient_key = messages.StringField(7)
     past_actions_count = messages.IntegerField(11, default=0)
     made_actions_count = messages.IntegerField(12, default=0)
+    finish_date = messages.StringField(18)
 
     fulfillment_porcentage = messages.FloatField(13)
 

@@ -79,12 +79,22 @@ class ForDoctors(remote.Service):
         treatment.past_actions_count = 0
         treatment.put()
 
+        last_finish_date = None
+
         for a in treatment_msg.actions:
             action = TreatmentAction(message=a, parent=treatment.key)
             action.made_count = 0
             action.past_count = 0
             action.put()
             a.key = action.key.urlsafe()
+
+            if (last_finish_date == None):
+                last_finish_date = action.finish_date
+            else:
+                last_finish_date = action.finish_date if action.finish_date > last_finish_date else last_finish_date
+
+        treatment.finish_date = last_finish_date
+        treatment.put()
 
         treatment_msg = treatment.to_message()
 

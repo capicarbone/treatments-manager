@@ -150,7 +150,7 @@ class TreatmentAction(MessageModel):
     REGIME_INTERVAL_TIME = 'I'
 
     message_class = TreatmentActionMsg
-    ignore_fields = ('medicament', 'measurement', 'take_hour', 'fulfillments')
+    ignore_fields = ('medicament', 'measurement', 'take_hour', 'fulfillments', 'finish_date')
 
     """ Rango de minutos en los que debe repetirse la acción
     """
@@ -169,6 +169,8 @@ class TreatmentAction(MessageModel):
     medicament = ndb.KeyProperty()
     measurement = ndb.StructuredProperty(Measurement)
 
+    finish_date = ndb.DateProperty()
+
     def from_message(self, msg):
         super(TreatmentAction, self).from_message(msg)
 
@@ -181,6 +183,9 @@ class TreatmentAction(MessageModel):
         if msg.take_hour:
             take_hour = parser.parse(msg.take_hour)
             self.take_hour = time(take_hour.hour, take_hour.minute)
+
+        if msg.finish_date:
+            self.finish_date = parser.parse(msg.finish_date)
 
     def to_message(self, ignore_fields=[]):
         msg = super(TreatmentAction,self).to_message(ignore_fields)
@@ -204,6 +209,7 @@ class TreatmentAction(MessageModel):
         msg.made_count = self.made_count
         msg.past_count = self.past_count
         msg.id =str(self.key.id())
+        msg.finish_date = self.finish_date.isoformat() if self.finish_date else None
 
         if self.past_count and self.past_count != 0:
             msg.fulfillment_porcentage = float(float(self.made_count) / float(self.past_count))*100.0
@@ -224,7 +230,7 @@ class TreatmentAction(MessageModel):
 class Treatment(MessageModel):
 
     message_class = TreatmentMsg
-    ignore_fields = ('patient_key','created_at', 'patient', 'fulfillment_porcentage', 'last_syncronize_at', 'last_resport_time')
+    ignore_fields = ('patient_key','created_at', 'patient', 'fulfillment_porcentage', 'last_syncronize_at', 'last_resport_time', 'finish_date')
 
     display_code = ndb.StringProperty()
     is_active = ndb.BooleanProperty(default=False)
@@ -239,6 +245,7 @@ class Treatment(MessageModel):
 
     last_report_time = ndb.DateTimeProperty()
 
+    finish_date = ndb.DateProperty()
 
     def to_message(self, ignore_fields=['patient_key'], with_patient=False):
 
