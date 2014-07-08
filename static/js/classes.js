@@ -48,50 +48,57 @@ function Measurement(measurement_data, fulfillments){
 	var measurement = measurement_data;
 	measurement.fulfillments = fulfillments;
 
-	if (fulfillments)
+	measurement.hasFulfillments = fulfillments != undefined 
+
+	if (measurement.hasFulfillments)
 		for (var i = measurement.fulfillments.length - 1; i >= 0; i--) {			
 			measurement.fulfillments[i].value = measurement.fulfillments[i].value*1;
 		}	
 
-	measurement.highter_record = function(){
 
-		var highter_value = 0;
+	if (measurement.hasFulfillments){
 
-		for (var i = measurement.fulfillments.length - 1; i >= 0; i--) {
-			if ( measurement.fulfillments[i].value > highter_value)
-				highter_value = measurement.fulfillments[i].value;
+		measurement.highter_record = function(){
+
+			var highter_value = 0;
+
+			for (var i = measurement.fulfillments.length - 1; i >= 0; i--) {
+				if ( measurement.fulfillments[i].value > highter_value)
+					highter_value = measurement.fulfillments[i].value;
+			}	
+
+			return highter_value;
+		}
+
+		measurement.lowest_record = function(){
+
+			var lowest_value = measurement.fulfillments[0].value;
+
+			for (var i = measurement.fulfillments.length - 1; i >= 1; i--) {
+				if ( measurement.fulfillments[i].value < lowest_value)
+					lowest_value = measurement.fulfillments[i].value;
+			}	
+
+			return lowest_value;
+		}
+
+		measurement.average= function(){
+
+			var sum = 0;
+			var totals = measurement.fulfillments.length;
+
+			for (var i = totals - 1; i >= 0; i--) {	
+
+				if (measurement.fulfillments[i].realized())		
+					sum = sum + measurement.fulfillments[i].value*1;
+				else
+					totals = totals - 1;
+			}		
+
+			return sum / totals;
 		}	
-
-		return highter_value;
 	}
-
-	measurement.lowest_record = function(){
-
-		var lowest_value = measurement.fulfillments[0].value;
-
-		for (var i = measurement.fulfillments.length - 1; i >= 1; i--) {
-			if ( measurement.fulfillments[i].value < lowest_value)
-				lowest_value = measurement.fulfillments[i].value;
-		}	
-
-		return lowest_value;
-	}
-
-	measurement.average= function(){
-
-		var sum = 0;
-		var totals = measurement.fulfillments.length;
-
-		for (var i = totals - 1; i >= 0; i--) {	
-
-			if (measurement.fulfillments[i].realized())		
-				sum = sum + measurement.fulfillments[i].value*1;
-			else
-				totals = totals - 1;
-		}		
-
-		return sum / totals;
-	}
+	
 
 	return measurement;
 }
@@ -101,11 +108,6 @@ function TreatmentAction (treatment_action_data) {
 	var treatment_action = treatment_action_data;
 
 	treatment_action.take_hour_readable = moment(treatment_action.take_hour, "hh:mm:ss").format("h:mm a").toUpperCase();
-
-	treatment_action.description = function(){
-
-		return "Todos los dias a las " + treatment_action.take_hour_readable;
-	}
 
 	treatment_action.isForMedicamentTake = treatment_action.action_type == 'M';
 
@@ -128,6 +130,16 @@ function TreatmentAction (treatment_action_data) {
 	}
 
 	treatment_action.regimeIsTimeInterval = treatment_action.regime_type ==	 Consts.TreatmentAction.regimeTypes.TIME_INTERVAL
+
+	treatment_action.description = function(){
+
+		if (treatment_action.regimeIsTimeInterval){
+			return "Cada " + treatment_action.time_interval + " horas";
+		}else{
+			return "Todos los dias a las " + treatment_action.take_hour_readable;	
+		}
+		
+	}
 
 	return treatment_action;
 

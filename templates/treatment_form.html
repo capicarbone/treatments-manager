@@ -33,6 +33,7 @@
 
 				{{ fields.input('Nombre', 'action.measurement.name', 'measurement_name', label_cols='4', input_cols='8')}}
 				{{ fields.input('Unidad', 'action.measurement.unit', 'measurement_unit', label_cols='4', input_cols='8')}}
+				{{ fields.textarea('Indicaciones', 'action.measurement.indications', 'measurement_indicatios', label_cols='4', input_cols='8')}}
 				
 			</div>
 
@@ -129,7 +130,9 @@
 					</div>
 					<div class="col-md-4">
 					<strong>{{action.readable_take_hour}}</strong>
-						
+					<span ng-show="action.regimeIsTimeInterval">
+						Cada {{action.time_interval}} horas
+					</span>	
 					</div>
 				</div>
 				

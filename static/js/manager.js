@@ -75,9 +75,12 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 		$rootScope.api.patients.all({ekey: $rootScope.doctor_key})
 		.execute( function(res){
-			$scope.$apply(function(){
-				console.log(res);
-				$scope.patients = res.patients;
+			$scope.$apply(function(){				
+				
+				angular.forEach(res.patients, function(patient){
+
+					$scope.patients.push(new Patient(patient));
+				})
 			})
 		});
 	};
@@ -390,12 +393,15 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 				$scope.measurement_chartdata = [['Dias', 'Registro']];
 
-				for (var i = $scope.action.measurement.fulfillments.length - 1; i >= 0; i--) {
+				if ($scope.action.measurement.fulfillments){
+					for (var i = $scope.action.measurement.fulfillments.length - 1; i >= 0; i--) {
 
-					$scope.measurement_chartdata[i+1] = [];
-					$scope.measurement_chartdata[i+1][0] = moment($scope.action.measurement.fulfillments[i].for_moment).toDate();
-					$scope.measurement_chartdata[i+1][1] = $scope.action.measurement.fulfillments[i].value*1;
-				};
+						$scope.measurement_chartdata[i+1] = [];
+						$scope.measurement_chartdata[i+1][0] = moment($scope.action.measurement.fulfillments[i].for_moment).toDate();
+						$scope.measurement_chartdata[i+1][1] = $scope.action.measurement.fulfillments[i].value*1;
+					};	
+				}
+				
 			}
 
 			if ($scope.action.isForMedicamentTake){
