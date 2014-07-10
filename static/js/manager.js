@@ -443,8 +443,11 @@ angular.module('logic', ['ngRoute', 'tmComponents'])
 
 	$scope.initFinishDateField = function(){		
 
+		var format = "dd / mm / yyyy";
+
 	    $(".input-group.date").datepicker({
-	    	format: "dd / mm / yyyy",	    	
+	    	format: format,
+	    	startDate: moment(new Date).format(format),	    	
     		language: "es",    		
     		autoclose: true
 	    })

@@ -259,6 +259,7 @@ class Treatment(MessageModel):
         msg.past_actions_count = self.past_actions_count
         msg.made_actions_count = self.made_actions_count
         msg.last_report_time = self.last_report_time.isoformat() if self.last_report_time else None
+        msg.finish_date = self.finish_date.isoformat() if self.finish_date else None
 
         if self.past_actions_count and self.past_actions_count != 0:
             msg.fulfillment_porcentage = float(float(self.made_actions_count) / float(self.past_actions_count))*100.0
