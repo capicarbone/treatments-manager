@@ -1,6 +1,8 @@
 
 {% raw %}
 
+<tm-back-button></tm-back-button>
+
 <div class="section-title">
 	<h1 class="title">{{section_title}}</h1>
 	<h3 class="complement">Paciente: Abelardo Torres</h3>
@@ -26,9 +28,16 @@
 					{{action.measurement.unit}}
 				</div>				
 			</div>
-
-			<p class="standout separate">Indicaciones:</p>
-			<p>{{action.measurement.indications}}</p>
+			<div class="row-fluid clearfix">
+				<div class="col-md-10">
+					<p class="standout separate">Indicaciones:</p>
+					<p>{{action.measurement.indications}}</p>
+				</div>
+				<div class="col-md-2">
+					<p class="standout separate"></p>
+				</div>
+			</div>
+			
 		</div>
 		
 	</div>

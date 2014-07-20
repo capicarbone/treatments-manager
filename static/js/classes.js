@@ -157,6 +157,20 @@ function Treatment(treatment_data){
 		return moment(treatment.init_date).format("dddd DD [de] MMMM [de] YYYY").capitalize();
 	}
 
+	treatment.finish_date_readable = function(){
+		if (treatment.finish_date)			
+			return moment(treatment.finish_date).format("dddd DD [de] MMMM [de] YYYY").capitalize();
+		else
+			return "Indefinido";
+	}
+	
+	treatment.finish_date_readable_short = function(){
+		if (finish_date)
+			return moment(treatment.finish_date).format("DD/MM/YY");
+		else
+			return "--";
+	}	
+
 	treatment.init_date_readable_short = function(){
 		return moment(treatment.init_date).format("DD/MM/YY")
 	}
