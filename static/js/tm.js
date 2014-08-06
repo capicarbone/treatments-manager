@@ -59,7 +59,7 @@ angular.module('TreatmentsManager', ['ngRoute', 'tmComponents'])
 
 .run(function($rootScope, $window, $location){
 
-	moment.lang('es');
+	moment.lang('es');	
 
 	$rootScope.is_backend_ready = false;
 	$rootScope.section_title = 'Inicio';
@@ -76,6 +76,7 @@ angular.module('TreatmentsManager', ['ngRoute', 'tmComponents'])
 		$rootScope.$apply(function(){
 			$rootScope.doctor_key = document.getElementById('doctor_key').value
 		})
+
 	};
 
 	$rootScope.load_endpoints = function(){
@@ -93,8 +94,8 @@ angular.module('TreatmentsManager', ['ngRoute', 'tmComponents'])
 });
 
 init_app = function(){
-
-	window.init();
+	
+	window.init();	
 
 }
 

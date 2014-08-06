@@ -24,6 +24,12 @@
 
 
 {% block module_js %}	
+		
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript">
+		google.load('visualization', '1.0', {'packages':['corechart'], 'language': 'es' });	
+	</script>
+
 	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script src="static/js/vendor/bootstrap.min.js"></script>
 	<script src="static/js/vendor/bootstrap-datepicker.js"></script>
@@ -41,14 +47,13 @@
 	<script src="static/js/treatments/form.js"></script>
 	<script src="static/js/treatments/action_details.js"></script>
 	<script src="static/js/medicaments/form.js"></script>
-	<script src="static/js/medicaments/manager.js"></script>	
-
-	<script src="https://apis.google.com/js/client.js?onload=init_app"></script>
-
-	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script src="static/js/medicaments/manager.js"></script>			
 
 	<script src="static/js/vendor/moment.min.js"></script>
 	<script src="static/js/vendor/bootstrap-datetimepicker.min.js"></script>
+
+	<script src="https://apis.google.com/js/client.js?onload=init_app"></script>
+
 {% endblock module_js %}
 
 

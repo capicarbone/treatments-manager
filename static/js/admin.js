@@ -1,5 +1,5 @@
 
-angular.module('logic', ['ngRoute', 'tmComponents'])
+angular.module('TreatmentsManager', ['ngRoute', 'tmComponents'])
 
 .config(function($routeProvider){
 

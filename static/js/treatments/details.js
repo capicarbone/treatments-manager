@@ -126,8 +126,8 @@ angular.module('TreatmentsManager')
 					$scope.diary_fulfillments_chartdata = diary_fulfillments_chartdata;
 
 					$scope.$apply();
-
-					google.load('visualization', '1.0', {'packages':['corechart'], 'language': 'es', 'callback': $scope.setupChart });	
+					$scope.setupChart();
+					
 				}				
 			});		
 		});
