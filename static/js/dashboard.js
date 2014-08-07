@@ -25,6 +25,12 @@ angular.module('TreatmentsManager')
         2:{
         	color: '#ff2a2a'
         }
+      },
+      chartArea: {
+        height: "85%",
+        width: "85%",
+        top: 8,
+        left: 100
       }
 
     };
