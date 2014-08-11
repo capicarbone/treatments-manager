@@ -14,8 +14,14 @@ a
 	color principal
 	cursor pointer
 
+	&.no-underline
+		text-decoration none
+
 	&:hover
 		color principal
+
+		.no-underline
+			text-decoration none
 
 .pull
 	float left
@@ -27,6 +33,15 @@ a
 	display inline-block
 
 
+.selectable
+	cursor pointer
+	&:hover
+		background-color light_background
+
+		.caption
+			text-decoration underline
+
+
 .clickable
 	&:active
 		background-color principal
@@ -35,6 +50,9 @@ a
 
 	&:active *
 		color white
+
+.inactive
+	opacity 0.5
 
 
 //  ---------- About Text   --------
@@ -78,8 +96,15 @@ a
 	font-size 0.9em
 
 // ----------- About spaces --------------
+
+.expand
+	padding 1em
+
 .without-margin
 	margin 0px
+
+.separator
+	border-bottom 1px solid medium_grey
 
 .separate 	
 	margin-top 1.2em
@@ -170,6 +195,14 @@ a
 
 .progress
 	background-color dark_grey
+
+	&.thin
+		height 10px
+
+	.progress-bar
+		&.good
+			background-color #2CA02C
+		
 
 // Especificos para campos de informacion
 

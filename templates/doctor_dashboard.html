@@ -6,23 +6,40 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-6"></div>
 		<div class="col-md-6">
-			<div class="important-indicator accepts-friends">
-				<p class="indicator">20</p>
+
+			<p ng-show="!treatments.length">No hay tratamientos en realización en este momento.</p>
+
+			<a href="#/tratamiento/{{treatment.key}}" class="no-underline" ng-repeat="treatment in treatments | orderBy:fulfillment_porcentage">
+				<div class="separator selectable expand" >
+
+					
+					<h2 class="light caption">{{treatment.patient.person.first_name}} {{treatment.patient.person.last_name}}</h2>
+					<p class="no-underline black">Han transcurrido {{treatment.elapsedDays()}} días y quedan {{treatment.remainingDays()}} días.</p>
+					<div class="progress thin">
+						<div class="progress-bar good" style="width: {{treatment.fulfillment_porcentage | number:0}}%">												
+						</div>
+					</div>				
+				</div>			
+			</a>
+
+		</div>
+		<div class="col-md-6" ng-class="{inactive: !treatments.length }">
+			<div class="important-indicator accepts-friends less-important">
+				<p class="indicator">{{treatmentsActivesCount}}</p>
 				<p class="description">Tratamientos activos</p>
 			</div>
 
 			<div class="important-indicator accepts-friends">
 				<p class="indicator">
-					42%
+					{{porcentageAverage | number:1 }}%
 				</p>
 				<p class="description">Cumplimiento promedio</p>
 			</div>
 
 			<div class="important-indicator">
 				<div id="chart"></div>
-				<p class="description">Cumplimiento promedio</p>
+				<p class="description">Proporción de cumplimientos</p>
 			</div>					
 		</div>
 	</div>

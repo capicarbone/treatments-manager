@@ -8,7 +8,7 @@ angular.module('TreatmentsManager')
 
 	$scope.init = function(){
 
-		$rootScope.api.treatments.all({ekey: $rootScope.doctor_key}).execute(function(response){
+		$rootScope.api.treatments.actives({ekey: $rootScope.doctor_key}).execute(function(response){
 
 			$scope.$apply(function(){
 				

@@ -147,7 +147,7 @@ class ForDoctors(remote.Service):
 
 
     @endpoints.method(KEY_CONTAINER, treatments_messages.TreatmentsCollection,
-                      path="treatments", http_method="GET", name="treatments.all")
+                      path="treatments", http_method="GET", name="treatments.actives")
     def treatments(self, request):
 
         treatments = Treatment.get_actives_by_doctor(ndb.Key(urlsafe=request.ekey))
