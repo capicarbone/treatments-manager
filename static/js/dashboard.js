@@ -104,10 +104,12 @@ angular.module('TreatmentsManager')
 
       })
 
-      
+    }
 
-      }
+    $scope.$watch('$rootScope.is_backend_ready', function(){
 
-      $scope.init();    
+      if ($rootScope.is_backend_ready)
+        $scope.init();
+    })    
 
 }])
