@@ -59,7 +59,7 @@ angular.module('TreatmentsManager', ['ngRoute', 'tmComponents'])
 
 .run(function($rootScope, $window, $location){
 
-	moment.lang('es');	
+	moment.lang('es');		
 
 	$rootScope.is_backend_ready = false;
 	$rootScope.section_title = 'Inicio';
@@ -85,9 +85,11 @@ angular.module('TreatmentsManager', ['ngRoute', 'tmComponents'])
 
 		gapi.client.load('doctor', 'v1', function(){
 			$rootScope.is_backend_ready = true;
-			$rootScope.$apply();
+			$rootScope.$apply();			
 
 			$rootScope.api = gapi.client.doctor;
+
+			$rootScope.$broadcast('is_backend_ready');
 
 		}, API_ROOT)
 	};

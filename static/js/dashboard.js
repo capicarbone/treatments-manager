@@ -20,29 +20,33 @@ angular.module('TreatmentsManager')
 
   $scope.init = function(){
 
-    $scope.treatmentsActivesCount = 0;
-    $scope.porcentageAverage = 0;
-
     $rootScope.api.treatments.actives({ekey: $rootScope.doctor_key}).execute(function(response){
 
       if (response.treatments && response.treatments.length > 0 ){
 
-        $scope.$apply(function(){
+        $scope.treatments = response.treatments;
+        $scope.$apply();
 
-          //$scope.treatments = $filter('filter')( response.treatments, {is_sync: true});
-          $scope.treatments = response.treatments;
+        $scope.syncronizedTreatments = $filter('filter')($scope.treatments, function(t){
+          return t.last_report_time;
+        });
+
+        if ($scope.syncronizedTreatments.length > 0 ){
+          $scope.$apply(function(){
+
+          //$scope.treatments = $filter('filter')( response.treatments, {is_sync: true});          
 
           TreatmentsUtils.addHelpersToAll($scope.treatments);
 
-          $scope.nHighFulfillment = $filter('filter')($scope.treatments, function(t){
+          $scope.nHighFulfillment = $filter('filter')($scope.syncronizedTreatments, function(t){
             return t.highFulfillment();
           }).length;
 
-          $scope.nLowFulfillment = $filter('filter')($scope.treatments, function(t){
+          $scope.nLowFulfillment = $filter('filter')($scope.syncronizedTreatments, function(t){
             return t.lowFulfillment();
           }).length;
 
-          $scope.nMediumFulfillment = $filter('filter')($scope.treatments, function(t){
+          $scope.nMediumFulfillment = $filter('filter')($scope.syncronizedTreatments, function(t){
             return t.mediumFulfillment();
           }).length;
 
@@ -54,10 +58,9 @@ angular.module('TreatmentsManager')
             sum += t.fulfillment_porcentage;
           });  
 
-          $scope.porcentageAverage = sum / $scope.treatments.length;
-          
+          $scope.porcentageAverage = sum / $scope.treatments.length;          
 
-          $scope.chartArea = google.visualization.arrayToDataTable([
+          $scope.chartData = google.visualization.arrayToDataTable([
               ['Niveles de cumplimiento', 'Porcentaje'],
               ['Alto',   $scope.nHighFulfillment > 0 ? $scope.nHighFulfillment : 1],
               ['Aceptable', $scope.nMediumFulfillment],
@@ -75,27 +78,30 @@ angular.module('TreatmentsManager')
                 color: '#ff2a2a'
               }
           }           
-                            
-          console.log(response);
-        });
+                                    
+          });
 
-      }else{
+        }
 
-         $scope.chartData = google.visualization.arrayToDataTable([
-                ['Niveles de cumplimiento', 'Porcentaje'],
-                ['Tratamientos', 1],                
-              ]);
+      }
 
-          $scope.chartBaseOptions.slices = {
-              0:{
-                color: '#888'
-              }
-          }
+      if (!$scope.treatments || $scope.syncronizedTreatments.length == 0){
 
-          $scope.chartBaseOptions.enableInteractivity = false;
-          $scope.chartBaseOptions.legend = {
-            position: 'none'
-          }
+       $scope.chartData = google.visualization.arrayToDataTable([
+              ['Niveles de cumplimiento', 'Porcentaje'],
+              ['Tratamientos', 1],                
+            ]);
+
+        $scope.chartBaseOptions.slices = {
+            0:{
+              color: '#888'
+            }
+        }
+
+        $scope.chartBaseOptions.enableInteractivity = false;
+        $scope.chartBaseOptions.legend = {
+          position: 'none'
+        }
 
       };
 
@@ -106,10 +112,18 @@ angular.module('TreatmentsManager')
 
     }
 
-    $scope.$watch('$rootScope.is_backend_ready', function(){
+    if ($rootScope.is_backend_ready == false){
 
-      if ($rootScope.is_backend_ready)
+      $scope.treatmentsActivesCount = 0;
+      $scope.porcentageAverage = 0;
+      
+      $scope.$on('is_backend_ready', function(e, args){        
+        
         $scope.init();
-    })    
+
+      });
+    }else
+      $scope.init();
+    
 
 }])

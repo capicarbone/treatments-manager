@@ -13,10 +13,10 @@ angular.module('TreatmentsManager')
 					if (treatment.finish_date){
 						var now = moment();
 
-						return -1*now.diff(moment(treatment.finish_date), 'days');
+						return now.diff(moment(treatment.finish_date), 'days');
 					}
 
-					return 'sdf';
+					return null;
 					
 				}
 
@@ -29,7 +29,7 @@ angular.module('TreatmentsManager')
 						return now.diff(moment(treatment.created_at), 'days');
 					}
 
-					return 'sdf';
+					return null;
 					
 				}
 

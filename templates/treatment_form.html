@@ -1,10 +1,8 @@
 
 {% import "includes/bs_fields.html" as fields %}
 
-<tm-back-button></tm-back-button>
-
 <div class="row-fluid">
-	<div class="col-md-6">
+	<div class="col-md-7">
 
 		<form action="" name="form" class="form-horizontal">
 			<div class="form-group">
@@ -27,9 +25,9 @@
 				<div class="btn-group"><button class="btn btn-default" ng-click="measurement_take_form()">Agregar indicador</button></div>
 			</div>		
 
-			<p>
+			<div ng-show="measurement_take_form_fl || medicament_take_form_fl" class="top-bottom-margin">
 				{{ fields.inputdate('Realizar hasta', 'action.readable_finish_date', 'measurement_finish_date', label_cols='4', input_cols='8')}}			
-			</p>			
+			</div>			
 
 			<div class="measurement_form" ng-show="measurement_take_form_fl">
 
@@ -41,61 +39,54 @@
 				
 			</div>
 
-			<div class="medicament_form" ng-show="medicament_take_form_fl">
+			<div class="medicament_form" ng-show="medicament_take_form_fl">				
 
-				<h3>Medicamento</h3>
-
-				{{ fields.select('', 'action.medicament', 'medicament', 'm.name for m in medicaments', 'Seleccione un medicamento', label_cols="0", input_cols="12" ) }}			
+				{{ fields.select('Medicamento', 'action.medicament', 'medicament', 'm.name for m in medicaments', 'Seleccione un medicamento', label_cols="4", input_cols="8" ) }}			
 				
 			</div>
 
 			<div ng-show="isFormActive()">
-				<h3>Régimen</h3>
+				<h4 class="page-header">Régimen</h4>
 		
-					<div class="row-fluid">
-						<div class="col-md-6">
-							<input type="radio" ng-model="action.regime_type" value="E" > Hora específica		
-						</div>
-						<div class="col-md-6">
-							<input type="radio" ng-model="action.regime_type" value="I"> Cada cierto tiempo		
-						</div>
-					</div>
-					
-					<div class="form-group" ng-show="specificHourSelected()">
-						<label for="Tipo de sangre" class="control-label col-md-2">
-							Hora
-						</label>
-						<div class="col-md-4">
-							<div class="input-group" id="take_time_picker">
-								<input type="text" class="form-control" name="take_hour" ng-model="action.readable_take_hour" id="take_hour">
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-time"></i>
-								</span>	
+				<div class="row-fluid clearfix">
+					<div class="col-md-6">
+						<input type="radio" ng-model="action.regime_type" value="E" > Hora específica		
+
+						<div class="form-group top-bottom-margin" ng-show="specificHourSelected()">							
+							<div class="col-md-12">
+								<div class="input-group" id="take_time_picker">
+									<input type="text" class="form-control datetime-input" name="take_hour" ng-model="action.readable_take_hour" id="take_hour" placeholder="Hora de realización">
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-time"></i>
+									</span>	
+								</div>
+								
 							</div>
-							
 						</div>
 					</div>
+					<div class="col-md-6">
+						<input type="radio" ng-model="action.regime_type" value="I"> Cada cierto tiempo		
 
-					<div class="form-group" ng-show="rangeHourSelected()">
-						Realizada cada 
-						<input type="text" class="form-control" name="time_interval", ng-model="action.time_interval"
-						>
+						<div class="form-group top-bottom-margin" ng-show="rangeHourSelected()">
+							<input type="number" class="form-control number-input" name="time_interval", ng-model="action.time_interval" 
+							> Horas
+						</div>
 					</div>
-
-					<div class="buttons" ng-show="isFormActive()">
-						<button class="btn btn-primary" ng-click="register_action()">Registrar</button>
-						<button class="btn" ng-click="cancel()">Cancelar</button>	
-					</div>
-					
-
-
+				</div>	
+				<div class="buttons" ng-show="isFormActive()">
+					<button class="btn btn-primary" ng-click="register_action()">Registrar</button>
+					<button class="btn" ng-click="cancel()">Cancelar</button>	
+				</div>																					
 			</div>
-
 		</form>
 	</div>	
 	
-	
-	<div class="col-md-6 treatment-resumen">
+
+	{#
+		----- Resumen del tratamiento
+	#}
+
+	<div class="col-md-5 treatment-resumen">
 		{% raw %}
 		<h2>{{patient.person.first_name}} {{patient.person.last_name}}</h2>
 		<div class="row">
