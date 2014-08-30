@@ -4,6 +4,10 @@
 	| Amministratore
 {% endblock %}
 
+{% block module_css %}
+	<link rel="stylesheet" href="static/css/syslayout.css">			
+{% endblock module_css %}
+
 {% block sidebar_options %}
 	<tm-option url="#/" title="Dashboard" iconclass="glyphicon glyphicon-home"></tm-option>	
 	<tm-option url="#/doctors" title="Doctores" iconclass="glyphicon glyphicon-user"></tm-option>	

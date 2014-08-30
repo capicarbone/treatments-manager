@@ -6,7 +6,32 @@ Estilos para el formulario de registro de tratamiento.
 background_gray = #f2f2f2
 
 .treatment-resumen
-	background-color background_gray
+	background-color darken(background_gray, 2%)
 	position fixed
 	right 0px
+	top topnav_height
+	bottom 0px
 	width 28em
+	box-shadow 1px 1px 2px rgba(0, 0, 0, 0.15) inset
+
+	.wrapper
+		position absolute
+		height 100%
+		width 96%
+
+	.buttons-wrapper
+		position absolute		
+		bottom 0px
+		margin-bottom 0.5em
+		width 96%
+
+	.patient-identifier
+		height 25%
+
+	.actions-list
+		height 64%
+		overflow-y scroll
+		overflow-x hidden
+
+		& > *
+			width 99%

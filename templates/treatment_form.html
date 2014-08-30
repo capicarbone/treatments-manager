@@ -73,9 +73,9 @@
 						</div>
 					</div>
 				</div>	
-				<div class="buttons" ng-show="isFormActive()">
-					<button class="btn btn-primary" ng-click="register_action()">Registrar</button>
-					<button class="btn" ng-click="cancel()">Cancelar</button>	
+				<div class="buttons to-right" ng-show="isFormActive()">					
+					<button class="btn btn-cancel" ng-click="cancel()">Cancelar</button>	
+					<button class="btn btn-accept btn-large" ng-click="register_action()">Añadir acción</button>
 				</div>																					
 			</div>
 		</form>
@@ -88,90 +88,100 @@
 
 	<div class="col-md-5 treatment-resumen">
 		{% raw %}
-		<h2>{{patient.person.first_name}} {{patient.person.last_name}}</h2>
-		<div class="row">
+		<div class="wrapper">
 
-			<div class="col-md-6">
-				Tipo de sangre: {{patient.blood_type}} <br/>
-				Sexo: {{patient.person.gender}} <br/>	
-			</div>
-			<div class="col-md-6">
-				Alergias: <br/>
-				{{patient.allergies}}
-			</div>
-
-		</div>
-
-		<div class="page-header">
-			<h4>Indicadores</h4>			
-		</div>		
-
-		<div ng-repeat="action in actions|filter:{action_type:'I'}" class="panel panel-success">
-			<div class="panel-heading">
+			<div class="patient-identifier clearfix">
+				<h2>{{patient.person.first_name}} {{patient.person.last_name}}</h2>
 				<div class="row">
-					<div class="col-md-10">
-						<h4>{{action.measurement.name}}</h4>
-						
+
+					<div class="col-md-6">
+						Tipo de sangre: {{patient.blood_type}} <br/>
+						Sexo: {{patient.person.gender}} <br/>	
 					</div>
-					<div class="col-md-2">
-						<button class="close pull-right" ng-click="$parent.delete_action($index)">&times;</button>	
+					<div class="col-md-6">
+						Alergias: <br/>
+						{{patient.allergies}}
 					</div>
-				</div>							
+
+				</div>
 			</div>
-			<div class="panel-body">
-				<div class="row-fluid">
-					<div class="col-md-8">
-						{{action.medicament.description}}
+			
+			<div class="actions-list">
+				<div class="subtitle-wrapper small" ng-show="measurementsCount > 0">
+					<h4 class="subtitle">Indicadores</h4>			
+				</div>		
+
+				<div ng-repeat="action in actions|filter:{action_type:'I'}" class="tm-panel with-shadow">
+					<div class="icon-box small push">
+						<img src="static/img/ic_measurement.png">
 					</div>
-					<div class="col-md-4">
-					<strong>{{action.readable_take_hour}}</strong>
-					<span ng-show="action.regimeIsTimeInterval">
-						Cada {{action.time_interval}} horas
-					</span>	
+					<a class="simple-button push" ng-click="$parent.delete_action($index)">Eliminar</a>
+					<div class="tm-panel-heading">
+
+						<span class="standout">{{action.measurement.name}}</span>
 					</div>
+					<div class="panel-body">
+						<div class="row-fluid">
+							<div class="col-md-8">
+								{{action.measurement.indications}}
+							</div>
+							<div class="col-md-4">
+							<strong>{{action.readable_take_hour}}</strong>
+							<span ng-show="action.regimeIsTimeInterval">
+								Cada {{action.time_interval}} horas
+							</span>	
+							</div>
+						</div>
+						
+					</div>				
 				</div>
 				
-			</div>				
-		</div>
-		
-		<div class="page-header">
-			<h4>Medicamentos</h4>			
-		</div>		
+				<div class="subtitle-wrapper small" ng-show="medicamentsCount > 0">
+					<h4 class="subtitle">Medicamentos</h4>			
+				</div>		
 
-		<div ng-repeat="action in actions|filter:{action_type:'M'}" class="panel panel-success">
-			<div class="panel-heading">
-				<div class="row">
-					<div class="col-md-10">
-						<h4>{{action.medicament.name}}</h4>
+				<div ng-repeat="action in actions|filter:{action_type:'M'}" class="tm-panel with-shadow">
+					<div class="icon-box small push">
+						<img src="static/img/ic_capsule.png">
+					</div>
+					<a class="simple-button push" ng-click="$parent.delete_action($index)">Eliminar</a>
+					<div class="tm-panel-heading">						
+						<span class="standout">{{action.medicament.name}}</span>	
+					</div>
+					<div class="panel-body">
+						<div class="row-fluid">
+							<div class="col-md-8">
+								{{action.medicament.description}}
+							</div>
+							<div class="col-md-4">
+							<strong>{{action.readable_take_hour}}</strong>
+							<span ng-show="action.regimeIsTimeInterval">
+								Cada {{action.time_interval}} horas
+							</span>	
+							</div>
+						</div>
 						
-					</div>
-					<div class="col-md-2">
-						<button class="close pull-right" ng-click="$parent.delete_action($index)">&times;</button>	
-					</div>
-				</div>							
-			</div>
-			<div class="panel-body">
-				<div class="row-fluid">
-					<div class="col-md-8">
-						{{action.medicament.description}}
-					</div>
-					<div class="col-md-4">
-					<strong>{{action.readable_take_hour}}</strong>
-					<span ng-show="action.regimeIsTimeInterval">
-						Cada {{action.time_interval}} horas
-					</span>	
-					</div>
+					</div>				
 				</div>
-				
-			</div>				
-		</div>
-		{% endraw %}
 
-		<button class="btn btn-primary btn-lg btn-block" ng-click="treatment_save()">
-			Asignar tratamiento
-		</button>
-		<button class="btn btn-default btn-lg btn-block">
-			Cancelar
-		</button>
+			</div>
+			
+			{% endraw %}
+
+			<div class="row-fluid clearfix buttons-wrapper bs-less-padding">
+				
+				<div class="col-md-4">
+					<button class="btn btn-cancel btn-fit">
+						Cancelar
+					</button>	
+				</div>
+				<div class="col-md-8">
+					<button class="btn btn-accept btn-fit" ng-click="treatment_save()">
+						Asignar tratamiento
+					</button>
+				</div>				
+			</div>
+
+		</div>
 	</div>
 </div>

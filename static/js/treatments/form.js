@@ -14,9 +14,11 @@ angular.module('TreatmentsManager')
 
 	$scope.actions = []
 
-
 	$scope.medicament_take_form_fl = false;
 	$scope.measurement_take_form_fl = false;
+
+	$scope.medicamentsCount = 0;
+	$scope.measurementsCount = 0;
 
 	$scope.isFormActive = function(){
 		return $scope.medicament_take_form_fl || $scope.measurement_take_form_fl;
@@ -128,7 +130,15 @@ angular.module('TreatmentsManager')
 
 			action.readable_take_hour = $scope.action.readable_take_hour;
 
-			$scope.actions.push(new TreatmentAction(action));			
+			var action = new TreatmentAction(action);
+
+			if (action.isForMeasurement)
+				$scope.measurementsCount++;
+
+			if (action.isForMedicamentTake)
+				$scope.medicamentsCount++;
+
+			$scope.actions.push(action);			
 
 			delete $scope.action.medicament;
 			$scope.action.take_hour = "";
@@ -159,7 +169,13 @@ angular.module('TreatmentsManager')
 
 	$scope.delete_action = function(index){
 
-		$scope.actions.pop(index);		
+		var action = $scope.actions.pop(index);		
+
+		if (action.isForMeasurement)
+			$scope.measurementsCount--;
+
+		if (action.isForMedicamentTake)
+			$scope.measurementsCount--;
 
 	}
 

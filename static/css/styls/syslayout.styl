@@ -2,17 +2,20 @@
 @import fonts
 @import colors
 
+@import variables
+@import spacing
+@import animations
 @import inputs
+@import buttons
+
 
 @import components
-
-
-topnav_height = 52px
 
 body
 	padding-top topnav_height
 	font-size 16px
 	font-family font_light
+	padding-bottom 1em
 
 a
 	color principal
@@ -74,6 +77,12 @@ a
 .text-center
 	text-align center
 
+.to-right
+	text-align right
+
+.center-childs
+	text-align center	
+
 .fit-line
 	line-height 1em
 
@@ -107,6 +116,9 @@ a
 	padding 1em
 
 .without-margin
+	margin 0px
+
+.without-top-margin
 	margin 0px
 
 .separator

@@ -1,5 +1,5 @@
 
-angular.module('TreatmentsManager', ['ngRoute', 'tmComponents'])
+angular.module('TreatmentsManager', ['ngRoute', 'ngAnimate', 'tmComponents'])
 
 .config(function($routeProvider){
 

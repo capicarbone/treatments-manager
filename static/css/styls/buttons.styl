@@ -1,0 +1,25 @@
+
+@import colors 
+
+.btn
+	border-radius 0px
+
+	&.btn-accept
+		background-color principal
+		color white
+
+		&:hover
+			background-color darken(@background-color, 10%)
+
+	&.btn-cancel
+		background-color medium_grey
+
+		&:hover
+			background-color darken(@background-color, 10%)
+
+
+	&.btn-large
+		width 12em
+
+	&.btn-fit
+		width 100%
