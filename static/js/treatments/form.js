@@ -30,7 +30,7 @@ angular.module('TreatmentsManager')
 
 	    $(".input-group.date").datepicker({
 	    	format: format,
-	    	startDate: moment(new Date).format(format),	    	
+	    	startDate: new Date(),	    	
     		language: "es",    		
     		autoclose: true
 	    })
