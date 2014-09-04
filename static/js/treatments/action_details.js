@@ -1,10 +1,15 @@
 
 angular.module('TreatmentsManager')
-.controller('TreatmentActionDetailCtrl', function($scope, $rootScope, $routeParams){
+.controller('TreatmentActionDetailCtrl', function($scope, $rootScope, $routeParams, $filter){
 
 	$scope.setupChart = function(){
 
-		var data = google.visualization.arrayToDataTable($scope.measurement_chartdata, false);
+		//var data = google.visualization.arrayToDataTable($scope.measurement_chartdata, false);
+		var data = new google.visualization.DataTable();
+		data.addColumn('datetime', 'Dias');
+		data.addColumn('number', 'Registro');
+
+		data.addRows($scope.measurement_chartdata);
 
 		var container = document.getElementById('measurement_chart');
 
@@ -14,7 +19,6 @@ angular.module('TreatmentsManager')
 			'pointSize': 5,
 			'vAxis':{
 				'title': 'Registros',
-				'maxValue': 100,
 				'minValue': 0
 			},
 			'hAxis':{
@@ -51,14 +55,19 @@ angular.module('TreatmentsManager')
 			if ($scope.action.isForMeasurement){
 				$rootScope.section_title = $scope.action.measurement.name
 
-				$scope.measurement_chartdata = [['Dias', 'Registro']];
+				//$scope.measurement_chartdata = [['Dias', 'Registro']];
+				$scope.measurement_chartdata = [];
 
-				if ($scope.action.measurement.fulfillments){
+				var realizeds = $filter('filter')($scope.action.measurement.fulfillments, function(f){
+					return f.decision == 'T';
+				})
+
+				if (realizeds){
 					for (var i = $scope.action.measurement.fulfillments.length - 1; i >= 0; i--) {
 
-						$scope.measurement_chartdata[i+1] = [];
-						$scope.measurement_chartdata[i+1][0] = moment($scope.action.measurement.fulfillments[i].for_moment).toDate();
-						$scope.measurement_chartdata[i+1][1] = $scope.action.measurement.fulfillments[i].value*1;
+						$scope.measurement_chartdata[i] = [];
+						$scope.measurement_chartdata[i][0] = new Date($scope.action.measurement.fulfillments[i].for_moment);
+						$scope.measurement_chartdata[i][1] = $scope.action.measurement.fulfillments[i].value*1;
 					};	
 				}
 				
@@ -73,7 +82,8 @@ angular.module('TreatmentsManager')
 			google.load('visualization', '1.0', {'packages':['corechart'], 'language': 'es', 'callback': $scope.setupChart });	
 			
 		})
-	}
+	} 
+	
 
 	$scope.init();
 })

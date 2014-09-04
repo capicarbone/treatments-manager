@@ -4,4 +4,17 @@ angular.module('TreatmentsManager')
 
 	$rootScope.section_title = "Medicamentos"
 
+	$scope.init = function(){
+		$rootScope.api.medicaments.all().execute(function(res){
+
+			$scope.medicaments = res.medicaments;
+
+			$scope.$apply();
+		})
+	}
+
+	
+
+	$scope.init();
+
 })

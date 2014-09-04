@@ -1,6 +1,6 @@
 
 angular.module('TreatmentsManager')
-.controller('TreatmentDetailCtrl', function($scope, $rootScope, $routeParams){
+.controller('TreatmentDetailCtrl', function($scope, $rootScope, $routeParams, $filter){
 
 	$rootScope.section_title = "Tratamiento"
 
@@ -10,34 +10,37 @@ angular.module('TreatmentsManager')
 	$scope.diaryFulfillments = {};
 
 	$scope.setupChart = function (){
-		console.log("Charts Loaded");
+		
+		if ($scope.diary_fulfillments_chartdata){
+			var data = google.visualization.arrayToDataTable($scope.diary_fulfillments_chartdata, false);
 
-		var data = google.visualization.arrayToDataTable($scope.diary_fulfillments_chartdata, false);
+			var container = document.getElementById('diary_fulfillment_chart');
 
-		var container = document.getElementById('diary_fulfillment_chart');
+			var options = {			
+				'width': container.offsetWidth,
+				'height': 300,
+				'pointSize': 5,
+				'vAxis':{
+					'title': '% Cumplimiento',
+					'maxValue': 100,
+					'minValue': 0
+				},
+				'hAxis':{
+					'title': 'Días'
+				},
+				'animation':{
+					'duration': 1000,				
+				},
+				'legend': {
+					'position': 'none'
+				}
+			};
 
-		var options = {			
-			'width': container.offsetWidth,
-			'height': 300,
-			'pointSize': 5,
-			'vAxis':{
-				'title': '% Cumplimiento',
-				'maxValue': 100,
-				'minValue': 0
-			},
-			'hAxis':{
-				'title': 'Días'
-			},
-			'animation':{
-				'duration': 1000,				
-			},
-			'legend': {
-				'position': 'none'
-			}
-		};
+			var chart = new google.visualization.LineChart(container);
+			chart.draw(data, options);
+		}
 
-		var chart = new google.visualization.LineChart(container);
-		chart.draw(data, options);
+
 
 		var actions = $scope.treatment.actions;
 
@@ -46,18 +49,23 @@ angular.module('TreatmentsManager')
 
 			if ( action.isForMeasurement ){
 				container = document.getElementById(action.id);
-				var plain_data = [['Dia','Valor']];
+				var plain_data = [];
 
 				if (action.measurement.chart_data.points && action.measurement.chart_data.points.length > 0){
+					
 					for (var j = action.measurement.chart_data.points.length - 1; j >= 0; j--) {
 						data_point = action.measurement.chart_data.points[j];
 
-						plain_data[j+1] = [];
-						plain_data[j+1][0] = Date(data_point.tag);
-						plain_data[j+1][1] = data_point.value;
+						plain_data[j] = [];
+						plain_data[j][0] = new Date(data_point.tag);
+						plain_data[j][1] = data_point.value;
 					};				
 
-					var data = google.visualization.arrayToDataTable(plain_data, false);	
+					var data = new google.visualization.DataTable();	
+					data.addColumn('datetime', 'Dias');
+					data.addColumn('number', 'Registro');
+
+					data.addRows(plain_data);
 
 					var options = {
 						'width': container.offsetWidth,
@@ -105,30 +113,34 @@ angular.module('TreatmentsManager')
 
 			$rootScope.api.treatment.diary_fulfillments({ekey: treatment_key}).execute(function(response){			
 
-				if (!angular.isUndefined(response) && !angular.isUndefined(response.diary_fulfillments)){
-					var diary_fulfillments_chartdata = [['Dia', 'Cumplimiento']];
+				if (!angular.isUndefined(response) ){
 
-					$scope.diaryFulfillments = response.diary_fulfillments;
+					if (!angular.isUndefined(response.diary_fulfillments)){
+						var diary_fulfillments_chartdata = [['Dia', 'Cumplimiento']];
 
-					for (var i = response.diary_fulfillments.length - 1; i >= 0; i--) {
+						$scope.diaryFulfillments = response.diary_fulfillments;
 
-						response.diary_fulfillments[i] = new DiaryFulfillment(response.diary_fulfillments[i]);
-						var diary_fulfillment = response.diary_fulfillments[i];
-						var data_point = []
+						for (var i = response.diary_fulfillments.length - 1; i >= 0; i--) {
 
-						data_point[0] = moment(diary_fulfillment.day).toDate();
-						data_point[1] = diary_fulfillment.general_porcentage;
+							response.diary_fulfillments[i] = new DiaryFulfillment(response.diary_fulfillments[i]);
+							var diary_fulfillment = response.diary_fulfillments[i];
+							var data_point = []
 
-						diary_fulfillments_chartdata[i+1] = data_point;
+							data_point[0] = moment(diary_fulfillment.day).toDate();
+							data_point[1] = diary_fulfillment.general_porcentage;
 
-					};
+							diary_fulfillments_chartdata[i+1] = data_point;
 
-					$scope.diary_fulfillments_chartdata = diary_fulfillments_chartdata;
+						};
+
+						$scope.diary_fulfillments_chartdata = diary_fulfillments_chartdata;										
+
+					};							
 
 					$scope.$apply();
 					$scope.setupChart();
-					
-				}				
+
+				}
 			});		
 		});
 	}
