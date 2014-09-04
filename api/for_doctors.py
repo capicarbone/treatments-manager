@@ -118,7 +118,8 @@ class ForDoctors(remote.Service):
                 action_msg.measurement.chart_data = ChartData(points=[])
                 chart_points = []
 
-                fulfillments = Fulfillment.query(ancestor=ndb.Key(urlsafe=action_msg.key)).order(Fulfillment.for_moment)
+                # Cumplimiento realizados para ser graficados
+                fulfillments = Fulfillment.query(ancestor=ndb.Key(urlsafe=action_msg.key)).filter(Fulfillment.decision=='T').order(Fulfillment.for_moment)
 
                 for f in fulfillments:
                     point = ChartPoint(value=float(f.value), tag=str(f.action_moment))

@@ -31,6 +31,7 @@ class MessageModel(ndb.Model):
 
         # TODO: Esto puede ser supremamente mejorado llamando al init con un diccionario de los campos
 
+
         super(MessageModel, self).__init__( **kwargs)
 
         if message:
