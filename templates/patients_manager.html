@@ -1,60 +1,78 @@
+
+<div class="md-col-12 text-center" ng-show="!is_ready">
+	<div class="spinner animable" >
+	  <div class="rect1"></div>
+	  <div class="rect2"></div>
+	  <div class="rect3"></div>
+	  <div class="rect4"></div>
+	  <div class="rect5"></div>
+	</div>
+	<div>
+		Cargando
+	</div>
+</div>
+
 {% raw %}
 
-	<tm-back-button></tm-back-button>
+	<div ng-show="is_ready">
+		<tm-back-button></tm-back-button>
 	
-	<div class="section-title">
-		<h1 class="title">		
-				{{section_title}}		
-			<a class="lateral clickable" href="#/paciente/form">
-				Añadir
-			</a>																
-		</h1>	
+		<div class="section-title">
+			<h1 class="title">		
+					{{section_title}}		
+				<a class="lateral clickable" href="#/paciente/form">
+					Añadir
+				</a>																
+			</h1>	
+		</div>
+
+		<table class="table table-hover">
+			<thead>
+				<tr>				
+					<th>Nombre y Apellido</th>
+					<th>Sexo</th>
+					<th></th>
+				</tr>	
+			</thead>		
+			<tbody>
+				<tr ng-repeat="patient in patients">
+					<td>
+						{{patient.person.first_name}} {{patient.person.last_name}}				
+					</td>
+					<td>	
+						{{patient.person.gender_readable}}
+					</td>
+					<td>
+						<div class="btn-group">
+							<a href="#paciente/{{patient.key}}" class="btn btn-default">
+								<i class="glyphicon glyphicon-eye-open">								
+								</i>		
+							</a>
+							<a href="" class="btn btn-default">
+								<i class="glyphicon glyphicon-edit">								
+								</i>		
+							</a>
+							<div class="btn-group">
+							    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							      Más acciones
+							      <span class="caret"></span>
+							    </button>
+							    <ul class="dropdown-menu">
+							      <li>
+							      	<a ng-hide="patient.active_treatment_key" href="#/paciente/{{patient.id}}/tratamiento/form">Asignar tratamiento</a>
+							      	<a ng-show="patient.active_treatment_key" href="#/tratamiento/{{patient.active_treatment_key}}">Ver tratamiento</a>
+							      </li>
+							      <li><a href="#">Eliminar</a></li>
+							    </ul>
+							  </div>
+						</div>
+					</td>
+				</tr>	
+			</tbody>
+			
+		</table>
 	</div>
 
-	<table class="table table-hover">
-		<thead>
-			<tr>				
-				<th>Nombre y Apellido</th>
-				<th>Sexo</th>
-				<th></th>
-			</tr>	
-		</thead>		
-		<tbody>
-			<tr ng-repeat="patient in patients">
-				<td>
-					{{patient.person.first_name}} {{patient.person.last_name}}				
-				</td>
-				<td>	
-					{{patient.person.gender_readable}}
-				</td>
-				<td>
-					<div class="btn-group">
-						<a href="#paciente/{{patient.key}}" class="btn btn-default">
-							<i class="glyphicon glyphicon-eye-open">								
-							</i>		
-						</a>
-						<a href="" class="btn btn-default">
-							<i class="glyphicon glyphicon-edit">								
-							</i>		
-						</a>
-						<div class="btn-group">
-						    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-						      Más acciones
-						      <span class="caret"></span>
-						    </button>
-						    <ul class="dropdown-menu">
-						      <li>
-						      	<a ng-hide="patient.active_treatment_key" href="#/paciente/{{patient.id}}/tratamiento/form">Asignar tratamiento</a>
-						      	<a ng-show="patient.active_treatment_key" href="#/tratamiento/{{patient.active_treatment_key}}">Ver tratamiento</a>
-						      </li>
-						      <li><a href="#">Eliminar</a></li>
-						    </ul>
-						  </div>
-					</div>
-				</td>
-			</tr>	
-		</tbody>
-		
-	</table>
+	
 
 {% endraw %}

@@ -1,227 +1,243 @@
 
+<div class="md-col-12 text-center" ng-show="!is_ready">
+	<div class="spinner animable" >
+	  <div class="rect1"></div>
+	  <div class="rect2"></div>
+	  <div class="rect3"></div>
+	  <div class="rect4"></div>
+	  <div class="rect5"></div>
+	</div>
+	<div>
+		Cargando
+	</div>
+</div>
+
+<div ng-show="is_ready">
 {% raw %}
 
-<tm-back-button></tm-back-button>
+	<tm-back-button></tm-back-button>
 
-<div class="section-title">
-	<h1 class="title">{{section_title}}</h1>
-	<h3 class="complement">Asignado el {{treatment.created_at_readable()}}</h3>
-</div>
+	<div class="section-title">
+		<h1 class="title">{{section_title}}</h1>
+		<h3 class="complement">Asignado el {{treatment.created_at_readable()}}</h3>
+	</div>
 
-<div class="row-fluid clearfix">
-	<div class="col-md-5 sidebox">
-		<div class="subtitle-wrapper without-margin">
-			<h4 class="subtitle text-center">Paciente</h4>	
-		</div>
-		
-		<div class="body">
-			<p class="text-center standout-more">
-				{{patient.person.first_name}} {{patient.person.last_name}}
-			</p>
+	<div class="row-fluid clearfix">
+		<div class="col-md-5 sidebox">
+			<div class="subtitle-wrapper without-margin">
+				<h4 class="subtitle text-center">Paciente</h4>	
+			</div>
 			
-			<div class="row-fluid clearfix">
-				<div class="col-md-4">
-					<span class="standout">Sexo: </span>
-					<br/>
-					{{patient.person.gender_readable}}
+			<div class="body">
+				<p class="text-center standout-more">
+					{{patient.person.first_name}} {{patient.person.last_name}}
+				</p>
+				
+				<div class="row-fluid clearfix">
+					<div class="col-md-4">
+						<span class="standout">Sexo: </span>
+						<br/>
+						{{patient.person.gender_readable}}
+					</div>
+					<div class="col-md-4">
+						<span class="standout">Edad: </span>
+						<br/>
+						{{patient.age}}
+					</div>
+					<div class="col-md-4">
+						<span class="standout">Nació el: </span>
+						<br/>
+						{{patient.birthday_readable}}
+					</div>
 				</div>
-				<div class="col-md-4">
-					<span class="standout">Edad: </span>
-					<br/>
-					{{patient.age}}
-				</div>
-				<div class="col-md-4">
-					<span class="standout">Nació el: </span>
-					<br/>
-					{{patient.birthday_readable}}
-				</div>
+
+				<p class="standout separate">Alergias:</p>
+				<p>{{patient.allergies}}</p>
+
+				<a href="#/paciente/{{ patient.key }}" class="right-button simple-button">
+					Ver detalles
+				</a>
 			</div>
-
-			<p class="standout separate">Alergias:</p>
-			<p>{{patient.allergies}}</p>
-
-			<a href="#/paciente/{{ patient.key }}" class="right-button simple-button">
-				Ver detalles
-			</a>
+			
 		</div>
-		
-	</div>
-	<div class="col-md-7">
-		<p class="standout-more">Objetivos</p>
-		<p>{{treatment.objetives}}</p>
+		<div class="col-md-7">
+			<p class="standout-more">Objetivos</p>
+			<p>{{treatment.objetives}}</p>
 
-		<div class="row-fluid clearfix">
-			<div class="col-md-6">
-				<p class="standout-more">Inicio:</p>
-				{{treatment.init_date_readable()}}
-			</div>
-			<div class="col-md-6">
-				<p class="standout-more">Finalización:</p>
-				{{treatment.finish_date_readable()}}
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="row-fluid clearfix tiny-separate">
-	<div class="col-md-5 sidebox">
-		<div class="body">
 			<div class="row-fluid clearfix">
 				<div class="col-md-6">
-					<p class="standout text-center without-margin">Código</p>
-					<p class="standout-more text-center without-margin display-code">{{treatment.display_code}}</p>
+					<p class="standout-more">Inicio:</p>
+					{{treatment.init_date_readable()}}
 				</div>
 				<div class="col-md-6">
-					<p class="standout-more without-margin red text-center" ng-hide="treatment.is_sync">
-						<span class="glyphicon glyphicon-remove"></span> <br/>
-						No Sincronizado
-					</p>
-
-					<p class="standout-more without-margin green text-center" ng-show="treatment.is_sync">
-						<span class="glyphicon glyphicon-cloud-download"></span> <br/>
-						Sincronizado
-					</p>
+					<p class="standout-more">Finalización:</p>
+					{{treatment.finish_date_readable()}}
 				</div>
 			</div>
-			<p class="separate help-text">
-				Para que su paciente pueda recibir su tratamiento
-				médico en su móvil debe especificarle el código
-				arriba. Una vez introducido en el móvil inciará
-				la sincronización de la información.
+		</div>
+	</div>
+
+	<div class="row-fluid clearfix tiny-separate">
+		<div class="col-md-5 sidebox">
+			<div class="body">
+				<div class="row-fluid clearfix">
+					<div class="col-md-6">
+						<p class="standout text-center without-margin">Código</p>
+						<p class="standout-more text-center without-margin display-code">{{treatment.display_code}}</p>
+					</div>
+					<div class="col-md-6">
+						<p class="standout-more without-margin red text-center" ng-hide="treatment.is_sync">
+							<span class="glyphicon glyphicon-remove"></span> <br/>
+							No Sincronizado
+						</p>
+
+						<p class="standout-more without-margin green text-center" ng-show="treatment.is_sync">
+							<span class="glyphicon glyphicon-cloud-download"></span> <br/>
+							Sincronizado
+						</p>
+					</div>
+				</div>
+				<p class="separate help-text">
+					Para que su paciente pueda recibir su tratamiento
+					médico en su móvil debe especificarle el código
+					arriba. Una vez introducido en el móvil inciará
+					la sincronización de la información.
+				</p>
+			</div>
+		</div>
+		<div class="col-md-7 squash">
+			<p class="standout-more text-center">Cumplimiento general</p>
+
+			<div>
+				<p class="text-center standout-more-more">{{treatment.fulfillment_porcentage | number:1}}%</p>
+				<div class="progress">
+					<div class="progress-bar" style="width: {{treatment.fulfillment_porcentage}}%"></div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+	<div ng-show="treatment.last_report_time">
+		<div class="subtitle-wrapper">
+			<h4 class="subtitle">
+				Detalles del cumplimiento	
+			</h4>	
+			<p class="subtitle-complement push" ng-show="treatment.last_report_time">
+				Último reporte del {{treatment.last_report_time_readable()}}
 			</p>
 		</div>
+
+		<p class="separate standout-more">Comportamiento del cumplimiento diario </p>
+		<div id="diary_fulfillment_chart" ></div>
+
+		<p class="separate standout-more">Últimos 5 dias</p>
+
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Dia</th>
+					<th>Cumplimiento</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="f in diaryFulfillments | limitTo: 5">
+					<td>{{f.day_readable()}}</td>
+					<td>
+						<div class="progress">
+							<div class="progress-bar" style="width: {{f.general_porcentage}}%">						
+								{{f.general_porcentage|number:1}}
+							</div>
+						</div>
+					</td>
+					<td>
+						<div class="btn-group">
+							<a href="" class="btn btn-default">
+								<i class="glyphicon glyphicon-eye-open"></i>
+							</a>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
-	<div class="col-md-7 squash">
-		<p class="standout-more text-center">Cumplimiento general</p>
 
-		<div>
-			<p class="text-center standout-more-more">{{treatment.fulfillment_porcentage | number:1}}%</p>
-			<div class="progress">
-				<div class="progress-bar" style="width: {{treatment.fulfillment_porcentage}}%"></div>
-			</div>
-		</div>
-		
-	</div>
-</div>
-
-<div ng-show="treatment.last_report_time">
-	<div class="subtitle-wrapper">
-		<h4 class="subtitle">
-			Detalles del cumplimiento	
-		</h4>	
-		<p class="subtitle-complement push" ng-show="treatment.last_report_time">
-			Último reporte del {{treatment.last_report_time_readable()}}
-		</p>
+	<div class="subtitle-wrapper" >
+		<h4 class="subtitle">Indicadores</h4>
 	</div>
 
-	<p class="separate standout-more">Comportamiento del cumplimiento diario </p>
-	<div id="diary_fulfillment_chart" ></div>
 
-	<p class="separate standout-more">Últimos 5 dias</p>
-
-	<table class="table table-hover">
-		<thead>
-			<tr>
-				<th>Dia</th>
-				<th>Cumplimiento</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="f in diaryFulfillments | limitTo: 5">
-				<td>{{f.day_readable()}}</td>
-				<td>
+	<div class="row">
+		<div class="col-md-6" ng-repeat="a in treatment.actions | filter:{isForMeasurement: true}" >
+			<div class="tm-panel">			
+				<div class="icon-box push">
+					<img src="static/img/ic_measurement.png" alt="">
+				</div>
+				<a class="simple-button push" href="#/tratamiento/accion/{{a.key}}">
+					Ver detalles
+				</a>
+				<div class="tm-panel-heading">
+					<span class="standout-more">{{a.measurement.name}} </span> {{a.measurement.unit}}				
+				</div>
+				<div class="tm-panel-body fix-height separate">
+					{{a.description()}}
+									
+				</div>
+				<div class="tm-panel-footer">
+					<p class="text-center">Cumplimiento general</p>
 					<div class="progress">
-						<div class="progress-bar" style="width: {{f.general_porcentage}}%">						
-							{{f.general_porcentage|number:1}}
+						<div class="progress-bar" style="width: {{a.fulfillment_porcentage}}%">
+							{{a.fulfillment_porcentage | number: 1}}%
 						</div>
 					</div>
-				</td>
-				<td>
-					<div class="btn-group">
-						<a href="" class="btn btn-default">
-							<i class="glyphicon glyphicon-eye-open"></i>
-						</a>
+				</div>
+
+				<div class="tm-panel-footer" ng-show="treatment.last_report_time">
+					<p class="text-center">Comportamiento diario</p>
+					<div class="chart-container" id="{{a.id}}">
+						
 					</div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	
-</div>
-<div class="subtitle-wrapper" >
-	<h4 class="subtitle">Indicadores</h4>
-</div>
-
-
-<div class="row">
-	<div class="col-md-6" ng-repeat="a in treatment.actions | filter:{isForMeasurement: true}" >
-		<div class="tm-panel">			
-			<div class="icon-box push">
-				<img src="static/img/ic_measurement.png" alt="">
-			</div>
-			<a class="simple-button push" href="#/tratamiento/accion/{{a.key}}">
-				Ver detalles
-			</a>
-			<div class="tm-panel-heading">
-				<span class="standout-more">{{a.measurement.name}} </span> {{a.measurement.unit}}				
-			</div>
-			<div class="tm-panel-body fix-height separate">
-				{{a.description()}}
-								
-			</div>
-			<div class="tm-panel-footer">
-				<p class="text-center">Cumplimiento general</p>
-				<div class="progress">
-					<div class="progress-bar" style="width: {{a.fulfillment_porcentage}}%">
-						{{a.fulfillment_porcentage | number: 1}}%
-					</div>
-				</div>
-			</div>
-
-			<div class="tm-panel-footer" ng-show="treatment.last_report_time">
-				<p class="text-center">Comportamiento diario</p>
-				<div class="chart-container" id="{{a.id}}">
-					
-				</div>
-			</div>
+		<div class="subtitle-wrapper">
+			<h4 class="subtitle">Medicamentos</h4>
 		</div>
-	</div>
-</div>
-
-<div class="subtitle-wrapper">
-	<h4 class="subtitle">Medicamentos</h4>
-</div>
 
 
-<div class="row">
-	<div class="col-md-6" ng-repeat="a in treatment.actions | filter:{isForMedicamentTake: true}" >
-		<div class="tm-panel">			
-			<div class="icon-box push">
-				<img src="static/img/ic_capsule.png" alt="">
-			</div>
-			<a class="simple-button push">
-				Ver detalle
-			</a>
-			<div class="tm-panel-heading">
-				<span class="standout-more">{{a.medicament.name}} </span> {{a.medicament.dose}}				
-			</div>
-			<div class="tm-panel-body fix-height separate">
-				{{a.description()}}.
-								
-			</div>
-			<div class="tm-panel-footer">
-				<p class="text-center">Cumplimiento general</p>
-				<div class="progress">
-					<div class="progress-bar" style="width: {{a.fulfillment_porcentage}}%">
-						{{a.fulfillment_porcentage | number: 1}}%
+		<div class="row">
+			<div class="col-md-6" ng-repeat="a in treatment.actions | filter:{isForMedicamentTake: true}" >
+				<div class="tm-panel">			
+					<div class="icon-box push">
+						<img src="static/img/ic_capsule.png" alt="">
+					</div>
+					<a class="simple-button push">
+						Ver detalle
+					</a>
+					<div class="tm-panel-heading">
+						<span class="standout-more">{{a.medicament.name}} </span> {{a.medicament.dose}}				
+					</div>
+					<div class="tm-panel-body fix-height separate">
+						{{a.description()}}.
+										
+					</div>
+					<div class="tm-panel-footer">
+						<p class="text-center">Cumplimiento general</p>
+						<div class="progress">
+							<div class="progress-bar" style="width: {{a.fulfillment_porcentage}}%">
+								{{a.fulfillment_porcentage | number: 1}}%
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
-
+	
 
 {% endraw %}
+
+</div>

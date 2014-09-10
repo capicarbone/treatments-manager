@@ -1,48 +1,66 @@
 
+
+<div class="md-col-12 text-center" ng-show="!is_ready">
+	<div class="spinner animable" >
+	  <div class="rect1"></div>
+	  <div class="rect2"></div>
+	  <div class="rect3"></div>
+	  <div class="rect4"></div>
+	  <div class="rect5"></div>
+	</div>
+	<div>
+		Cargando
+	</div>
+</div>
+
 {% raw %}
+
+	<div ng-show="is_ready">
+		<div class="section-title">
+			<h1 class="title">Dashboard</h1>
+		</div>
+
+		<div class="row">
+			<div class="col-md-6">
+
+				<p ng-show="!treatments.length">No hay tratamientos en realización en este momento.</p>
+
+				<a href="#/tratamiento/{{treatment.key}}" class="no-underline" ng-repeat="treatment in treatments | orderBy:fulfillment_porcentage">
+					<div class="separator selectable expand" >
+
+						
+						<h2 class="light caption">{{treatment.patient.person.first_name}} {{treatment.patient.person.last_name}}</h2>
+						<p class="no-underline black">Han transcurrido {{treatment.elapsedDays()}} días y quedan {{treatment.remainingDays()}} días.</p>
+						<div class="progress thin">
+							<div class="progress-bar good" style="width: {{treatment.fulfillment_porcentage | number:0}}%">												
+							</div>
+						</div>				
+					</div>			
+				</a>
+
+			</div>
+			<div class="col-md-6" ng-class="{inactive: !treatments.length }">
+				<div class="important-indicator accepts-friends less-important">
+					<p class="indicator">{{treatmentsActivesCount}}</p>
+					<p class="description">Tratamientos activos</p>
+				</div>
+
+				<div class="important-indicator accepts-friends">
+					<p class="indicator">
+						{{porcentageAverage | number:1 }}%
+					</p>
+					<p class="description">Cumplimiento promedio</p>
+				</div>
+
+				<div class="important-indicator">
+					<div id="chart"></div>
+					<p class="description">Proporción de cumplimientos</p>
+				</div>					
+			</div>
+		</div>
+	</div>
 	
-	<div class="section-title">
-		<h1 class="title">Dashboard</h1>
-	</div>
-
-	<div class="row">
-		<div class="col-md-6">
-
-			<p ng-show="!treatments.length">No hay tratamientos en realización en este momento.</p>
-
-			<a href="#/tratamiento/{{treatment.key}}" class="no-underline" ng-repeat="treatment in treatments | orderBy:fulfillment_porcentage">
-				<div class="separator selectable expand" >
-
-					
-					<h2 class="light caption">{{treatment.patient.person.first_name}} {{treatment.patient.person.last_name}}</h2>
-					<p class="no-underline black">Han transcurrido {{treatment.elapsedDays()}} días y quedan {{treatment.remainingDays()}} días.</p>
-					<div class="progress thin">
-						<div class="progress-bar good" style="width: {{treatment.fulfillment_porcentage | number:0}}%">												
-						</div>
-					</div>				
-				</div>			
-			</a>
-
-		</div>
-		<div class="col-md-6" ng-class="{inactive: !treatments.length }">
-			<div class="important-indicator accepts-friends less-important">
-				<p class="indicator">{{treatmentsActivesCount}}</p>
-				<p class="description">Tratamientos activos</p>
-			</div>
-
-			<div class="important-indicator accepts-friends">
-				<p class="indicator">
-					{{porcentageAverage | number:1 }}%
-				</p>
-				<p class="description">Cumplimiento promedio</p>
-			</div>
-
-			<div class="important-indicator">
-				<div id="chart"></div>
-				<p class="description">Proporción de cumplimientos</p>
-			</div>					
-		</div>
-	</div>
+	
 	
     
 {% endraw %}

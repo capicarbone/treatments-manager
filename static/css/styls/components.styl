@@ -195,6 +195,30 @@
 	&.ng-leave-active
 		opacity 0
 		right -5em
+
+
+.animable
+	position: relative;
+	
+	&.ng-enter
+		-webkit-transition:0.3s ease all;
+		-moz-transition:0.3s ease all;
+		-o-transition:0.3s ease all;
+		transition:0.3s ease all;
+		opacity:0;		
+
+	&.ng-enter-active
+		opacity 1		
+
+	&.ng-leave
+		-webkit-transition:0.3s ease all;
+		-moz-transition:0.3s ease all;
+		-o-transition:0.3s ease all;
+		transition:0.3s ease all;
+		opacity:1		
+
+	&.ng-leave-active
+		opacity 0		
 	
 
 	

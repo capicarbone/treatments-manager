@@ -30,6 +30,13 @@
 						</span>
 					</a>
 				</div>
+				<!-- <div class="spinner animable ontop" ng-show="!is_backend_ready">
+				  <div class="rect1"></div>
+				  <div class="rect2"></div>
+				  <div class="rect3"></div>
+				  <div class="rect4"></div>
+				  <div class="rect5"></div>
+				</div> -->
 				<div class="navbar-right ">
 					<ul>
 						<li class="left-border-dotted clickable">
@@ -41,7 +48,7 @@
 			</div>
 		</nav>
 
-		<div class="container-fluid ng-hide" ng-show="is_backend_ready">
+		<div class="container-fluid ng-hide animable" ng-show="is_backend_ready">
 			<div class="row-fluid clearfix">
 				<nav class="col-md-2 sidebar">
 					<tm-menu>
@@ -54,11 +61,25 @@
 					<div class="row-fluid">
 						<div class="md-col-12" ng-view>
 														
-						</div>
+						</div>						
 					</div>
 				</section>
 			</div>
+		</div>
 
+		<div ng-show="!is_backend_ready" style="margin-top: 5em;">
+			<div class="md-col-12 text-center">
+				<div class="spinner animable" >
+				  <div class="rect1"></div>
+				  <div class="rect2"></div>
+				  <div class="rect3"></div>
+				  <div class="rect4"></div>
+				  <div class="rect5"></div>
+				</div>
+				<div>
+					Cargando
+				</div>
+			</div>
 		</div>
 	</div>
 

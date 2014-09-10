@@ -5,6 +5,7 @@ angular.module('TreatmentsManager')
 	$rootScope.section_title = "Tratamientos activos"
 
 	$scope.treatments = [];
+	$scope.is_ready = false;
 
 	$scope.init = function(){
 
@@ -18,6 +19,8 @@ angular.module('TreatmentsManager')
 				});
 
 				$scope.treatments = response.treatments;
+
+				$scope.is_ready = true;
 			});
 
 		});

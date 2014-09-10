@@ -1,4 +1,5 @@
 
+
 angular.module('TreatmentsManager')
 .controller('DoctorDashboardCtrl', [ '$scope', '$rootScope', '$filter', 'TreatmentsUtils', function($scope, $rootScope, $filter, TreatmentsUtils){
 
@@ -17,6 +18,8 @@ angular.module('TreatmentsManager')
   };
 
   $scope.chartData = {};
+
+  $scope.is_ready = false;
 
   $scope.init = function(){
 
@@ -109,6 +112,8 @@ angular.module('TreatmentsManager')
       chart.draw($scope.chartData, $scope.chartBaseOptions);
 
       })
+
+      $scope.is_ready = true;
 
     }
 

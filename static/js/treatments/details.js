@@ -9,6 +9,8 @@ angular.module('TreatmentsManager')
 
 	$scope.diaryFulfillments = {};
 
+	$scope.is_ready = false;
+
 	$scope.setupChart = function (){
 		
 		if ($scope.diary_fulfillments_chartdata){
@@ -57,7 +59,7 @@ angular.module('TreatmentsManager')
 						data_point = action.measurement.chart_data.points[j];
 
 						plain_data[j] = [];
-						plain_data[j][0] = new Date(data_point.tag);
+						plain_data[j][0] = moment(data_point.tag).toDate();
 						plain_data[j][1] = data_point.value;
 					};				
 
@@ -138,10 +140,13 @@ angular.module('TreatmentsManager')
 					};							
 
 					$scope.$apply();
-					$scope.setupChart();
+					$scope.setupChart();					
 
 				}
-			});		
+			});
+
+			$scope.is_ready = true;
+			$scope.$apply();		
 		});
 	}
 

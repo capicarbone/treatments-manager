@@ -18,4 +18,10 @@ indexes:
 - kind: Fulfillment
   ancestor: yes
   properties:
+  - name: decision
+  - name: for_moment
+
+- kind: Fulfillment
+  ancestor: yes
+  properties:
   - name: for_moment

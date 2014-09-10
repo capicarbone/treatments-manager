@@ -4,7 +4,7 @@ angular.module('TreatmentsManager', ['ngRoute', 'ngAnimate', 'tmComponents'])
 .config(function($routeProvider){
 
 	$routeProvider
-	.when('/',{
+	.when('/dashboard',{
 		controller:'DoctorDashboardCtrl',
 		templateUrl:'template/doctor_dashboard.html'
 	})
@@ -53,7 +53,7 @@ angular.module('TreatmentsManager', ['ngRoute', 'ngAnimate', 'tmComponents'])
 	})
 
 	.otherwise({
-		redirectTo: '/'
+		redirectTo: '/dashboard'
 	});
 })
 

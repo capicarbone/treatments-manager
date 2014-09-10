@@ -63,11 +63,11 @@ angular.module('TreatmentsManager')
 				})
 
 				if (realizeds){
-					for (var i = $scope.action.measurement.fulfillments.length - 1; i >= 0; i--) {
+					for (var i = realizeds.length - 1; i >= 0; i--) {
 
 						$scope.measurement_chartdata[i] = [];
-						$scope.measurement_chartdata[i][0] = new Date($scope.action.measurement.fulfillments[i].for_moment);
-						$scope.measurement_chartdata[i][1] = $scope.action.measurement.fulfillments[i].value*1;
+						$scope.measurement_chartdata[i][0] = moment(realizeds[i].for_moment).toDate();
+						$scope.measurement_chartdata[i][1] = realizeds[i].value*1;
 					};	
 				}
 				

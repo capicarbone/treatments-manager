@@ -1,40 +1,59 @@
+
+
+<div class="md-col-12 text-center" ng-show="!is_ready">
+	<div class="spinner animable" >
+	  <div class="rect1"></div>
+	  <div class="rect2"></div>
+	  <div class="rect3"></div>
+	  <div class="rect4"></div>
+	  <div class="rect5"></div>
+	</div>
+	<div>
+		Cargando
+	</div>
+</div>
+
 {% raw %}
 
-	<tm-back-button></tm-back-button>
+	<div ng-show="is_ready">
+		<tm-back-button></tm-back-button>
 		
-	<div class="section-title">
-		<h1 class="title">{{section_title}}</h1>
+		<div class="section-title">
+			<h1 class="title">{{section_title}}</h1>
+		</div>
+
+		<input class="search-input" type="text" ng-model="search" placeholder="Introduzca algun nombre para buscar">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Paciente</th>				
+					<th>Objetivos</th>
+					<th>Cumplimiento General</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="treatment in treatments | filter: search">
+					<td> {{treatment.patient.person.first_name}} {{treatment.patient.person.last_name}}</td>				
+					<td> {{treatment.objetives}}</td>
+					<td>
+						<div class="progress">
+							<div class="progress-bar" style="width:{{treatment.fulfillment_porcentage}}%">
+								{{treatment.fulfillment_porcentage | number:1}}%
+							</div>
+						</div>
+					</td>
+					<td>		
+						<div class="btn-group">
+							<a class="btn btn-default" href="#/tratamiento/{{treatment.key}}">
+								<i class="glyphicon glyphicon-eye-open" ></i>
+							</a>
+						</div>			
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 
-	<input class="search-input" type="text" ng-model="search" placeholder="Introduzca algun nombre para buscar">
-	<table class="table table-hover">
-		<thead>
-			<tr>
-				<th>Paciente</th>				
-				<th>Objetivos</th>
-				<th>Cumplimiento General</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="treatment in treatments | filter: search">
-				<td> {{treatment.patient.person.first_name}} {{treatment.patient.person.last_name}}</td>				
-				<td> {{treatment.objetives}}</td>
-				<td>
-					<div class="progress">
-						<div class="progress-bar" style="width:{{treatment.fulfillment_porcentage}}%">
-							{{treatment.fulfillment_porcentage | number:1}}%
-						</div>
-					</div>
-				</td>
-				<td>		
-					<div class="btn-group">
-						<a class="btn btn-default" href="#/tratamiento/{{treatment.key}}">
-							<i class="glyphicon glyphicon-eye-open" ></i>
-						</a>
-					</div>			
-				</td>
-			</tr>
-		</tbody>
-	</table>
+	
 {% endraw %}

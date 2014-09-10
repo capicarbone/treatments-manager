@@ -6,6 +6,8 @@ angular.module('TreatmentsManager')
 
 	$scope.patients = []
 
+	$scope.is_ready = false;
+
 	$scope.init = function(){
 
 		$('.dropdown-toggle').dropdown();
@@ -18,6 +20,8 @@ angular.module('TreatmentsManager')
 
 					$scope.patients.push(new Patient(patient));
 				})
+
+				$scope.is_ready = true;
 			})
 		});
 	};

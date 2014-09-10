@@ -2,6 +2,8 @@
 angular.module('TreatmentsManager')
 .controller('PatientDetailsCtrl', function($scope, $rootScope, $routeParams){
 
+	$scope.is_ready = false;
+
 	$scope.init = function(){
 
 		$rootScope.api.patient.details({ekey: $routeParams.patient_key})
@@ -18,6 +20,7 @@ angular.module('TreatmentsManager')
 				$scope.treatments.push(new Treatment(t));
 			})
 
+			$scope.is_ready = true;
 			$scope.$apply();
 		});
 	}
