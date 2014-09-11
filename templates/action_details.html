@@ -5,7 +5,7 @@
 
 <div class="section-title">
 	<h1 class="title">{{section_title}}</h1>
-	<h3 class="complement">Paciente: Abelardo Torres</h3>
+	<!-- <h3 class="complement">Paciente: Abelardo Torres</h3> -->
 </div>
 
 <div class="row-fluid clearfix">
@@ -53,31 +53,33 @@
 	</div>
 </div>
 
-<div class="subtitle-wrapper">
-	<h4 class="subtitle">
-		Detalles
-	</h4>	
-	<p class="subtitle-complement push" ng-show="treatment.last_report_time">
-		Último reporte del {{treatment.last_report_time_readable()}}
-	</p>
-</div>
+<div ng-show="action.isForMeasurement">
+	<div class="subtitle-wrapper">
+		<h4 class="subtitle">
+			Detalles
+		</h4>	
+		<p class="subtitle-complement push" ng-show="treatment.last_report_time">
+			Último reporte del {{treatment.last_report_time_readable()}}
+		</p>
+	</div>
 
 
-<div class="row-fluid clearfix">
-	<div class="col-md-4">
-		<p class="text-center standout more">Promedio</p>
-		<p class="text-center standout too-much without-margin fit-line">{{action.measurement.average() | number:2}}</p>
-		<p class="text-center">{{action.measurement.unit}}</p>
-	</div>
-	<div class="col-md-4">
-		<p class="text-center standout more">Registro más alto</p>
-		<p class="text-center standout too-much without-margin fit-line">{{action.measurement.highter_record()}}</p>
-		<p class="text-center">{{action.measurement.unit}}</p>
-	</div>
-	<div class="col-md-4">
-		<p class="text-center standout more">Registro más bajo</p>
-		<p class="text-center standout too-much without-margin fit-line">{{action.measurement.lowest_record()}}</p>
-		<p class="text-center">{{action.measurement.unit}}</p>
+	<div class="row-fluid clearfix">
+		<div class="col-md-4">
+			<p class="text-center standout more">Promedio</p>
+			<p class="text-center standout too-much without-margin fit-line">{{action.measurement.average() | number:2}}</p>
+			<p class="text-center">{{action.measurement.unit}}</p>
+		</div>
+		<div class="col-md-4">
+			<p class="text-center standout more">Registro más alto</p>
+			<p class="text-center standout too-much without-margin fit-line">{{action.measurement.highter_record()}}</p>
+			<p class="text-center">{{action.measurement.unit}}</p>
+		</div>
+		<div class="col-md-4">
+			<p class="text-center standout more">Registro más bajo</p>
+			<p class="text-center standout too-much without-margin fit-line">{{action.measurement.lowest_record()}}</p>
+			<p class="text-center">{{action.measurement.unit}}</p>
+		</div>
 	</div>
 </div>
 
@@ -103,7 +105,7 @@
 				<th>Realizado a las</th>
 				<th>Debió realizar</th>
 				<th>Diferencia</th>
-				<th>Medición</th>
+				<th ng-show="action.isForMeasurement">Medición</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -112,7 +114,7 @@
 				<td>{{f.realized_time}}</td>
 				<td>{{f.realization_time}}</td>
 				<td>{{f.difference_time}}</td>
-				<td>{{f.value}}</td>
+				<td ng-show="action.isForMeasurement">{{f.value}}</td>
 			</tr>
 		</tbody>
 	</table>

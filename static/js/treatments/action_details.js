@@ -70,16 +70,15 @@ angular.module('TreatmentsManager')
 						$scope.measurement_chartdata[i][1] = realizeds[i].value*1;
 					};	
 				}
-				
+			
+				google.load('visualization', '1.0', {'packages':['corechart'], 'language': 'es', 'callback': $scope.setupChart });		
 			}
 
 			if ($scope.action.isForMedicamentTake){
 
 			}
 
-			$scope.$apply();
-
-			google.load('visualization', '1.0', {'packages':['corechart'], 'language': 'es', 'callback': $scope.setupChart });	
+			$scope.$apply();			
 			
 		})
 	} 
